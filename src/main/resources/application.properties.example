@@ -1,0 +1,11 @@
+spring.application.name=PFC-DAM
+
+#URL conexión a servidor local y a base de datos
+spring.datasource.url = jdbc:postgresql://localhost:5432/protectapp
+spring.datasource.username=usuario
+spring.datasource.password=contraseña_aqui
+
+
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=true
+spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect

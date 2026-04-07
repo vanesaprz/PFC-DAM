@@ -2,6 +2,8 @@ package com.example.PFC_DAM.model;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 @Table(name = "protectoras")
 public class Protectora {
@@ -44,7 +46,11 @@ public class Protectora {
     private Cuenta cuenta;
 
     //Con animales
+    @OneToOne(mappedBy = "animal")
+    private List<Animal> animal;
 
     //Con red social
+    @OneToMany(mappedBy = "redSocial")
+    private List<RedSocial> redSocial;
 
 }

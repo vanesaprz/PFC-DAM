@@ -28,10 +28,10 @@ public class Cuenta {
     //RELACIONES:
 
     //Con adoptante
-    @OneToOne(mappedBy = "adoptante")
+    @OneToOne(mappedBy = "cuenta")
     private Adoptante adoptante;
     //Con protectora
-    @OneToOne(mappedBy = "protectora")
+    @OneToOne(mappedBy = "cuenta")
     private Protectora protectora;
 
     //CONSTRUCTORES:
@@ -40,8 +40,6 @@ public class Cuenta {
     public Cuenta() {
     }
 
-    public Cuenta(String email, String contrasena, String rol) {
-    }
 
     //Setters y getters
 

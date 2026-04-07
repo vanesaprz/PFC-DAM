@@ -2,6 +2,8 @@ package com.example.PFC_DAM.model;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 @Table(name = "adoptantes")
 public class Adoptante {
@@ -33,9 +35,14 @@ public class Adoptante {
     @OneToOne
     @JoinColumn(name = "cuenta_id")
     private Cuenta cuenta;
-    //Con favoritos
 
-    //Con solicitudes
+    //Con favoritos
+    @OneToMany(mappedBy = "adoptante")
+    private List<Favorito> favoritos;
+
+    //Con solicitudes:
+    @OneToMany(mappedBy = "adoptante")
+    private List<Solicitud> solicitudes;
 
 
     //CONSTRUCTORES:

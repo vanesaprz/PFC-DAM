@@ -4,13 +4,14 @@ import jakarta.persistence.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Table(name = "animales")
 public class Animal {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
     @Column(nullable = false,
             length = 30,
             name = "nombre")
@@ -52,8 +53,8 @@ public class Animal {
     private String tamano;
 
     @Column(nullable = false,
-            scale = 5,
-            precision = 2,
+            scale = 2,
+            precision = 5,
             name = "peso")
     private BigDecimal peso;
 
@@ -113,8 +114,12 @@ public class Animal {
     private Protectora protectora;
 
     //Con favoritos:
+    @OneToMany(mappedBy = "animal")
+    private List<Favorito> favoritos;
 
     //Con solicitudes:
+    @OneToMany(mappedBy = "animal")
+    private List<Solicitud> solicitudes;
 
 
 }

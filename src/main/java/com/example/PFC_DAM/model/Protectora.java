@@ -46,11 +46,11 @@ public class Protectora {
     private Cuenta cuenta;
 
     //Con animales
-    @OneToOne(mappedBy = "animal")
-    private List<Animal> animal;
+    @OneToMany(mappedBy = "protectora")
+    private List<Animal> animales;
 
     //Con red social
-    @OneToMany(mappedBy = "redSocial")
-    private List<RedSocial> redSocial;
+    @OneToMany(mappedBy = "protectora")
+    private List<RedSocial> redesSociales;
 
 }

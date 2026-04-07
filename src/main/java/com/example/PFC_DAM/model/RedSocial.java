@@ -1,14 +1,22 @@
 package com.example.PFC_DAM.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = "redes_sociales")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class RedSocial {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @Column(name = "tipo",
             nullable = false,

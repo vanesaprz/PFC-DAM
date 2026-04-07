@@ -1,11 +1,19 @@
 package com.example.PFC_DAM.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.List;
 
 @Entity
 @Table(name = "protectoras")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Protectora {
 
     @Id

@@ -1,11 +1,19 @@
 package com.example.PFC_DAM.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "solicitudes")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Solicitud {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,15 +29,13 @@ public class Solicitud {
     private String notas;
 
     @Column(name = "estado",
-            columnDefinition = "default 'Pendiente'",
             nullable = false)
-    private String estado;
+    private String estado = "Pendiente";
 
     @Column(name = "fecha",
             nullable = false,
-            columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP",
             updatable = false)
-    private LocalDateTime fecha;
+    private LocalDateTime fecha = LocalDateTime.now();
 
 
     //RELACIONES:

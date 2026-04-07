@@ -1,11 +1,19 @@
 package com.example.PFC_DAM.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.List;
 
 @Entity
 @Table(name = "adoptantes")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Adoptante {
 
     @Id
@@ -45,31 +53,4 @@ public class Adoptante {
     private List<Solicitud> solicitudes;
 
 
-    //CONSTRUCTORES:
-
-    public Adoptante() {
-    }
-
-    public Adoptante(String nombre, String apellidos, String provincia, String presentacion, String fotoPerfil) {
-        this.nombre = nombre;
-        this.apellidos = apellidos;
-        this.provincia = provincia;
-        this.presentacion = presentacion;
-        this.fotoPerfil = fotoPerfil;
-    }
-
-    //Setters y getters
-
-
-    @Override
-    public String toString() {
-        return "adoptante{" +
-                "id=" + id +
-                ", nombre='" + nombre + '\'' +
-                ", apellidos='" + apellidos + '\'' +
-                ", provincia='" + provincia + '\'' +
-                ", presentacion='" + presentacion + '\'' +
-                ", fotoPerfil='" + fotoPerfil + '\'' +
-                '}';
-    }
 }

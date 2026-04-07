@@ -1,9 +1,17 @@
 package com.example.PFC_DAM.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = "cuentas")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Cuenta {
 
     @Id
@@ -33,15 +41,5 @@ public class Cuenta {
     //Con protectora
     @OneToOne(mappedBy = "cuenta")
     private Protectora protectora;
-
-    //CONSTRUCTORES:
-
-
-    public Cuenta() {
-    }
-
-
-    //Setters y getters
-
-
+    
 }

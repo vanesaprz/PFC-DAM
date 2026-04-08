@@ -1,10 +1,12 @@
 package com.example.PFC_DAM.model;
 
+import com.example.PFC_DAM.model.enums.Rol;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
 
 @Entity
 @Table(name = "cuentas")
@@ -13,6 +15,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Cuenta {
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,7 +34,8 @@ public class Cuenta {
     @Column(name = "rol",
             nullable = false,
             length = 20)
-    private String rol;
+    @Enumerated(EnumType.STRING)
+    private Rol rol;
 
     //RELACIONES:
 
@@ -41,5 +45,5 @@ public class Cuenta {
     //Con protectora
     @OneToOne(mappedBy = "cuenta")
     private Protectora protectora;
-    
+
 }

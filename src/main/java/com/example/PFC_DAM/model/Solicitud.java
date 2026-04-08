@@ -1,5 +1,6 @@
 package com.example.PFC_DAM.model;
 
+import com.example.PFC_DAM.model.enums.EstadoSolicitud;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -30,7 +31,8 @@ public class Solicitud {
 
     @Column(name = "estado",
             nullable = false)
-    private String estado = "Pendiente";
+    @Enumerated(EnumType.STRING)
+    private EstadoSolicitud estado;
 
     @Column(name = "fecha",
             nullable = false,

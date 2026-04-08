@@ -1,5 +1,7 @@
 package com.example.PFC_DAM.model;
 
+import com.example.PFC_DAM.model.enums.EstadoAnimal;
+import com.example.PFC_DAM.model.enums.Sexo;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -39,7 +41,8 @@ public class Animal {
             nullable = false,
             length = 10
     )
-    private String sexo;
+    @Enumerated(EnumType.STRING)
+    private Sexo sexo;
 
     @Column(name = "fecha_nacimiento",
             nullable = false
@@ -54,7 +57,8 @@ public class Animal {
     @Column(nullable = false,
             length = 10,
             name = "estado")
-    private String estado;
+    @Enumerated(EnumType.STRING)
+    private EstadoAnimal estado;
 
     @Column(length = 20,
             name = "tamano")

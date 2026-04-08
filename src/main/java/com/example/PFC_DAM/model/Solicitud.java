@@ -32,7 +32,7 @@ public class Solicitud {
     @Column(name = "estado",
             nullable = false)
     @Enumerated(EnumType.STRING)
-    private EstadoSolicitud estado;
+    private EstadoSolicitud estado = EstadoSolicitud.PENDIENTE;
 
     @Column(name = "fecha",
             nullable = false,

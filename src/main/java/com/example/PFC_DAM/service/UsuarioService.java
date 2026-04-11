@@ -18,14 +18,20 @@ public class UsuarioService {
     private ProtectoraRepository protectoraRepository;
 
     @Transactional
-    public void registrarAdoptante(Cuenta cuenta, Adoptante adoptante) {
+    public void registrarAdoptante(Cuenta cuenta, Adoptante adoptante) throws Exception {
+        if (cuentaRepository.existsByEmail(cuenta.getEmail())) {
+            throw new Exception("El email ya está registrado");
+        }
         Cuenta cuentaGuardada = cuentaRepository.save(cuenta);
         adoptante.setCuenta(cuentaGuardada);
         adoptanteRepository.save(adoptante);
     }
 
     @Transactional
-    public void registrarProtectora(Cuenta cuenta, Protectora protectora) {
+    public void registrarProtectora(Cuenta cuenta, Protectora protectora) throws Exception {
+        if (cuentaRepository.existsByEmail(cuenta.getEmail())) {
+            throw new Exception("El email ya se ha registrado");
+        }
         Cuenta cuentaGuardada = cuentaRepository.save(cuenta);
         protectora.setCuenta(cuentaGuardada);
         protectoraRepository.save(protectora);

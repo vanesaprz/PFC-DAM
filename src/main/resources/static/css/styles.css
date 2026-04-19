@@ -1,0 +1,43 @@
+/* Contenedor de las tarjetas para que no se peguen */
+.animal-container {
+    padding: 20px 0;
+}
+
+/* Títulos de sección */
+.section-title {
+    margin-bottom: 25px;
+    font-weight: bold;
+}
+
+/* Estilo para CADA tarjeta */
+.animal-card {
+    border: none;
+    border-radius: 10px;
+    overflow: hidden; /* Para que la imagen no se salga de las esquinas redondeadas */
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    height: 100%; /* Para que todas las tarjetas de la fila midan lo mismo */
+}
+
+/* Efecto al pasar el ratón (opcional, queda muy pro) */
+.animal-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+}
+
+/* LA SOLUCIÓN PARA LAS FOTOS */
+.animal-card-img {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    object-position: center;
+}
+
+/* Variaciones para Urgentes */
+.card-urgente {
+    border: 2px solid #dc3545; /* Borde rojo */
+}
+
+.text-urgente {
+    color: #dc3545;
+    font-weight: bold;
+}

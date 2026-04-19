@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Únete a AmigosPeludos</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body class="bg-light">
+
+<div class="container vh-100 d-flex align-items-center justify-content-center">
+    <div class="row w-100 text-center">
+        <h2 class="mb-5 fw-bold">¿Cómo quieres unirte a nosotros?</h2>
+
+        <div class="col-md-6 mb-4">
+            <div class="card shadow-sm h-100 border-0 p-4 animal-card">
+                <div class="card-body">
+                    <i class="fas fa-heart text-danger fa-4x mb-3"></i>
+                    <h3 class="card-title">Quiero Adoptar</h3>
+                    <p class="text-muted">Busca a tu nuevo mejor amigo, haz seguimiento de tus favoritos y gestiona tus
+                        solicitudes de adopción.</p>
+                    <a th:href="@{/registro/adoptante}" class="btn btn-primary btn-lg w-100 mt-3">Soy Adoptante</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 mb-4">
+            <div class="card shadow-sm h-100 border-0 p-4 animal-card">
+                <div class="card-body">
+                    <i class="fa-solid fa-paw fa-4x mb-3"></i>
+                    <h3 class="card-title">Soy una Protectora</h3>
+                    <p class="text-muted">Publica animales, gestiona refugios y encuentra el hogar perfecto para tus
+                        peludos.</p>
+                    <a th:href="@{/registro/protectora}" class="btn btn-outline-primary btn-lg w-100 mt-3">Registrar
+                        Protectora</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-4">
+            <a th:href="@{/}" class="text-muted text-decoration-none small">
+                <i class="fas fa-arrow-left"></i> Volver al inicio
+            </a>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

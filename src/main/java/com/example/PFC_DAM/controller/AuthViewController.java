@@ -2,6 +2,7 @@ package com.example.PFC_DAM.controller;
 
 import com.example.PFC_DAM.model.Adoptante;
 import com.example.PFC_DAM.model.Cuenta;
+import com.example.PFC_DAM.model.Protectora;
 import com.example.PFC_DAM.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,11 +19,20 @@ public class AuthViewController {
 
     //Muestra el formulario registro-adoptante.html
     @GetMapping("/registro/adoptante")
-    public String mostrarFormularioRegistro(Model model) {
+    public String mostrarFormularioRegAdoptante(Model model) {
         model.addAttribute("cuenta", new Cuenta());
         model.addAttribute("adoptante", new Adoptante());
         return "registro-adoptante"; // Nombre del archivo HTML
     }
+
+    //Muestra el formulario registro-protectora.html
+    @GetMapping("/registro/protectora")
+    public String mostrarFormularioRegProtectora(Model model) {
+        model.addAttribute("cuenta", new Cuenta());
+        model.addAttribute("protectora", new Protectora());
+        return "registro-protectora";
+    }
+
 
     // 2. Procesa los datos del formulario
     @PostMapping("/registro/adoptante")

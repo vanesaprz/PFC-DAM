@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <title>Adopta un Amigo - Inicio</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
 </head>
 <body>
 <header th:fragment="header-nav" style="background-color: #f8f9fa; padding: 1rem; border-bottom: 1px solid #dee2e6;">
@@ -17,7 +17,7 @@
             <div sec:authorize="isAnonymous()">
                 <a th:href="@{/}">Inicio</a> |
                 <a th:href="@{/login}">Iniciar Sesión</a> |
-                <a th:href="@{/registro/adoptante}">Registrarse</a>
+                <a th:href="@{/registro/seleccion}">Registrarse</a>
             </div>
 
             <div sec:authorize="isAuthenticated()">

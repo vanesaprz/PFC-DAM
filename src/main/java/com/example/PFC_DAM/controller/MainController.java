@@ -24,5 +24,9 @@ public class MainController {
         return "index";
     }
 
+    @GetMapping("/registro/seleccion")
+    public String mostrarSeleccionRegistro() {
+        return "registro-seleccion";
+    }
 
 }

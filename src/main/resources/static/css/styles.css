@@ -13,12 +13,12 @@
 .animal-card {
     border: none;
     border-radius: 10px;
-    overflow: hidden; /* Para que la imagen no se salga de las esquinas redondeadas */
+    overflow: hidden;
     transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
     height: 100%; /* Para que todas las tarjetas de la fila midan lo mismo */
 }
 
-/* Efecto al pasar el ratón (opcional, queda muy pro) */
+/* Efecto al pasar el ratón*/
 .animal-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 10px 20px rgba(0,0,0,0.15);

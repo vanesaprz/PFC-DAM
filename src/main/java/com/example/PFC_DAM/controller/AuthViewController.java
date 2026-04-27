@@ -49,6 +49,17 @@ public class AuthViewController {
         }
     }
 
+    @PostMapping("/registro/protectora")
+    public String registrarProtectora(Cuenta cuenta, Protectora protectora, Model model) {
+        try {
+
+        } catch (Exception e) {
+            model.addAttribute("error", e.getMessage());
+            model.addAttribute("cuenta", cuenta);
+            model.addAttribute("protectora", protectora);
+        }
+    }
+
     @GetMapping("/login")
     public String login() {
         return "login"; // Esto buscará el archivo login.html en templates

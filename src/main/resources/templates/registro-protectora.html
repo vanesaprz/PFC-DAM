@@ -1,10 +1,33 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Registro Protectora - AmigosPeludos</title>
 </head>
 <body>
+<h1>Registra tu protectora</h1>
 
+<div th:if="${error}" style="color: red;">
+    <p th:text="${error}"></p>
+</div>
+
+<form th:action="@{/registro/protectora}" method="post">
+    <h3>Datos de Acceso</h3>
+    <input type="email" name="email" placeholder="Email"
+           th:value="${cuenta != null ? cuenta.email : ''}" required>
+    <input type="password" name="contrasena" placeholder="Contraseña" required>
+
+    <h3>Datos de la Entidad</h3>
+    <input type="text" name="nombre" placeholder="Nombre"
+           th:value="${adoptante != null ? adoptante.nombre : ''}" required>
+
+    <input type="text" name="apellidos" placeholder="Apellido (Opcional)"
+           th:value="${adoptante != null ? adoptante.apellidos : ''}">
+
+    <input type="text" name="provincia" placeholder="Provincia (Opcional)"
+           th:value="${adoptante != null ? adoptante.provincia: ''}">
+    <button type="submit">Registrarme</button>
+</form>
+<p>¿Ya tienes cuenta? <a th:href="@{/login}">Inicia sesión aquí</a></p>
 </body>
 </html>

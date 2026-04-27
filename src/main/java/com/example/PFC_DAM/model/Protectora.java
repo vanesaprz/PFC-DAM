@@ -29,6 +29,12 @@ public class Protectora {
             length = 64)
     private String direccion;
 
+    @Column(name = "cif",
+            length = 9,
+            unique = true,
+            nullable = false)
+    private String cif;
+
     @Column(name = "telefono",
             length = 15)
     private String telefono;

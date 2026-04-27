@@ -1,13 +1,15 @@
 package com.example.PFC_DAM.controller;
 
-import com.example.PFC_DAM.model.Adoptante;
-import com.example.PFC_DAM.model.Cuenta;
-import com.example.PFC_DAM.model.Protectora;
+import com.example.PFC_DAM.model.DTO.RegistroAdoptanteDTO;
+import com.example.PFC_DAM.model.DTO.RegistroProtectoraDTO;
 import com.example.PFC_DAM.service.UsuarioService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
@@ -20,45 +22,48 @@ public class AuthViewController {
     //Muestra el formulario registro-adoptante.html
     @GetMapping("/registro/adoptante")
     public String mostrarFormularioRegAdoptante(Model model) {
-        model.addAttribute("cuenta", new Cuenta());
-        model.addAttribute("adoptante", new Adoptante());
+        model.addAttribute("datosAdoptante", new RegistroAdoptanteDTO());
         return "registro-adoptante"; // Nombre del archivo HTML
     }
 
     //Muestra el formulario registro-protectora.html
     @GetMapping("/registro/protectora")
     public String mostrarFormularioRegProtectora(Model model) {
-        model.addAttribute("cuenta", new Cuenta());
-        model.addAttribute("protectora", new Protectora());
+        model.addAttribute("datosProtectora", new RegistroProtectoraDTO());
         return "registro-protectora";
     }
 
 
     // 2. Procesa los datos del formulario
     @PostMapping("/registro/adoptante")
-    public String registrarAdoptante(Cuenta cuenta, Adoptante adoptante, Model model) {
+    public String registrarAdoptante(@Valid @ModelAttribute("datosAdoptante") RegistroAdoptanteDTO dto, BindingResult result, Model model) {
+        if (result.hasErrors()) {
+            return "registro-adoptante";
+        }
         try {
-            //aqui le paso la cuenta y el adoptanet para que lo registr en la base de datos..
-            usuarioService.registrarAdoptante(cuenta, adoptante);
+            usuarioService.registrarAdoptante(dto);
             return "redirect:/login?exito";
+
         } catch (Exception e) {
             model.addAttribute("error", e.getMessage());
-            model.addAttribute("cuenta", cuenta);
-            model.addAttribute("adoptante", adoptante);
             return "registro-adoptante";
         }
     }
 
     @PostMapping("/registro/protectora")
-    public String registrarProtectora(Cuenta cuenta, Protectora protectora, Model model) {
+    public String registrarProtectora(@Valid @ModelAttribute("datosProtectora") RegistroProtectoraDTO dto, BindingResult result, Model model) {
+        if (result.hasErrors()) {
+            return "registro-protectora";
+        }
         try {
+            usuarioService.registrarProtectora(dto);
+            return "redirect:/login?exito";
 
         } catch (Exception e) {
             model.addAttribute("error", e.getMessage());
-            model.addAttribute("cuenta", cuenta);
-            model.addAttribute("protectora", protectora);
+            return "registro-protectora";
         }
-        return "registro-protectora";
+
     }
 
     @GetMapping("/login")

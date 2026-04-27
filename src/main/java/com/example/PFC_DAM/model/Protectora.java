@@ -30,7 +30,7 @@ public class Protectora {
     private String direccion;
 
     @Column(name = "cif",
-            length = 9,
+            length = 10,
             unique = true,
             nullable = false)
     private String cif;

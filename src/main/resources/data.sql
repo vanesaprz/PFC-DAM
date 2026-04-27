@@ -1,10 +1,18 @@
 -- 1. Limpiar datos existentes (TRUNCATE con CASCADE borra las tablas y sus relaciones)
-TRUNCATE TABLE animales CASCADE;
-TRUNCATE TABLE protectoras CASCADE;
-
+DELETE
+FROM animales;
+DELETE
+FROM protectoras;
+DELETE
+FROM adoptantes;
+DELETE
+FROM cuentas;
 -- 2. Insertar Protectora
-INSERT INTO protectoras (id, nombre, email_contacto, telefono, direccion, provincia)
-VALUES (1, 'Huellas Felices', 'info@huellas.org', '600111222', 'Calle Principal 1', 'Pontevedra');
+INSERT INTO cuentas (id, email, contrasena, rol)
+VALUES (1, 'info@huellas.org', '$2a$10$8.UnVuG9HHgffUDAlk8qfOuVGkqRzgVymGe07xd00DM99S7shL.mG', 'PROTECTORA');
+
+INSERT INTO protectoras (id, nombre, cif, email_contacto, telefono, direccion, provincia, cuenta_id)
+VALUES (1, 'Huellas Felices', 'B47357428', 'info@huellas.org', '600111222', 'Calle Principal 1', 'Pontevedra', 1);
 
 -- 1. CASOS URGENTES (4 animales) - Aparecerán en la sección SOS
 INSERT INTO animales (nombre, especie, raza, sexo, fecha_nacimiento, fecha_ingreso, estado,

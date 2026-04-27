@@ -1,34 +1,102 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="es">
 <head>
-    <title>Registro Adoptante - AmigosPeludos</title>
     <meta charset="UTF-8">
-
+    <title>Registro de Adoptante - GeoAdopt</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <style>
+        .container-form { max-width: 550px; margin: 50px auto; }
+        .card-header { background-color: #28a745; color: white; }
+    </style>
 </head>
-<body>
-<h1>Crear cuenta de Adoptante</h1>
+<body class="bg-light">
 
-<div th:if="${error}" style="color: red;">
-    <p th:text="${error}"></p>
+<div class="container container-form">
+    <div class="card shadow">
+        <div class="card-header text-center py-3">
+            <h2 class="mb-0">Crear cuenta de Adoptante</h2>
+        </div>
+        <div class="card-body p-4">
+
+            <div th:if="${error}" class="alert alert-danger" role="alert">
+                <span th:text="${error}">Error al registrar</span>
+            </div>
+
+            <form th:action="@{/registro/adoptante}" th:object="${datosAdoptante}" method="post">
+
+                <h5 class="border-bottom pb-2 mb-3">Datos de Acceso</h5>
+
+                <div class="mb-3">
+                    <label class="form-label">Correo Electrónico</label>
+                    <input type="email" th:field="*{email}" class="form-control"
+                           th:classappend="${#fields.hasErrors('email')} ? 'is-invalid' : ''"
+                           placeholder="ejemplo@correo.com" required>
+                    <div class="invalid-feedback" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Contraseña</label>
+                        <input type="password" th:field="*{password}" class="form-control"
+                               th:classappend="${#fields.hasErrors('password')} ? 'is-invalid' : ''" required>
+                        <div class="invalid-feedback" th:if="${#fields.hasErrors('password')}"
+                             th:errors="*{password}"></div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Confirmar Contraseña</label>
+                        <input type="password" th:field="*{repetirPassword}" class="form-control" required>
+                    </div>
+                </div>
+
+                <h5 class="border-bottom pb-2 mb-3 mt-4">Información Personal</h5>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Nombre</label>
+                        <input type="text" th:field="*{nombre}" class="form-control"
+                               th:classappend="${#fields.hasErrors('nombre')} ? 'is-invalid' : ''" required>
+                        <div class="invalid-feedback" th:if="${#fields.hasErrors('nombre')}"
+                             th:errors="*{nombre}"></div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Apellidos</label>
+                        <input type="text" th:field="*{apellidos}" class="form-control"
+                               th:classappend="${#fields.hasErrors('apellidos')} ? 'is-invalid' : ''">
+                        <div class="invalid-feedback" th:if="${#fields.hasErrors('apellidos')}"
+                             th:errors="*{apellidos}"></div>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Provincia</label>
+                    <select th:field="*{provincia}" class="form-select">
+                        <option value="">Selecciona tu provincia (opcional)</option>
+                        <option value="A Coruña">A Coruña</option>
+                        <option value="Lugo">Lugo</option>
+                        <option value="Ourense">Ourense</option>
+                        <option value="Pontevedra">Pontevedra</option>
+                    </select>
+                </div>
+
+                <div class="mb-4">
+                    <label class="form-label">Cuéntanos sobre ti (Opcional)</label>
+                    <textarea th:field="*{presentacion}" class="form-control" rows="3"
+                              placeholder="¿Tienes experiencia con animales?"></textarea>
+                </div>
+
+                <button type="submit" class="btn btn-success w-100 py-2 shadow-sm">
+                    Registrarme ahora
+                </button>
+
+                <div class="text-center mt-3">
+                    <a th:href="@{/login}" class="text-decoration-none small">¿Ya tienes cuenta? Inicia sesión</a>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
 
-<form th:action="@{/registro/adoptante}" method="post">
-    <h3>Datos de Acceso</h3>
-    <input type="email" name="email" placeholder="Email"
-           th:value="${cuenta != null ? cuenta.email : ''}" required>
-    <input type="password" name="contrasena" placeholder="Contraseña" required>
-
-    <h3>Datos Personales</h3>
-    <input type="text" name="nombre" placeholder="Tu Nombre"
-           th:value="${adoptante != null ? adoptante.nombre : ''}" required>
-
-    <input type="text" name="apellidos" placeholder="Apellido (Opcional)"
-           th:value="${adoptante != null ? adoptante.apellidos : ''}">
-
-    <input type="text" name="provincia" placeholder="Provincia (Opcional)"
-           th:value="${adoptante != null ? adoptante.provincia: ''}">
-    <button type="submit">Registrarme</button>
-</form>
-<p>¿Ya tienes cuenta? <a th:href="@{/login}">Inicia sesión aquí</a></p>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

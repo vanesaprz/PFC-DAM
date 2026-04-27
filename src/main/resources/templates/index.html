@@ -23,7 +23,7 @@
             <div sec:authorize="isAuthenticated()">
                 <span>Bienvenido, <b sec:authentication="name">Usuario</b></span> |
 
-                <form th:action="@{/logout}" method="post\" style="display: inline;">
+                <form th:action="@{/logout}" method="post" style="display: inline;">
                     <button type="submit"
                             style="background: none; border: none; color: blue; cursor: pointer; text-decoration: underline; padding: 0;">
                         Cerrar Sesión

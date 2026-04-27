@@ -10,10 +10,10 @@ public class RegistroProtectoraDTO {
 
     //CUENTA
     @Email
-    @NotBlank
+    @NotBlank(message = "El email es obligatorio")
     private String email;
     @NotBlank
-    @Size(min = 5)
+    @Size(min = 5, message = "La contraseña debe tener al menos 5 caracteres")
     private String password;
     private String repetirPassword;
 
@@ -23,12 +23,12 @@ public class RegistroProtectoraDTO {
     @NotBlank
     private String direccion;
 
-    @NotBlank
-    @Size(min = 9)
+    @NotBlank(message = "El CIF es obligatorio")
+    @Size(min = 10, message = "El CIF no puede tene más de 10 caracteres")
     private String cif;
 
-    @Size(min = 9)
-    @NotBlank
+    @Size(min = 15, message = "El teléfono es demasiado largo")
+    @NotBlank(message = "El teléfono es obligatorio")
     private String telefono;
 
     @NotBlank

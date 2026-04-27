@@ -58,6 +58,7 @@ public class AuthViewController {
             model.addAttribute("cuenta", cuenta);
             model.addAttribute("protectora", protectora);
         }
+        return "registro-protectora";
     }
 
     @GetMapping("/login")

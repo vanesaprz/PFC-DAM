@@ -16,11 +16,13 @@
         <nav>
             <div sec:authorize="isAnonymous()">
                 <a th:href="@{/}">Inicio</a> |
+                <a th:href="@{/animales}"> Buscar Animales</a>|
                 <a th:href="@{/login}">Iniciar Sesión</a> |
                 <a th:href="@{/registro/seleccion}">Registrarse</a>
             </div>
 
             <div sec:authorize="isAuthenticated()">
+                <a th:href="@{/animales}"> Buscar Animales</a>|
                 <span>Bienvenido, <b sec:authentication="name">Usuario</b></span> |
 
                 <form th:action="@{/logout}" method="post" style="display: inline;">

@@ -70,11 +70,16 @@ public class AnimalController {
     @GetMapping("/{id}")
     public String verDetalle(@PathVariable Long id, Model model) {
         Animal animal = animalRepository.findById(id).orElse(null);
-        model.addAttribute("animal", animal);
+
         if (animal == null) {
             return "redirect:/animales/";
         }
+
         model.addAttribute("animal", animal);
+
+
+        //PENDIENTE INCLUIR LISTA DE TODAS LAS FOTOS PARA GALERÍA/CARRUSEL
+
         return "detalles";
     }
 

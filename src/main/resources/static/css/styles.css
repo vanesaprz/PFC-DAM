@@ -46,3 +46,13 @@
     border: 2px solid red !important;
     background-color: #fff0f0;
 }
+
+.bi-heart, .bi-heart-fill {
+    transition: transform 0.2s ease, color 0.2s ease;
+    cursor: pointer;
+}
+
+.bi-heart:hover {
+    color: #dc3545 !important; /* Rojo Bootstrap */
+    transform: scale(1.2);
+}

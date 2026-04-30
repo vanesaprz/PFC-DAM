@@ -7,6 +7,7 @@ import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.Period;
 import java.util.List;
 
 @Entity
@@ -117,6 +118,20 @@ public class Animal {
     private String descripcion;
 
 
+    @Transient
+    public String getEdadFormateada() {
+        String edad = "Desconocida";
+        if (this.fechaNacimiento != null) {
+            Period periodo = Period.between(this.fechaNacimiento, LocalDate.now());
+            if (periodo.getYears() > 0) {
+                edad = periodo.getYears() + (periodo.getYears() == 1 ? " año" : " años");
+            } else {
+                edad = periodo.getMonths() + (periodo.getMonths() == 1 ? " mes" : " meses");
+            }
+        }
+        return edad;
+    }
+
     //RELACIONES:
     //Con protectora:
     @ManyToOne
@@ -133,3 +148,4 @@ public class Animal {
 
 
 }
+

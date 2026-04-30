@@ -70,7 +70,7 @@ public class AnimalController {
     @GetMapping("/{id}")
     public String verDetalle(@PathVariable Long id, Model model) {
         model.addAttribute("animal", new Animal());
-        return "detalle";
+        return "detalles";
     }
 
     @GetMapping("/{id}/adoptar")

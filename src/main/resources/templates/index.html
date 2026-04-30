@@ -55,6 +55,10 @@
                             Ingresado: <span th:text="${#temporals.format(animal.fechaIngreso, 'dd/MM/yyyy')}"></span>
                         </p>
                     </div>
+                    <div class="card-footer bg-white border-top-0 pb-3">
+                        <a th:href="@{/animales/{id}(id=${animal.id})}" class="btn btn-outline-primary w-100">Ver ficha
+                            completa</a>
+                    </div>
                 </div>
             </div>
 
@@ -78,6 +82,10 @@
                                 th:text="${animal.especie} + ' - ' + ${animal.raza}"></span>
                         </p>
                         <small class="text-muted">Tamaño: <span th:text="${animal.tamano}"></span></small>
+                    </div>
+                    <div class="card-footer bg-white border-top-0 pb-3">
+                        <a th:href="@{/animales/{id}(id=${animal.id})}" class="btn btn-outline-primary w-100">Ver ficha
+                            completa</a>
                     </div>
                 </div>
             </div>

@@ -49,10 +49,11 @@
                         <h5 class="card-title text-urgente" th:text="${animal.nombre}">Nombre</h5>
                         <p class="card-text mb-1">
                             <span class="badge bg-secondary" th:text="${animal.especie}"></span>
-                            <span class="badge bg-light text-dark" th:text="${animal.raza}"></span>
+                            <span class="badge bg-light text-dark" th:text="${animal.getEdadFormateada()}"></span>
                         </p>
                         <p class="small text-muted mb-0">
-                            Ingresado: <span th:text="${#temporals.format(animal.fechaIngreso, 'dd/MM/yyyy')}"></span>
+                            Con nosotros desde: <span
+                                th:text="${#temporals.format(animal.fechaIngreso, 'dd/MM/yyyy')}"></span>
                         </p>
                     </div>
                     <div class="card-footer bg-white border-top-0 pb-3">
@@ -79,7 +80,7 @@
                         <h5 class="card-title text-primary" th:text="${animal.nombre}">Nombre</h5>
                         <p class="mb-1">
                             <i class="fas fa-paw"></i> <span
-                                th:text="${animal.especie} + ' - ' + ${animal.raza}"></span>
+                                th:text="${animal.especie} + ' - ' + ${animal.getEdadFormateada()}"></span>
                         </p>
                         <small class="text-muted">Tamaño: <span th:text="${animal.tamano}"></span></small>
                     </div>

@@ -3,10 +3,7 @@ package com.example.PFC_DAM.model;
 import com.example.PFC_DAM.model.enums.EstadoAnimal;
 import com.example.PFC_DAM.model.enums.Sexo;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -16,6 +13,7 @@ import java.util.List;
 @Table(name = "animales")
 @Getter
 @Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class Animal {

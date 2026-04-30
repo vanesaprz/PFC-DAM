@@ -69,7 +69,12 @@ public class AnimalController {
 
     @GetMapping("/{id}")
     public String verDetalle(@PathVariable Long id, Model model) {
-        model.addAttribute("animal", new Animal());
+        Animal animal = animalRepository.findById(id).orElse(null);
+        model.addAttribute("animal", animal);
+        if (animal == null) {
+            return "redirect:/animales/";
+        }
+        model.addAttribute("animal", animal);
         return "detalles";
     }
 

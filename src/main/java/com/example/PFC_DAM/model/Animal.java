@@ -97,17 +97,15 @@ public class Animal {
     @Column(name = "apto_perros",
             nullable = false,
             length = 50)
-    private String aptoPerros;
+    private Boolean aptoPerros;
 
     @Column(name = "apto_gatos",
-            nullable = false,
-            length = 50)
-    private String aptoGatos;
+            nullable = false)
+    private Boolean aptoGatos;
 
     @Column(name = "apto_ninos",
-            nullable = false,
-            length = 50)
-    private String aptoNinos;
+            nullable = false)
+    private Boolean aptoNinos;
 
     @Column(name = "miedos",
             length = 50)

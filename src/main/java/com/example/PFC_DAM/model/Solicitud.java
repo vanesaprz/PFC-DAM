@@ -39,6 +39,12 @@ public class Solicitud {
             updatable = false)
     private LocalDateTime fecha = LocalDateTime.now();
 
+    @Column(name = "tipo_vivienda", nullable = false)
+    private String tipoVivienda;
+    
+    @Column(name = "otros_animales", nullable = false)
+    private String otrosAnimales;
+
 
     //RELACIONES:
     //Con adoptantes:

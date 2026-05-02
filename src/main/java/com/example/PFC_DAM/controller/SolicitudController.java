@@ -37,7 +37,7 @@ public class SolicitudController {
 
         model.addAttribute("animal", animal);
         model.addAttribute("solicitud", new Solicitud());
-        return "formulario-solicitud";
+        return "formulario-adopcion";
     }
 
     @PostMapping("/guardar")
@@ -52,7 +52,7 @@ public class SolicitudController {
 
         solicitudRepository.save(solicitud);
 
-        return "redirect:/animales" + animalId + "?enviado=true";
+        return "redirect:/animales/" + animalId + "?enviado=true";
     }
 }
 

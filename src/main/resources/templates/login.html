@@ -1,25 +1,101 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - GeoAdopt</title>
+    <!-- Bootstrap 5 y Iconos -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <style>
+        body {
+            background-color: #f4f7f6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .login-card {
+            width: 100%;
+            max-width: 400px;
+            padding: 2rem;
+            border: none;
+            border-radius: 12px;
+            background: #ffffff;
+        }
+        .btn-primary {
+            background-color: #333;
+            border: none;
+            padding: 0.8rem;
+        }
+        .btn-primary:hover {
+            background-color: #555;
+        }
+        .logo-text {
+            font-weight: 800;
+            letter-spacing: -1px;
+            color: #333;
+        }
+    </style>
 </head>
 <body>
-<h1>Iniciar Sesión</h1>
 
-<div th:if="${param.exito}" style="color: green;">
-    ¡Registro completado! Ya puedes entrar.
+<div class="login-card shadow-lg">
+    <div class="text-center mb-4">
+        <h1 class="logo-text">LOGO</h1>
+        <h4 class="text-muted">¡Hola de nuevo!</h4>
+    </div>
+
+    <!-- Mensaje de Éxito -->
+    <div th:if="${param.exito}" class="alert alert-success d-flex align-items-center" role="alert">
+        <i class="bi bi-check-circle-fill me-2"></i>
+        <div>Registro completado. ¡Ya puedes entrar!</div>
+    </div>
+
+    <!-- Mensaje de Error -->
+    <div th:if="${param.error}" class="alert alert-danger d-flex align-items-center" role="alert">
+        <i class="bi bi-exclamation-triangle-fill me-2"></i>
+        <div>Email o contraseña incorrectos.</div>
+    </div>
+
+    <form th:action="@{/login}" method="post">
+        <div class="mb-3">
+            <label class="form-label fw-bold small">Correo electrónico</label>
+            <div class="input-group">
+                <span class="input-group-text bg-light"><i class="bi bi-envelope text-muted"></i></span>
+                <input type="email" name="username" class="form-control" placeholder="nombre@ejemplo.com" required>
+            </div>
+        </div>
+
+        <div class="mb-2">
+            <label class="form-label fw-bold small">Contraseña</label>
+            <div class="input-group">
+                <span class="input-group-text bg-light"><i class="bi bi-lock text-muted"></i></span>
+                <input type="password" name="password" class="form-control" placeholder="••••••••" required>
+            </div>
+        </div>
+
+        <!-- Enlace Olvidé mi contraseña -->
+        <div class="text-end mb-4">
+            <a th:href="@{/recuperar-password}" class="text-decoration-none small text-muted">¿Has olvidado tu
+                contraseña?</a>
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100 fw-bold mb-3">
+            INICIAR SESIÓN
+        </button>
+    </form>
+
+    <hr class="text-muted">
+
+    <div class="text-center mt-3">
+        <p class="small text-muted mb-0">¿Aún no tienes cuenta?</p>
+        <a th:href="@{/registro/seleccion}" class="fw-bold text-dark text-decoration-none">Regístrate gratis aquí</a>
+    </div>
 </div>
 
-<div th:if="${param.error}" style="color: red;">
-    Usuario o contraseña incorrectos.
-</div>
-
-<form th:action="@{/login}" method="post">
-    <input type="email" name="username" placeholder="Email" required>
-    <input type="password" name="password" placeholder="Contraseña" required>
-    <button type="submit">Entrar</button>
-</form>
-
-<p>¿No tienes cuenta? <a th:href="@{/registro/seleccion}">Regístrate aquí</a></p>
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

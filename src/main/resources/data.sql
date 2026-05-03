@@ -9,6 +9,17 @@ VALUES ('info@huellas.org', '$2a$10$8.UnVuG9HHgffUDAlk8qfOuVGkqRzgVymGe07xd00DM9
 INSERT INTO protectoras (nombre, cif, email_contacto, telefono, direccion, provincia, cuenta_id)
 VALUES ('Huellas Felices', 'B47357428', 'info@huellas.org', '600111222', 'Calle Principal 1', 'Pontevedra', 1);
 
+
+-- Insertar Cuenta Admin (Password: 'admin123')
+INSERT INTO cuentas (email, contrasena, rol)
+VALUES ('admin@geoadopt.es', '$2a$10$QGMWqLZlJia8irHKTqkY0OOo4kCYEa9pPnrqyuDe.hUww7QLpyuxS', 'ADMIN');
+
+-- Si quieres que el Admin también sea una protectora para probar el panel:
+INSERT INTO protectoras (nombre, cif, email_contacto, telefono, direccion, provincia, cuenta_id)
+VALUES ('Administración General', '00000000A', 'admin@geoadopt.es', '900000000', 'Sede Central', 'Pontevedra',
+        (SELECT id FROM cuentas WHERE email = 'admin@geoadopt.es'));
+
+
 -- 1. CASOS URGENTES (4 animales) - Aparecerán en la sección SOS
 INSERT INTO animales (nombre, especie, raza, sexo, fecha_nacimiento, fecha_ingreso, estado,
                       tamano, peso, foto_principal, esterilizado, vacunado, desparasitado,

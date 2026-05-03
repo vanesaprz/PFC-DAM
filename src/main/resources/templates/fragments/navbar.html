@@ -24,9 +24,15 @@
                 </li>
 
                 <!-- ACCESO AL PANEL (Solo para Protectoras) -->
-                <li class="nav-item" sec:authorize="hasRole('PROTECTORA')">
+                <li class="nav-item" sec:authorize="hasAnyRole('PROTECTORA', 'ADMIN')">
                     <a class="nav-link text-primary fw-bold" th:href="@{/protectora/panel}">
                         <i class="bi bi-layout-text-window-reverse"></i> MI PANEL
+                    </a>
+                </li>
+                <!-- ACCESO A favoritos (Solo para Adoptantes) -->
+                <li class="nav-item" sec:authorize="hasAnyRole('ADOPTANTE', 'ADMIN')">
+                    <a class="nav-link" th:href="@{/adoptante/favoritos}">
+                        <i class="bi bi-heart"></i> FAVORITOS
                     </a>
                 </li>
             </ul>
@@ -45,7 +51,7 @@
                     </button>
                     <ul class="dropdown-menu dropdown-menu-end">
                         <li><a class="dropdown-item" th:href="@{/perfil}">Mi Perfil</a></li>
-                        <li sec:authorize="hasRole('PROTECTORA')">
+                        <li sec:authorize="hasAnyRole('PROTECTORA', 'ADMIN')">
                             <a class="dropdown-item" th:href="@{/protectora/panel}">Gestión de Animales</a>
                         </li>
                         <li>

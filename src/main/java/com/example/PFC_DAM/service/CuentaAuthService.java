@@ -7,6 +7,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -21,6 +22,9 @@ public class CuentaAuthService implements UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException("No se encontró el usuario con email: " + email));
 
         // Devolvemos el objeto User que Spring Security sabe gestionar
+        System.out.println("Login intentando: " + cuenta.getEmail() + " con Rol: " + cuenta.getRol().name());
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        System.out.println("¿Coincide admin123?: " + encoder.matches("admin123", cuenta.getContrasena()));
         return User.builder()
                 .username(cuenta.getEmail())
                 .password(cuenta.getContrasena()) // La contraseña ya encriptada

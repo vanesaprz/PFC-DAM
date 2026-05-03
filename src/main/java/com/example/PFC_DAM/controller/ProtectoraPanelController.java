@@ -18,7 +18,7 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/protectora")
-@PreAuthorize("hasRole('PROTECTORA')")
+@PreAuthorize("hasAnyRole('PROTECTORA', 'ADMIN')")
 public class ProtectoraPanelController {
     @Autowired
     private CuentaRepository cuentaRepository;

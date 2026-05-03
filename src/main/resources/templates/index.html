@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       lang="es">
 <head>
     <meta charset="UTF-8">
@@ -9,32 +8,7 @@
     <link rel="stylesheet" th:href="@{/css/styles.css}">
 </head>
 <body>
-<header th:fragment="header-nav" style="background-color: #f8f9fa; padding: 1rem; border-bottom: 1px solid #dee2e6;">
-    <div style="display: flex; justify-content: space-between; align-items: center;">
-        <strong>GeoAdopt</strong>
-
-        <nav>
-            <div sec:authorize="isAnonymous()">
-                <a th:href="@{/}">Inicio</a> |
-                <a th:href="@{/animales}"> Buscar Animales</a>|
-                <a th:href="@{/login}">Iniciar Sesión</a> |
-                <a th:href="@{/registro/seleccion}">Registrarse</a>
-            </div>
-
-            <div sec:authorize="isAuthenticated()">
-                <a th:href="@{/animales}"> Buscar Animales</a>|
-                <span>Bienvenido, <b sec:authentication="name">Usuario</b></span> |
-
-                <form th:action="@{/logout}" method="post" style="display: inline;">
-                    <button type="submit"
-                            style="background: none; border: none; color: blue; cursor: pointer; text-decoration: underline; padding: 0;">
-                        Cerrar Sesión
-                    </button>
-                </form>
-            </div>
-        </nav>
-    </div>
-</header>
+<div th:replace="~{fragments/navbar :: menu_principal}"></div>
 <div class="container animal-container">
 
     <div th:if="${!urgentes.isEmpty()}">

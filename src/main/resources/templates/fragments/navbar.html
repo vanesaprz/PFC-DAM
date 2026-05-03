@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      lang="es">
+<body>
+
+
+<nav th:fragment="menu_principal" class="navbar navbar-expand-lg navbar-light bg-white border-bottom shadow-sm">
+    <div class="container">
+        <!-- Logo -->
+        <a class="navbar-brand fw-bold fs-3" th:href="@{/}">LOGO</a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/animales}">Animales</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/protectoras}">Protectoras</a>
+                </li>
+
+                <!-- ACCESO AL PANEL (Solo para Protectoras) -->
+                <li class="nav-item" sec:authorize="hasRole('PROTECTORA')">
+                    <a class="nav-link text-primary fw-bold" th:href="@{/protectora/panel}">
+                        <i class="bi bi-layout-text-window-reverse"></i> MI PANEL
+                    </a>
+                </li>
+            </ul>
+
+            <div class="d-flex align-items-center">
+                <!-- Si NO está logueado -->
+                <div sec:authorize="isAnonymous()">
+                    <a th:href="@{/login}" class="btn btn-outline-dark me-2">Login</a>
+                    <a th:href="@{/registro/seleccion}" class="btn btn-dark">Registro</a>
+                </div>
+
+                <!-- Si SÍ está logueado -->
+                <div sec:authorize="isAuthenticated()" class="dropdown">
+                    <button class="btn btn-dark dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                        <i class="bi bi-person-circle"></i> <span sec:authentication="name">Usuario</span>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li><a class="dropdown-item" th:href="@{/perfil}">Mi Perfil</a></li>
+                        <li sec:authorize="hasRole('PROTECTORA')">
+                            <a class="dropdown-item" th:href="@{/protectora/panel}">Gestión de Animales</a>
+                        </li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li>
+                            <form th:action="@{/logout}" method="post">
+                                <button type="submit" class="dropdown-item text-danger">Cerrar Sesión</button>
+                            </form>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+
+</body>
+</html>

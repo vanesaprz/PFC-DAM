@@ -15,10 +15,17 @@ public interface AnimalRepository extends JpaRepository<Animal, Long> {
     //Por especie:
     List<Animal> findByEspecie(String especie);
 
+    //Para los urgentes de la página principal:
     List<Animal> findByEstado(EstadoAnimal estado);
-    
-    //Pensado para incluir los recién llegados en la página principal
+
+    //Pensado para incluir los recién llegados en la página principal:
     List<Animal> findTop10ByEstadoOrderByFechaIngresoDesc(EstadoAnimal estado);
+
+    //Para el panel privado de la protectora:
+    List<Animal> findByProtectoraId(Long protectoraId);
+
+    long countByProtectoraIdAndEstado(Long protectoraId, EstadoAnimal estado);
+
 
     //PARA FILTRO DE BÚSQUEDA
     @Query("SELECT a FROM Animal a WHERE " +

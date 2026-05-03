@@ -24,10 +24,10 @@ public class RegistroProtectoraDTO {
     private String direccion;
 
     @NotBlank(message = "El CIF es obligatorio")
-    @Size(min = 10, message = "El CIF no puede tene más de 10 caracteres")
+    @Size(max = 10, message = "El CIF no puede tener más de 10 caracteres")
     private String cif;
 
-    @Size(min = 15, message = "El teléfono es demasiado largo")
+    @Size(max = 15, message = "El teléfono es demasiado largo")
     @NotBlank(message = "El teléfono es obligatorio")
     private String telefono;
 

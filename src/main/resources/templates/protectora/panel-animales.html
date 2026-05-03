@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Panel de Administración - Protectora</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Iconos de Bootstrap -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <style>
+        body { background-color: #f4f7f6; }
+        .sidebar { min-height: 100vh; background-color: #fff; border-right: 1px solid #e0e0e0; }
+        .nav-link { color: #333; font-weight: 500; padding: 10px 20px; border-radius: 5px; margin-bottom: 5px; }
+        .nav-link:hover { background-color: #f0f0f0; color: #000; }
+        .nav-link.active { background-color: #333; color: #fff; }
+        .stat-card { background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; text-align: center; }
+        .stat-card h2 { font-size: 3rem; font-weight: 700; color: #333; }
+        .stat-card p { color: #666; margin-bottom: 0; font-size: 0.9rem; text-uppercase; letter-spacing: 1px; }
+        .table-container { background: #fff; border-radius: 8px; border: 1px solid #e0e0e0; padding: 20px; }
+        .animal-thumb { width: 50px; height: 50px; object-fit: cover; border-radius: 5px; }
+    </style>
+</head>
+<body>
+
+<!-- Header-->
+<div th:replace="~{fragments/navbar :: menu_principal}"></div>
+
+<div class="container-fluid">
+    <div class="row">
+        <!--BARRA LATERAL(IZQUIERDA)-->
+        <nav class="col-md-3 col-lg-2 d-md-block sidebar collapse p-3">
+            <div class="position-sticky">
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link" th:classappend="${menuActivo == 'perfil' ? 'active' : ''}" href="#">
+                            <i class="bi bi-person-lines-fill me-2"></i> INFORMACIÓN PERFIL
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:classappend="${menuActivo == 'animales' ? 'active' : ''}"
+                           th:href="@{/protectora/panel}">
+                            <i class="bi bi-dog me-2"></i> MIS ANIMALES
+                        </a>
+                    </li>
+                    <li class="nav-item ps-3">
+                        <a class="nav-link text-success small" th:href="@{/protectora/animales/crear}">
+                            <i class="bi bi-plus-circle me-2"></i> + Añadir animal
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:classappend="${menuActivo == 'solicitudes' ? 'active' : ''}" href="#">
+                            <i class="bi bi-file-earmark-text me-2"></i> MIS SOLICITUDES
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <!-- CONTENIDO PRINCIPAL (DERECHA) -->
+        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 py-4">
+
+            <!-- Sección ADMINISTRACIÓN (Tarjetas) -->
+            <h3 class="mb-4 text-uppercase fw-bold text-muted" style="letter-spacing: 1px;">Administración</h3>
+            <div class="row g-3 mb-5">
+                <!-- Tarjeta 1: Animales en adopción -->
+                <div class="col-md-3">
+                    <div class="stat-card shadow-sm h-100 d-flex flex-column justify-content-between">
+                        <p>Animales en adopción</p>
+                        <h2 th:text="${cantEnAdopcion}">0</h2>
+                    </div>
+                </div>
+
+                <!-- Tarjeta 2: Animales adoptados -->
+                <div class="col-md-3">
+                    <div class="stat-card shadow-sm border-success h-100 d-flex flex-column justify-content-between">
+                        <p class="text-success">Animales adoptados</p>
+                        <h2 class="text-success" th:text="${cantAdoptados}">0</h2>
+                    </div>
+                </div>
+
+                <!-- Tarjeta 3: Casos Urgentes -->
+                <div class="col-md-3">
+                    <div class="stat-card shadow-sm border-danger h-100 d-flex flex-column justify-content-between">
+                        <p class="text-danger">Casos Urgentes</p>
+                        <h2 class="text-danger" th:text="${cantUrgentes}">0</h2>
+                    </div>
+                </div>
+
+                <!-- Tarjeta 4: Solicitudes pendientes -->
+                <div class="col-md-3">
+                    <div class="stat-card shadow-sm bg-dark text-white h-100 d-flex flex-column justify-content-between">
+                        <p class="text-white-50">Solicitudes pendientes</p>
+                        <h2 class="text-white">0</h2>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sección ANIMALES (Tabla) -->
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h3 class="mb-0 text-uppercase fw-bold text-muted" style="letter-spacing: 1px;">Mis Animales</h3>
+                <a th:href="@{/protectora/animales/crear}" class="btn btn-dark">
+                    <i class="bi bi-plus-lg me-1"></i> NUEVO ANIMAL
+                </a>
+            </div>
+
+            <div class="table-container shadow-sm">
+                <table class="table table-hover align-middle">
+                    <thead class="table-light">
+                    <tr>
+                        <th>Foto</th>
+                        <th>Nombre</th>
+                        <th>Especie</th>
+                        <th>Estado</th>
+                        <th>Fecha de ingreso</th>
+                        <th class="text-center">Acciones</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <!-- Iteración sobre la lista de animales -->
+                    <tr th:each="animal : ${animales}">
+                        <td>
+                            <img th:src="${animal.fotoPrincipal != null ? animal.fotoPrincipal : '/img/default-animal.png'}"
+                                 class="animal-thumb border" alt="Foto animal"/>
+                        </td>
+                        <td class="fw-bold" th:text="${animal.nombre}">Nombre</td>
+                        <td th:text="${animal.especie}">Especie</td>
+                        <td>
+                            <span th:if="${animal.estado.name() == 'DISPONIBLE'}"
+                                  class="badge bg-primary">Disponible</span>
+                            <span th:if="${animal.estado.name() == 'URGENTE'}" class="badge bg-danger">Urgente</span>
+                            <span th:if="${animal.estado.name() == 'ADOPTADO'}" class="badge bg-success">Adoptado</span>
+                        </td>
+                        <td th:text="${#temporals.format(animal.fechaIngreso, 'dd/MM/yyyy')}">01/01/2024</td>
+                        <td class="text-center">
+                            <div class="btn-group btn-group-sm">
+                                <!-- Botón Editar -->
+                                <a th:href="@{/protectora/animales/editar/{id}(id=${animal.id})}"
+                                   class="btn btn-outline-dark" title="Editar">
+                                    <i class="bi bi-pencil-square"></i>
+                                </a>
+                                <!-- Botón Borrar -->
+                                <form th:action="@{/protectora/animales/borrar/{id}(id=${animal.id})}" method="post"
+                                      style="display:inline;">
+                                    <button type="submit" class="btn btn-outline-danger"
+                                            onclick="return confirm('¿Estás seguro de eliminar este animal?')"
+                                            title="Borrar">
+                                        <i class="bi bi-trash3"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <!-- Bloque para lista vacía -->
+                    <tr th:if="${#lists.isEmpty(animales)}">
+                        <td colspan="6" class="text-center py-5 text-muted">
+                            <i class="bi bi-dog fs-1 d-block mb-3"></i>
+                            Aún no has registrado ningún animal. <br/>
+                            <a th:href="@{/protectora/animales/crear}" class="fw-bold text-dark">¡Empieza ahora!</a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+
+            <footer class="mt-5 pt-4 border-top text-center text-muted">
+                <p>&copy; 2026 Vanesa Pérez.</p>
+            </footer>
+
+        </main>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

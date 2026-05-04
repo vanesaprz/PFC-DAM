@@ -69,11 +69,7 @@ public class AnimalController {
 
     @GetMapping("/{id}")
     public String verDetalle(@PathVariable Long id, Model model) {
-        Animal animal = animalRepository.findById(id).orElse(null);
-
-        if (animal == null) {
-            return "redirect:/animales/";
-        }
+        Animal animal = animalRepository.findById(id).orElseThrow(() -> new RuntimeException("Animal no encontrado"));
 
         model.addAttribute("animal", animal);
 

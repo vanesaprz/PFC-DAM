@@ -2,10 +2,12 @@ package com.example.PFC_DAM.controller;
 
 import com.example.PFC_DAM.model.enums.EstadoAnimal;
 import com.example.PFC_DAM.repos.AnimalRepository;
+import com.example.PFC_DAM.repos.ProtectoraRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.security.Principal;
 
@@ -14,6 +16,9 @@ public class MainController {
 
     @Autowired
     private AnimalRepository animalRepository;
+
+    @Autowired
+    private ProtectoraRepository protectoraRepository;
 
     @GetMapping("/")
     public String index(Model model) {
@@ -33,7 +38,8 @@ public class MainController {
 
     //Protectoras en navbar:
     @GetMapping("/protectoras")
-    public String listarProtercoras() {
+    public String listarProtectoras(Model model) {
+        model.addAttribute("protectoras", protectoraRepository.findAll());
         return "listado-protectoras";
     }
 
@@ -55,6 +61,11 @@ public class MainController {
     public String verMisSolicitudes(Model model, Principal principal) {
         return "adoptante/mis-solicitudes";
 
+    }
+
+    @GetMapping("/protectora/{id}")
+    public String verDetalleProtectora(@PathVariable Long id, Model model) {
+        return "detalle-protectora";
     }
 
 

@@ -23,7 +23,7 @@
                     <a class="nav-link" th:href="@{/protectoras}">Protectoras</a>
                 </li>
 
-                <!-- ACCESO AL PANEL (Solo para Protectoras) -->
+                <!-- ACCESO AL PANEL (Solo para Protectoras o Admin) -->
                 <li class="nav-item" sec:authorize="hasAnyRole('PROTECTORA', 'ADMIN')">
                     <a class="nav-link text-primary fw-bold" th:href="@{/protectora/panel}">
                         <i class="bi bi-layout-text-window-reverse"></i> MI PANEL
@@ -33,6 +33,11 @@
                 <li class="nav-item" sec:authorize="hasAnyRole('ADOPTANTE', 'ADMIN')">
                     <a class="nav-link" th:href="@{/adoptante/favoritos}">
                         <i class="bi bi-heart"></i> FAVORITOS
+                    </a>
+                </li>
+                <li class="nav-item" sec:authorize="hasAnyRole('ADOPTANTE', 'ADMIN')">
+                    <a class="nav-link" th:href="@{/adoptante/solicitudes}">
+                        <i class="bi bi-file-earmark-text"></i> MIS SOLICITUDES
                     </a>
                 </li>
             </ul>
@@ -51,6 +56,9 @@
                     </button>
                     <ul class="dropdown-menu dropdown-menu-end">
                         <li><a class="dropdown-item" th:href="@{/perfil}">Mi Perfil</a></li>
+                        <li sec:authorize="hasAnyRole('ADOPTANTE', 'ADMIN')">
+                            <a class="dropdown-item" th:href="@{/adoptante/solicitudes}">Mis Solicitudes</a>
+                        </li>
                         <li sec:authorize="hasAnyRole('PROTECTORA', 'ADMIN')">
                             <a class="dropdown-item" th:href="@{/protectora/panel}">Gestión de Animales</a>
                         </li>

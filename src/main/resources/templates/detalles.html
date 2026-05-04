@@ -1,170 +1,160 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-      lang="es">
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
 <head>
     <meta charset="UTF-8">
-    <title th:text="${animal.nombre != null ? animal.nombre + ' - Detalle' : 'Detalle del Animal'}">Detalle</title>
+    <title th:text="${animal.nombre} + ' - Detalles'"></title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
-    <link rel="stylesheet" th:href="@{/css/styles.css}">
     <style>
-        .img-main { height: 400px; object-fit: cover; width: 100%; border: 1px solid #ddd; }
-        .img-sub { height: 195px; object-fit: cover; width: 100%; border: 1px solid #ddd; }
-        .info-box { border: 1px solid #ccc; padding: 20px; height: 100%; }
-        .sidebar { border: 1px solid #ccc; padding: 30px; text-align: center; }
-        .badge-custom { font-size: 0.8rem; padding: 8px; border: 1px solid #666; color: #333; background: none; }
-        .check-item { list-style: none; padding-left: 0; }
-        .check-item li { margin-bottom: 10px; }
-        .check-item i { color: #333; margin-right: 10px; font-weight: bold; }
+        .badge-salud { font-size: 0.9rem; padding: 8px 15px; border-radius: 50px; }
+        .info-label { color: #6c757d; font-size: 0.85rem; text-uppercase: uppercase; font-weight: bold; }
+        .info-value { font-size: 1.1rem; color: #212529; }
+        .card-protectora { border-left: 4px solid #0d6efd; background-color: #f8f9fa; }
     </style>
 </head>
-<body>
+<body class="bg-light">
 
 <div th:replace="~{fragments/navbar :: menu_principal}"></div>
-<div th:if="${param.enviado}" class="alert alert-success">
-    ¡Tu solicitud ha sido enviada con éxito a la protectora!
-</div>
-<main class="container my-5">
-    <!-- Título y Provincia -->
-    <div class="mb-4">
-        <div class="d-flex align-items-center mb-4">
-            <h1 class="display-5 fw-bold me-3"
-                th:text="${animal?.nombre} + ' - ' + ${animal?.getEdadFormateada()}">
-                NOMBRE - Edad
-            </h1>
 
-            <!-- Botón de Favorito -->
-            <form th:action="@{/animales/{id}/favorito(id=${animal.id})}" method="post">
-                <button type="submit" class="btn p-0 border-0 bg-transparent shadow-none"
-                        aria-label="Marcar como favorito">
-                    <!-- Corazón vacío si no es favorito, relleno si lo es -->
-                    <i class="bi fs-2"
-                       th:classappend="${esFavorito} ? 'bi-heart-fill text-danger' : 'bi-heart text-dark'">
-                    </i>
-                </button>
-            </form>
-        </div>
-        <p class="text-muted fs-5" th:text="${animal.protectora != null ? animal.protectora.provincia : 'Provincia'}">
-            Provincia</p>
-    </div>
-
+<main class="container py-5">
     <div class="row g-4">
-        <!-- COLUMNA IZQUIERDA: Fotos e Info -->
-        <div class="col-lg-8">
-            <div class="row g-2 mb-4">
-                <div class="col-7">
-                    <img th:src="${animal.fotoPrincipal != null ? animal.fotoPrincipal : 'https://via.placeholder.com/400'}"
-                         class="img-main" alt="Foto principal">
-                </div>
-                <div class="col-5">
-                    <div class="row g-2">
-                        <div class="col-6"><img src="https://via.placeholder.com/200" class="img-sub"></div>
-                        <div class="col-6"><img src="https://via.placeholder.com/200" class="img-sub"></div>
-                        <div class="col-6"><img src="https://via.placeholder.com/200" class="img-sub"></div>
-                        <div class="col-6"><img src="https://via.placeholder.com/200" class="img-sub"></div>
-                    </div>
-                </div>
-            </div>
 
-            <!-- DATOS -->
-            <div class="row g-3">
-                <div class="col-md-6">
-                    <div class="info-box">
-                        <h5>Mis datos</h5>
-                        <ul class="mt-3">
-                            <li><strong>Especie:</strong> <span th:text="${animal.especie}">Perro</span></li>
-                            <li><strong>Raza:</strong> <span th:text="${animal.raza}">Mestizo</span></li>
-                            <li><strong>Sexo:</strong> <span th:text="${animal.sexo}">Macho</span></li>
-                            <li><strong>Peso:</strong> <span th:text="${animal.peso + ' kg'}">15 kg</span></li>
-                            <li><strong>Nivel actividad:</strong> <span th:text="${animal.nivelActividad}">Medio</span>
-                            </li>
-                            <li th:if="${animal.miedos != null and !animal.miedos.isEmpty()}"><strong>Miedos:</strong>
-                                <span th:text="${animal.miedos}">Miedos</span></li>
-                        </ul>
-                        <div class="d-flex flex-wrap gap-2 mt-3">
-                            <span class="badge badge-custom" th:if="${animal.aptoNinos}">Bueno con niños</span>
-                            <span class="badge badge-custom" th:if="${animal.aptoPerros}">Bueno con perros</span>
-                            <span class="badge badge-custom" th:if="${animal.aptoGatos}">Bueno con gatos</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="info-box">
-                        <h5>Me entregan:</h5>
-                        <ul class="check-item mt-3">
-                            <li><i class="bi"
-                                   th:classappend="${animal.esterilizado} ? 'bi-check-circle-fill' : 'bi-circle'"></i>
-                                Esterilizado
-                            </li>
-                            <li><i class="bi"
-                                   th:classappend="${animal.vacunado} ? 'bi-check-circle-fill' : 'bi-circle'"></i>
-                                Vacunado
-                            </li>
-                            <li><i class="bi"
-                                   th:classappend="${animal.microchip != null} ? 'bi-check-circle-fill' : 'bi-circle'"></i>
-                                Microchip
-                            </li>
-                            <li><i class="bi"
-                                   th:classappend="${animal.desparasitado} ? 'bi-check-circle-fill' : 'bi-circle'"></i>
-                                Desparasitado
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
-            <!-- HISTORIA DEL ANIMAL -->
-            <div class="mt-4">
-                <div class="info-box">
-                    <h5>Mi historia</h5>
-                    <p class="mt-3 text-justify" th:text="${animal.descripcion}">Aquí va la descripción larga del
-                        animal...</p>
+        <!-- COLUMNA IZQUIERDA: IMAGEN Y ESTADO -->
+        <div class="col-lg-5">
+            <div class="card border-0 shadow-sm overflow-hidden">
+                <img th:src="${animal.fotoPrincipal}" class="img-fluid w-100" th:alt="${animal.nombre}"
+                     style="height: 500px; object-fit: cover;">
+                <div class="card-body text-center">
+                    <span th:classappend="${animal.estado.name() == 'URGENTE' ? 'bg-danger' : 'bg-success'}"
+                          class="badge fs-5 px-4 py-2 mb-2" th:text="${animal.estado}">Estado</span>
+                    <p class="text-muted small">En la protectora desde: <span
+                            th:text="${#temporals.format(animal.fechaIngreso, 'dd/MM/yyyy')}">01/01/2026</span></p>
                 </div>
             </div>
         </div>
 
-        <!-- COLUMNA DERECHA: Protectora y Acción -->
-        <div class="col-lg-4">
-            <div class="sidebar shadow-sm">
-                <div class="mb-3">
-                    <img src="https://via.placeholder.com/80" class="rounded-circle mb-2" alt="Logo Protectora">
-                    <h5 th:text="${animal.protectora != null ? animal.protectora.nombre : 'Nombre Protectora'}">NOMBRE
-                        PROTECTORA</h5>
-                    <p class="text-muted"
-                       th:text="${animal.protectora != null ? animal.protectora.telefono : 'Teléfono'}">Teléfono</p>
+        <!-- COLUMNA DERECHA: INFORMACIÓN DETALLADA -->
+        <div class="col-lg-7">
+            <div class="ps-lg-4">
+                <h1 class="display-4 fw-bold mb-0" th:text="${animal.nombre}">Nombre</h1>
+                <p class="lead text-primary mb-4" th:text="${animal.raza} + ' · ' + ${animal.getEdadFormateada()}"></p>
+
+                <!-- BLOQUE: FICHA TÉCNICA -->
+                <div class="row g-3 mb-4">
+                    <div class="col-6 col-md-3">
+                        <div class="info-label">Sexo</div>
+                        <div class="info-value" th:text="${animal.sexo}">Macho</div>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <div class="info-label">Peso</div>
+                        <div class="info-value" th:text="${animal.peso} + ' Kg'">15 Kg</div>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <div class="info-label">Tamaño</div>
+                        <div class="info-value" th:text="${animal.tamano}">Mediano</div>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <div class="info-label">Actividad</div>
+                        <div class="info-value" th:text="${animal.nivelActividad}">Alta</div>
+                    </div>
                 </div>
 
-                <a href="#" class="btn btn-dark w-100 mb-3 text-uppercase fw-bold">Web</a>
-
-                <p class="small text-muted">Redes sociales</p>
-                <div class="d-flex justify-content-center gap-3 fs-4 mb-4">
-                    <a href="#" class="text-dark"><i class="bi bi-instagram"></i></a>
-                    <a href="#" class="text-dark"><i class="bi bi-facebook"></i></a>
-                    <a href="#" class="text-dark"><i class="bi bi-twitter-x"></i></a>
+                <hr>
+                <!-- BLOQUE: NECESIDADES ESPECIALES-->
+                <div th:if="${animal.necesidadesEspeciales != null and !animal.necesidadesEspeciales.isEmpty()}"
+                     class="alert alert-warning border-0 shadow-sm d-flex align-items-center mb-4">
+                    <i class="bi bi-exclamation-triangle-fill fs-3 me-3 text-warning"></i>
+                    <div>
+                        <h6 class="fw-bold mb-1 text-dark">Necesidades Especiales</h6>
+                        <p class="mb-0 text-muted" th:text="${animal.necesidadesEspeciales}"></p>
+                    </div>
                 </div>
 
-                <a th:href="@{/solicitudes/crear/{id}(id=${animal.id})}"
-                   class="btn btn-dark w-100 py-3 fw-bold fs-5 shadow">¡Quiero adoptarlo!</a>
+                <!-- BLOQUE: SALUD -->
+                <h5 class="fw-bold mb-3"><i class="bi bi-heart-pulse-fill text-danger me-2"></i>Salud</h5>
+                <div class="d-flex flex-wrap gap-2 mb-4">
+                    <span class="badge badge-salud border"
+                          th:classappend="${animal.vacunado ? 'bg-success-subtle text-success border-success' : 'bg-light text-muted'}">
+                        <i class="bi" th:classappend="${animal.vacunado ? 'bi-check-circle-fill' : 'bi-x-circle'}"></i> Vacunado
+                    </span>
+                    <span class="badge badge-salud border"
+                          th:classappend="${animal.esterilizado ? 'bg-success-subtle text-success border-success' : 'bg-light text-muted'}">
+                        <i class="bi"
+                           th:classappend="${animal.esterilizado ? 'bi-check-circle-fill' : 'bi-x-circle'}"></i> Esterilizado
+                    </span>
+                    <span class="badge badge-salud border"
+                          th:classappend="${animal.desparasitado ? 'bg-success-subtle text-success border-success' : 'bg-light text-muted'}">
+                        <i class="bi"
+                           th:classappend="${animal.desparasitado ? 'bi-check-circle-fill' : 'bi-x-circle'}"></i> Desparasitado
+                    </span>
+                    <span class="badge badge-salud border"
+                          th:classappend="${animal.microchip ? 'bg-success-subtle text-success border-success' : 'bg-light text-muted'}">
+                        <i class="bi" th:classappend="${animal.microchip ? 'bi-check-circle-fill' : 'bi-x-circle'}"></i> Microchip
+                    </span>
+                </div>
+
+                <!-- BLOQUE: CONVIVENCIA -->
+                <h5 class="fw-bold mb-3"><i class="bi bi-house-heart-fill text-primary me-2"></i>Convivencia</h5>
+                <ul class="list-group list-group-flush mb-4">
+                    <li class="list-group-item bg-transparent px-0 d-flex justify-content-between align-items-center">
+                        ¿Apto con otros perros?
+                        <i class="bi fs-4"
+                           th:classappend="${animal.aptoPerros ? 'bi-check-lg text-success' : 'bi-slash-circle text-danger'}"></i>
+                    </li>
+                    <li class="list-group-item bg-transparent px-0 d-flex justify-content-between align-items-center">
+                        ¿Apto con gatos?
+                        <i class="bi fs-4"
+                           th:classappend="${animal.aptoGatos ? 'bi-check-lg text-success' : 'bi-slash-circle text-danger'}"></i>
+                    </li>
+                    <li class="list-group-item bg-transparent px-0 d-flex justify-content-between align-items-center">
+                        ¿Apto con niños?
+                        <i class="bi fs-4"
+                           th:classappend="${animal.aptoNinos ? 'bi-check-lg text-success' : 'bi-slash-circle text-danger'}"></i>
+                    </li>
+                </ul>
+
+                <!-- BLOQUE: DESCRIPCIÓN Y MIEDOS -->
+                <div class="mb-4" th:if="${animal.miedos != null and !animal.miedos.isEmpty()}">
+                    <h5 class="fw-bold small text-muted text-uppercase mb-2">Miedos o inseguridades</h5>
+                    <p class="text-danger fw-bold" th:text="${animal.miedos}"></p>
+                </div>
+
+                <div class="mb-4">
+                    <h5 class="fw-bold small text-muted text-uppercase mb-2">Su historia</h5>
+                    <p class="text-justify lh-lg" th:text="${animal.descripcion}">Descripción del animal...</p>
+                </div>
+
+                <!-- BOTONES DE ACCIÓN -->
+                <div class="d-grid gap-2 d-md-flex mt-5">
+                    <button class="btn btn-primary btn-lg px-5">
+                        <i class="bi bi-chat-heart me-2"></i>Solicitar Adopción
+                    </button>
+                    <button class="btn btn-outline-danger btn-lg px-4">
+                        <i class="bi bi-heart"></i>
+                    </button>
+                </div>
+
+                <!-- MINI FICHA PROTECTORA -->
+                <div class="card card-protectora mt-5 border-0 shadow-sm">
+                    <div class="card-body d-flex align-items-center justify-content-between">
+                        <div>
+                            <small class="text-muted d-block text-uppercase fw-bold">Bajo la tutela de</small>
+                            <a th:href="@{/protectora/{id}(id=${animal.protectora.id})}"
+                               class="h5 text-decoration-none fw-bold" th:text="${animal.protectora.nombre}">Nombre
+                                Protectora</a>
+                            <p class="mb-0 small text-muted"><i class="bi bi-geo-alt"></i> <span
+                                    th:text="${animal.protectora.provincia}">Provincia</span></p>
+                        </div>
+                        <a th:href="@{/protectora/{id}(id=${animal.protectora.id})}"
+                           class="btn btn-sm btn-outline-dark">Ver perfil</a>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
 </main>
 
-<!-- Footer simple -->
-<footer class="border-top py-4 mt-5 bg-light">
-    <div class="container d-flex justify-content-between align-items-center">
-        <span class="fw-bold fs-4">Logo</span>
-        <div class="d-flex gap-4">
-            <a href="#" class="text-decoration-none text-dark">Link one</a>
-            <a href="#" class="text-decoration-none text-dark">Link two</a>
-        </div>
-        <div class="d-flex gap-3 fs-5">
-            <i class="bi bi-instagram"></i>
-            <i class="bi bi-facebook"></i>
-            <i class="bi bi-twitter-x"></i>
-        </div>
-    </div>
-</footer>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

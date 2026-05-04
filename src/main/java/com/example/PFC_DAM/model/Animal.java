@@ -3,6 +3,9 @@ package com.example.PFC_DAM.model;
 import com.example.PFC_DAM.model.enums.EstadoAnimal;
 import com.example.PFC_DAM.model.enums.Sexo;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.math.BigDecimal;
@@ -24,6 +27,7 @@ public class Animal {
     @Column(nullable = false,
             length = 30,
             name = "nombre")
+    @NotBlank(message = "El nombre es obligatorio")
     private String nombre;
 
     @Column(nullable = false,
@@ -34,6 +38,7 @@ public class Animal {
     @Column(nullable = false,
             length = 40,
             name = "raza")
+    @NotBlank(message = "Es necesario indicar la raza")
     private String raza;
 
     @Column(name = "sexo",
@@ -46,11 +51,13 @@ public class Animal {
     @Column(name = "fecha_nacimiento",
             nullable = false
     )
+    @NotNull(message = "Indica la fecha de nacimiento aproximada")
     private LocalDate fechaNacimiento;
 
     @Column(name = "fecha_ingreso",
             nullable = false
     )
+    @NotNull(message = "La fecha de ingreso en la protectora es obligatoria")
     private LocalDate fechaIngreso;
 
     @Column(nullable = false,
@@ -67,8 +74,11 @@ public class Animal {
             scale = 2,
             precision = 5,
             name = "peso")
+    @NotNull(message = "Debes indicar el peso")
+    @DecimalMin(value = "0.1", message = "El peso debe ser mayor a 0")
     private BigDecimal peso;
 
+    @NotBlank(message = "La URL de la foto es obligatoria")
     @Column(name = "foto_principal",
             nullable = false)
     private String fotoPrincipal;

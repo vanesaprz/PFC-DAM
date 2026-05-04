@@ -4,6 +4,7 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
+import org.hibernate.validator.constraints.URL;
 
 @Data
 public class RegistroProtectoraDTO {
@@ -31,11 +32,14 @@ public class RegistroProtectoraDTO {
     @NotBlank(message = "El teléfono es obligatorio")
     private String telefono;
 
+    @URL(message = "Introduce una dirección web válida")
+    private String web;
+
     @NotBlank
     private String provincia;
 
     @Email
-    private String email_contacto;
+    private String emailContacto;
     private String logo;
     private String presentacion;
 

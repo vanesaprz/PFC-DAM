@@ -47,6 +47,9 @@ public class Protectora {
             length = 64)
     private String emailContacto;
 
+    @Column(name = "web")
+    private String web;
+
     @Column(name = "logo")
     private String logo;
 

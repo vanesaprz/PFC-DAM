@@ -105,8 +105,15 @@
 
                 <div class="mb-4">
                     <label class="form-label">Email Público (Contacto)</label>
-                    <input type="email" th:field="*{email_contacto}" class="form-control"
+                    <input type="email" th:field="*{emailContacto}" class="form-control"
                            placeholder="Para que los adoptantes os escriban">
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Sitio Web Oficial</label>
+                    <input type="url" th:field="*{web}" class="form-control"
+                           placeholder="https://www.miprotectora.org">
+                    <div class="form-text">Opcional: Enlace a vuestra página principal.</div>
                 </div>
 
                 <button type="submit" class="btn btn-primary w-100 py-2 shadow-sm">

@@ -126,13 +126,15 @@
 
                 <!-- BOTONES DE ACCIÓN -->
                 <div sec:authorize="hasAnyRole('ADOPTANTE','ADMIN')" class="d-grid gap-2 d-md-flex mt-5">
-                    <button class="btn btn-primary btn-lg px-5">
-                        <i class="bi bi-chat-heart me-2"></i>Solicitar Adopción
-                    </button>
+                    <a th:href="@{/solicitudes/crear/{animalId}(animalId=${animal.id})}"
+                       class="btn btn-primary btn-lg px-5 w-100">
+                        Solicitar Adopción
+                    </a>
                     <button class="btn btn-outline-danger btn-lg px-4">
                         <i class="bi bi-heart"></i>
                     </button>
                 </div>
+                
 
                 <!-- MINI FICHA PROTECTORA -->
                 <div class="card card-protectora mt-5 border-0 shadow-sm">

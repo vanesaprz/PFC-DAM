@@ -7,10 +7,12 @@ import com.example.PFC_DAM.model.enums.EstadoAnimal;
 import com.example.PFC_DAM.model.enums.Sexo;
 import com.example.PFC_DAM.repos.AnimalRepository;
 import com.example.PFC_DAM.repos.CuentaRepository;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -79,9 +81,19 @@ public class ProtectoraPanelController {
 
     //Guardar formulario
     @PostMapping("/animales/guardar")
-    public String guardarAnimal(@ModelAttribute("animal") Animal animal,
+    public String guardarAnimal(@Valid @ModelAttribute("animal") Animal animal,
+                                BindingResult result,
                                 Principal principal,
+                                Model model,
                                 RedirectAttributes redirectAttributes) {
+
+        if (result.hasErrors()) {
+            // Volvemos a cargar las listas necesarias para el formulario
+            model.addAttribute("especies", List.of("Perro", "Gato", "Otros"));
+            model.addAttribute("sexos", Sexo.values());
+            model.addAttribute("estados", EstadoAnimal.values());
+            return "protectora/formulario-animal"; // Se queda en la misma página mostrando errores
+        }
         try {
             Cuenta cuenta = cuentaRepository.findByEmail(principal.getName())
                     .orElseThrow(() -> new RuntimeException("Cuenta no encontrada"));

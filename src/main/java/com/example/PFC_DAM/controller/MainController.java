@@ -1,5 +1,6 @@
 package com.example.PFC_DAM.controller;
 
+import com.example.PFC_DAM.model.Protectora;
 import com.example.PFC_DAM.model.enums.EstadoAnimal;
 import com.example.PFC_DAM.repos.AnimalRepository;
 import com.example.PFC_DAM.repos.ProtectoraRepository;
@@ -64,6 +65,8 @@ public class MainController {
 
     @GetMapping("/protectora/{id}")
     public String verDetalleProtectora(@PathVariable Long id, Model model) {
+        Protectora protectora = protectoraRepository.findById(id).orElseThrow();
+        model.addAttribute("protectora", protectora);
         return "detalle-protectora";
     }
 

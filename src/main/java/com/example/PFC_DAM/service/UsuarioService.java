@@ -84,7 +84,7 @@ public class UsuarioService {
         protectora.setCif(dto.getCif());
         protectora.setDireccion(dto.getDireccion());
         protectora.setTelefono(dto.getTelefono());
-        protectora.setEmailContacto(dto.getEmail_contacto());
+        protectora.setEmailContacto(dto.getEmailContacto());
         protectora.setLogo(dto.getLogo());
         protectora.setCuenta(cuenta);
 

@@ -16,7 +16,7 @@ public class CuentaAuthService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        // Buscamos la cuenta en la BD
+
         Cuenta cuenta = cuentaRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("No se encontró el usuario con email: " + email));
 

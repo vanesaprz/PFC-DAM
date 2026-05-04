@@ -51,7 +51,9 @@
                         Descripción corta de la protectora y su labor con los animales...
                     </p>
                     <div class="d-flex justify-content-between align-items-center mt-auto">
-                        <span class="badge bg-light text-dark border">
+                        <span class="badge bg-light text-dark border"
+                              th:with="total=${#lists.size(pro.animales)}"
+                              th:text="|${total} ${total == 1 ? 'Animal' : 'Animales'}|">>
                             <i class="bi bi-paw-fill"></i> 12 Animales
                         </span>
                         <a th:href="@{/protectora/{id}(id=${pro.id})}" class="btn btn-outline-dark btn-sm">Ver

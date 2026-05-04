@@ -48,4 +48,16 @@ public class ProtectoraPanelController {
 
         return "protectora/panel-animales";
     }
+
+    @GetMapping("/animales/crear")
+    public String formularioNuevoAnimal(Model model) {
+        return "protectora/formulario-animal";
+    }
+
+    @GetMapping("/solicitudes")
+    public String verSolicitudesRecibidas(Model model) {
+        return ("protectora/solicitudes-recibidas");
+    }
+
+
 }

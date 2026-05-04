@@ -21,7 +21,9 @@
 <body>
 
 <div th:replace="~{fragments/navbar :: menu_principal}"></div>
-
+<div th:if="${param.enviado}" class="alert alert-success">
+    ¡Tu solicitud ha sido enviada con éxito a la protectora!
+</div>
 <main class="container my-5">
     <!-- Título y Provincia -->
     <div class="mb-4">

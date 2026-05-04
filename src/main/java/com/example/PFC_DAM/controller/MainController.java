@@ -7,6 +7,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import java.security.Principal;
+
 @Controller
 public class MainController {
 
@@ -28,5 +30,32 @@ public class MainController {
     public String mostrarSeleccionRegistro() {
         return "registro-seleccion";
     }
+
+    //Protectoras en navbar:
+    @GetMapping("/protectoras")
+    public String listarProtercoras() {
+        return "listado-protectoras";
+    }
+
+    //Pantalla Mi Perfil
+    @GetMapping("/perfil")
+    public String verPerfil() {
+        return "adoptante/perfil";
+    }
+
+    //Pantalla favoritos
+    @GetMapping("/adoptante/favoritos")
+    public String verFavoritos() {
+        return "adoptante/favoritos";
+    }
+
+    //Consulta de solicitudes realizadas:
+
+    @GetMapping("/adoptante/solicitudes")
+    public String verMisSolicitudes(Model model, Principal principal) {
+        return "adoptante/mis-solicitudes";
+
+    }
+
 
 }

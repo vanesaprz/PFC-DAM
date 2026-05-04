@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml" lang="es">
 <head>
     <meta charset="UTF-8">
     <title th:text="${animal.nombre} + ' - Detalles'"></title>
@@ -125,7 +125,7 @@
                 </div>
 
                 <!-- BOTONES DE ACCIÓN -->
-                <div class="d-grid gap-2 d-md-flex mt-5">
+                <div sec:authorize="hasAnyRole('ADOPTANTE','ADMIN')" class="d-grid gap-2 d-md-flex mt-5">
                     <button class="btn btn-primary btn-lg px-5">
                         <i class="bi bi-chat-heart me-2"></i>Solicitar Adopción
                     </button>
@@ -148,6 +148,15 @@
                         <a th:href="@{/protectora/{id}(id=${animal.protectora.id})}"
                            class="btn btn-sm btn-outline-dark">Ver perfil</a>
                     </div>
+                </div>
+
+                <div sec:authorize="hasRole('PROTECTORA')" class="alert alert-info w-100">
+                    <i class="bi bi-info-circle me-2"></i> Estás viendo este perfil como entidad gestora.
+                </div>
+
+                <div sec:authorize="isAnonymous()" class="alert alert-light border w-100 text-center">
+                    <p class="mb-2 small">¿Quieres adoptar a este peludo?</p>
+                    <a th:href="@{/login}" class="btn btn-sm btn-outline-primary">Inicia sesión como Adoptante</a>
                 </div>
 
             </div>

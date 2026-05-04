@@ -56,7 +56,6 @@ public class MainController {
     }
 
     //Consulta de solicitudes realizadas:
-
     @GetMapping("/adoptante/solicitudes")
     public String verMisSolicitudes(Model model, Principal principal) {
         return "adoptante/mis-solicitudes";

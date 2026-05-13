@@ -46,7 +46,7 @@ public class SolicitudController {
         String emailAdoptante = principal.getName();
 
         Cuenta cuenta = cuentaRepository.findByEmail(emailAdoptante).orElseThrow(() -> new RuntimeException("Cuenta no encontrada"));
-        Adoptante adoptante = cuenta.getAdoptante();
+        Adoptante adoptante = adoptanteRepository.findByCuenta(cuenta).orElseThrow(() -> new RuntimeException("Adoptante no encontrada"));
 
         solicitud.setAdoptante(adoptante);
 

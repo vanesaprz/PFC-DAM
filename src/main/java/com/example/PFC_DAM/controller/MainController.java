@@ -1,9 +1,14 @@
 package com.example.PFC_DAM.controller;
 
+import com.example.PFC_DAM.model.Adoptante;
+import com.example.PFC_DAM.model.Cuenta;
 import com.example.PFC_DAM.model.Protectora;
+import com.example.PFC_DAM.model.Solicitud;
 import com.example.PFC_DAM.model.enums.EstadoAnimal;
 import com.example.PFC_DAM.repos.AnimalRepository;
+import com.example.PFC_DAM.repos.CuentaRepository;
 import com.example.PFC_DAM.repos.ProtectoraRepository;
+import com.example.PFC_DAM.repos.SolicitudRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,6 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import java.security.Principal;
+import java.util.List;
 
 @Controller
 public class MainController {
@@ -20,6 +26,11 @@ public class MainController {
 
     @Autowired
     private ProtectoraRepository protectoraRepository;
+
+    @Autowired
+    private CuentaRepository cuentaRepository;
+    @Autowired
+    private SolicitudRepository solicitudRepository;
 
     @GetMapping("/")
     public String index(Model model) {
@@ -59,8 +70,13 @@ public class MainController {
     //Consulta de solicitudes realizadas:
     @GetMapping("/adoptante/solicitudes")
     public String verMisSolicitudes(Model model, Principal principal) {
-        return "adoptante/mis-solicitudes";
+        Cuenta cuenta = cuentaRepository.findByEmail(principal.getName()).orElse(null);
+        Adoptante adoptante = cuenta.getAdoptante();
 
+        List<Solicitud> solicitudes = solicitudRepository.findByAdoptanteId(adoptante.getId());
+        model.addAttribute("solicitudes", solicitudes);
+
+        return "adoptante/mis-solicitudes";
     }
 
     @GetMapping("/protectora/{id}")

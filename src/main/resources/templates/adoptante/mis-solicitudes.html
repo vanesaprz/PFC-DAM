@@ -28,20 +28,28 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
+                <tr th:each="solicitud : ${solicitudes}">
                     <td class="ps-4">
                         <div class="d-flex align-items-center">
-                            <img src="https://via.placeholder.com/50" class="rounded-circle me-3" alt="Foto animal">
-                            <span class="fw-bold">Nombre Animal</span>
+                            <img th:src="${solicitud.animal.fotoPrincipal}"
+                                 class="rounded-circle me-3" style="width:50px;height:50px;object-fit:cover;"
+                                 alt="Foto animal">
+                            <span class="fw-bold" th:text="${solicitud.animal.nombre}"></span>
                         </div>
                     </td>
-                    <td>Nombre de la Protectora</td>
-                    <td>01/05/2026</td>
+                    <td th:text="${solicitud.animal.protectora.nombre}"></td>
+                    <td th:text="${#temporals.format(solicitud.fecha, 'dd/MM/yyyy')}"></td>
                     <td>
-                        <span class="badge bg-warning text-dark">Pendiente</span>
+        <span th:text="${solicitud.estado}"
+              th:classappend="${solicitud.estado.name() == 'PENDIENTE'} ? 'bg-warning text-dark' :
+                             (${solicitud.estado.name() == 'RECHAZADA'} ? 'bg-danger' :
+                             (${solicitud.estado.name() == 'ENTREVISTA'} ? 'bg-info' : 'bg-secondary'))"
+              class="badge">
+        </span>
                     </td>
                     <td class="text-center">
-                        <a href="#" class="btn btn-sm btn-outline-dark">Ver detalle</a>
+                        <a th:href="@{/animales/{id}(id=${solicitud.animal.id})}" class="btn btn-sm btn-outline-dark">Ver
+                            animal</a>
                     </td>
                 </tr>
 

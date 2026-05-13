@@ -18,11 +18,22 @@ VALUES ('adopta@pontemascotas.es', '$2a$10$8.UnVuG9HHgffUDAlk8qfOuVGkqRzgVymGe07
 INSERT INTO cuentas (email, contrasena, rol)
 VALUES ('admin@geoadopt.es', '$2a$10$QGMWqLZlJia8irHKTqkY0OOo4kCYEa9pPnrqyuDe.hUww7QLpyuxS', 'ADMIN');
 
+-- protectora@test.com
+-- adoptante@test.com
+--contraseña 1234
+INSERT INTO cuentas (email, contrasena, rol)
+VALUES ('adoptante@test.com', '$2a$10$2/NDD8Gcp19n4a4Ce5mpAeeeavJOoLn7zqxVEZ0YusX6Fmx62w7/W', 'ADOPTANTE'),
+       ('protectora@test.com', '$2a$10$2/NDD8Gcp19n4a4Ce5mpAeeeavJOoLn7zqxVEZ0YusX6Fmx62w7/W', 'PROTECTORA');
+
+INSERT INTO adoptantes (nombre, apellidos, cuenta_id)
+VALUES ('Test', 'Adoptante', 4);
+INSERT INTO protectoras (nombre, cif, telefono, direccion, provincia, cuenta_id)
+VALUES ('Protectora Test', 'B99999999', '600000000', 'Calle Test 1', 'A Coruña', 5);
+
 -- ==========================================
 -- 3. ENTIDADES PROTECTORAS
 -- ==========================================
-
--- Protectora en Lugo
+ Protectora en Lugo
 INSERT INTO protectoras (nombre, cif, email_contacto, telefono, direccion, provincia, cuenta_id)
 VALUES ('Lucus Can', 'G27123456', 'contacto@lucuscan.org', '982111222', 'Rúa da Protectora s/n', 'Lugo', 1);
 

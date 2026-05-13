@@ -33,7 +33,7 @@ VALUES ('Protectora Test', 'B99999999', '600000000', 'Calle Test 1', 'A Coruña'
 -- ==========================================
 -- 3. ENTIDADES PROTECTORAS
 -- ==========================================
- Protectora en Lugo
+-- Protectora en Lugo
 INSERT INTO protectoras (nombre, cif, email_contacto, telefono, direccion, provincia, cuenta_id)
 VALUES ('Lucus Can', 'G27123456', 'contacto@lucuscan.org', '982111222', 'Rúa da Protectora s/n', 'Lugo', 1);
 

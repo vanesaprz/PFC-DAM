@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
 
@@ -41,15 +42,19 @@ public class SolicitudController {
     }
 
     @PostMapping("/guardar")
-    public String guardarSolicitud(@ModelAttribute Solicitud solicitud, @RequestParam Long animalId, Principal principal) {
+    public String guardarSolicitud(@ModelAttribute Solicitud solicitud, @RequestParam Long animalId, Principal principal, RedirectAttributes redirectAttributes) {
         solicitud.setAnimal(animalRepository.getReferenceById(animalId));
         String emailAdoptante = principal.getName();
 
         Cuenta cuenta = cuentaRepository.findByEmail(emailAdoptante).orElseThrow(() -> new RuntimeException("Cuenta no encontrada"));
         Adoptante adoptante = adoptanteRepository.findByCuenta(cuenta).orElseThrow(() -> new RuntimeException("Adoptante no encontrada"));
 
+        if (solicitudRepository.existsByAdoptanteIdAndAnimalId(adoptante.getId(), animalId)) {
+            redirectAttributes.addFlashAttribute("error", "Ya has enviado una solicitud para este animal");
+            return "redirect:/animales/" + animalId;
+        }
         solicitud.setAdoptante(adoptante);
-
+        solicitud.setAnimal(animalRepository.getReferenceById(animalId));
         solicitudRepository.save(solicitud);
 
         return "redirect:/animales/" + animalId + "?enviado=true";

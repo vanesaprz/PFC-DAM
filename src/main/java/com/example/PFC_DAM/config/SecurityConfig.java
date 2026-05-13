@@ -38,6 +38,10 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/registro/**", "/login", "/css/**", "/js/**", "/images/**",
                                 "/", "/animales", "/animales/{id}", "/protectoras", "/protectora/{id}").permitAll()
+                        .requestMatchers("/protectora/panel", "/protectora/animales/**", "/protectora/solicitudes")
+                        .hasAnyRole("PROTECTORA", "ADMIN")
+                        .requestMatchers("/adoptante/**", "/solicitudes/**")
+                        .hasAnyRole("ADOPTANTE", "ADMIN")
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form

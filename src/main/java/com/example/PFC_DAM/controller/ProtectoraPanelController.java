@@ -13,10 +13,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
@@ -65,7 +62,7 @@ public class ProtectoraPanelController {
         nuevoAnimal.setEsterilizado(false);
         nuevoAnimal.setDesparasitado(false);
         nuevoAnimal.setMicrochip(false);
-        nuevoAnimal.setAptoPerros(false); // Valor por defecto sugerido
+        nuevoAnimal.setAptoPerros(false);
         nuevoAnimal.setAptoGatos(false);
         nuevoAnimal.setAptoNinos(false);
         nuevoAnimal.setEstado(EstadoAnimal.DISPONIBLE);
@@ -124,10 +121,47 @@ public class ProtectoraPanelController {
         }
     }
 
-
     @GetMapping("/solicitudes")
     public String verSolicitudesRecibidas(Model model) {
         return ("protectora/solicitudes-recibidas");
+    }
+
+    //Se crea el controlador para la eliminación de animales del panel de la protectora.
+    @PostMapping("/animales/borrar/{id}")
+    public String borrarAnimal(@PathVariable Long id, Principal principal, RedirectAttributes redirectAttributes) {
+        Animal animal = animalRepository.findById(id).orElseThrow();
+
+        //Verifico que el animal pertenece a la protectora que trata de borrar el animal:
+        Cuenta cuenta = cuentaRepository.findByEmail(principal.getName()).orElseThrow();
+        if (!animal.getProtectora().getId().equals(cuenta.getProtectora().getId())) {
+            redirectAttributes.addFlashAttribute("error", "No tienes permiso para eliminar este animal");
+            return "redirect:/protectora/panel";
+        }
+        animalRepository.delete(animal);
+        redirectAttributes.addFlashAttribute("mensaje", "Animal eliminado correctamente");
+        return "redirect:/protectora/panel";
+    }
+
+    //Controlador para editar los datos de los animales desde el panel de la protectora:
+
+    @GetMapping("/animales/editar/{id}")
+    public String formularioEditarAnimal(@PathVariable Long id, Model model, Principal principa, RedirectAttributes redirectAttributes) {
+        Animal animal = animalRepository.findById(id).orElseThrow();
+        Cuenta cuenta = cuentaRepository.findByEmail(principa.getName()).orElseThrow();
+
+        if (!animal.getProtectora().getId().equals(cuenta.getProtectora().getId())) {
+            redirectAttributes.addFlashAttribute("error", "No tienes permiso para editar este animal");
+            return "redirect:/protectora/panel";
+        }
+
+        model.addAttribute("animal", animal);
+        model.addAttribute("especies", List.of("Perro", "Gato", "Otros"));
+        model.addAttribute("sexos", Sexo.values());
+        model.addAttribute("estados", EstadoAnimal.values());
+
+        return "protectora/formulario-animal";
+
+
     }
 
 

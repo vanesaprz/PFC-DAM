@@ -59,6 +59,24 @@ public class SolicitudController {
 
         return "redirect:/animales/" + animalId + "?enviado=true";
     }
+
+
+    @PostMapping("/eliminar/{id}")
+    public String eliminarSolicitud(@PathVariable Long id, Principal principal, RedirectAttributes redirectAttributes) {
+        Solicitud solicitud = solicitudRepository.findById(id).orElseThrow();
+        //Verifico que la solicitud la ha realizado la misma cuenta que está pidiendo que se elimine
+        Cuenta cuenta = cuentaRepository.findByEmail(principal.getName()).orElseThrow();
+        Adoptante adoptante = adoptanteRepository.findByCuenta(cuenta).orElseThrow();
+
+        if (!solicitud.getAdoptante().getId().equals(adoptante.getId())) {
+            redirectAttributes.addFlashAttribute("error", "No tienes permiso para borrar esta solicitud");
+            return "redirect:/adoptante/solicitudes";
+        }
+
+        solicitudRepository.delete(solicitud);
+        redirectAttributes.addFlashAttribute("mensaje", "Solicitud eliminada correctamente");
+        return "redirect:/adoptante/solicitudes";
+    }
 }
 
 

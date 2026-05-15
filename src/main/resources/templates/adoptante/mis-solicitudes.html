@@ -50,6 +50,13 @@
                     <td class="text-center">
                         <a th:href="@{/animales/{id}(id=${solicitud.animal.id})}" class="btn btn-sm btn-outline-dark">Ver
                             animal</a>
+                        <form th:action="@{/solicitudes/eliminar/{id}(id=${solicitud.id})}"
+                              method="post" style="display:inline;">
+                            <button type="submit" class="btn btn-sm btn-outline-danger"
+                                    onclick="return confirm('¿Seguro que quieres eliminar esta solicitud?')">
+                                <i class="bi bi-trash3"></i>
+                            </button>
+                        </form>
                     </td>
                 </tr>
 

@@ -1,6 +1,7 @@
 package com.example.PFC_DAM.repos;
 
 import com.example.PFC_DAM.model.Solicitud;
+import com.example.PFC_DAM.model.enums.EstadoSolicitud;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -13,6 +14,13 @@ public interface SolicitudRepository extends JpaRepository<Solicitud, Long> {
 
     //Devuelve true si un adoptante ya ha realizado una solicitud para un animal en concreto
     boolean existsByAdoptanteIdAndAnimalId(Long adoptanteId, Long animalId);
+
+    //Lista las solicitudes para animales de la protectora
+    List<Solicitud> findByAnimalProtectoraId(Long protectoraId);
+
+    //Filtra las solicitudes de los animales de la protectora, no mostrando los del estado elegido (pensado para
+    //que no se muestren en el panel de protectora las solicitudes rechazadas
+    List<Solicitud> findByAnimalProtectoraIdAndEstadoNot(Long protectoraId, EstadoSolicitud estado);
 
 
 }

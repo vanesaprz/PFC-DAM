@@ -3,10 +3,13 @@ package com.example.PFC_DAM.controller;
 import com.example.PFC_DAM.model.Animal;
 import com.example.PFC_DAM.model.Cuenta;
 import com.example.PFC_DAM.model.Protectora;
+import com.example.PFC_DAM.model.Solicitud;
 import com.example.PFC_DAM.model.enums.EstadoAnimal;
+import com.example.PFC_DAM.model.enums.EstadoSolicitud;
 import com.example.PFC_DAM.model.enums.Sexo;
 import com.example.PFC_DAM.repos.AnimalRepository;
 import com.example.PFC_DAM.repos.CuentaRepository;
+import com.example.PFC_DAM.repos.SolicitudRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -28,6 +31,9 @@ public class ProtectoraPanelController {
 
     @Autowired
     private AnimalRepository animalRepository;
+
+    @Autowired
+    private SolicitudRepository solicitudRepository;
 
     @GetMapping("/panel")
     public String mostrarPanel(Model model, Principal principal) {
@@ -121,11 +127,6 @@ public class ProtectoraPanelController {
         }
     }
 
-    @GetMapping("/solicitudes")
-    public String verSolicitudesRecibidas(Model model) {
-        return ("protectora/solicitudes-recibidas");
-    }
-
     //Se crea el controlador para la eliminación de animales del panel de la protectora.
     @PostMapping("/animales/borrar/{id}")
     public String borrarAnimal(@PathVariable Long id, Principal principal, RedirectAttributes redirectAttributes) {
@@ -160,8 +161,30 @@ public class ProtectoraPanelController {
         model.addAttribute("estados", EstadoAnimal.values());
 
         return "protectora/formulario-animal";
+    }
 
+    @GetMapping("/solicitudes")
+    public String verSolicitudesRecibidas(Model model, Principal principal) {
+        Cuenta cuenta = cuentaRepository.findByEmail(principal.getName()).orElseThrow();
+        Protectora protectora = cuenta.getProtectora();
 
+        List<Solicitud> solicitudes = solicitudRepository.findByAnimalProtectoraIdAndEstadoNot(protectora.getId(), EstadoSolicitud.RECHAZADA);
+        model.addAttribute("solicitudes", solicitudes);
+        model.addAttribute("menuActivo", "solicitudes");
+        return "protectora/solicitudes-recibidas";
+    }
+
+    @PostMapping("/solicitudes/actualizar/{id}")
+    public String actualizarSolicitud(@PathVariable Long id,
+                                      @RequestParam EstadoSolicitud estado,
+                                      @RequestParam(required = false) String notas,
+                                      RedirectAttributes redirectAttributes) {
+        Solicitud solicitud = solicitudRepository.findById(id).orElseThrow();
+        solicitud.setEstado(estado);
+        solicitud.setNotas(notas);
+        solicitudRepository.save(solicitud);
+        redirectAttributes.addFlashAttribute("mensaje", "Solicitud actualizada correctamente");
+        return "redirect:/protectora/solicitudes";
     }
 
 

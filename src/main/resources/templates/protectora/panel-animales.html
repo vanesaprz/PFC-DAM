@@ -47,7 +47,8 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" th:classappend="${menuActivo == 'solicitudes' ? 'active' : ''}" href="#">
+                        <a class="nav-link" th:classappend="${menuActivo == 'solicitudes' ? 'active' : ''}"
+                           th:href="@{/protectora/solicitudes}">
                             <i class="bi bi-file-earmark-text me-2"></i> MIS SOLICITUDES
                         </a>
                     </li>

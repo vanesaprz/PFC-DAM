@@ -1,10 +1,202 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Solicitudes Recibidas - GeoAdopt</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <style>
+        body { background-color: #f4f7f6; }
+        .sidebar { min-height: 100vh; background-color: #fff; border-right: 1px solid #e0e0e0; }
+        .nav-link { color: #333; font-weight: 500; padding: 10px 20px; border-radius: 5px; margin-bottom: 5px; }
+        .nav-link:hover { background-color: #f0f0f0; color: #000; }
+        .nav-link.active { background-color: #333; color: #fff; }
+        .table-container { background: #fff; border-radius: 8px; border: 1px solid #e0e0e0; padding: 20px; }
+        .animal-thumb { width: 50px; height: 50px; object-fit: cover; border-radius: 5px; }
+        .detalle-solicitud { background-color: #f8f9fa; border-left: 4px solid #0d6efd; }
+    </style>
 </head>
 <body>
 
+<div th:replace="~{fragments/navbar :: menu_principal}"></div>
+
+<div class="container-fluid">
+    <div class="row">
+        <!-- SIDEBAR -->
+        <nav class="col-md-3 col-lg-2 d-md-block sidebar collapse p-3">
+            <div class="position-sticky">
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link" th:classappend="${menuActivo == 'perfil' ? 'active' : ''}" href="#">
+                            <i class="bi bi-person-lines-fill me-2"></i> INFORMACIÓN PERFIL
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:classappend="${menuActivo == 'animales' ? 'active' : ''}"
+                           th:href="@{/protectora/panel}">
+                            <i class="bi bi-dog me-2"></i> MIS ANIMALES
+                        </a>
+                    </li>
+                    <li class="nav-item ps-3">
+                        <a class="nav-link text-success small" th:href="@{/protectora/animales/nuevo}">
+                            <i class="bi bi-plus-circle me-2"></i> + Añadir animal
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:classappend="${menuActivo == 'solicitudes' ? 'active' : ''}"
+                           th:href="@{/protectora/solicitudes}">
+                            <i class="bi bi-file-earmark-text me-2"></i> MIS SOLICITUDES
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <!-- CONTENIDO PRINCIPAL -->
+        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 py-4">
+
+            <div th:if="${mensaje}" class="alert alert-success alert-dismissible fade show" role="alert">
+                <span th:text="${mensaje}"></span>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h3 class="mb-0 text-uppercase fw-bold text-muted" style="letter-spacing: 1px;">Solicitudes
+                    Recibidas</h3>
+            </div>
+
+            <div class="table-container shadow-sm">
+                <table class="table table-hover align-middle">
+                    <thead class="table-light">
+                    <tr>
+                        <th>Animal</th>
+                        <th>Adoptante</th>
+                        <th>Fecha</th>
+                        <th>Estado</th>
+                        <th class="text-center">Detalle</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    <th:block th:each="solicitud : ${solicitudes}">
+                        <!-- FILA RESUMEN -->
+                        <tr>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <img th:src="${solicitud.animal.fotoPrincipal}"
+                                         class="animal-thumb border me-2" alt="Foto animal"/>
+                                    <span class="fw-bold" th:text="${solicitud.animal.nombre}"></span>
+                                </div>
+                            </td>
+                            <td>
+                                <span th:text="${solicitud.adoptante.nombre + ' ' + solicitud.adoptante.apellidos}"></span>
+                                <small class="d-block text-muted" th:text="${solicitud.adoptante.cuenta.email}"></small>
+                            </td>
+                            <td th:text="${#temporals.format(solicitud.fecha, 'dd/MM/yyyy')}"></td>
+                            <td>
+                                <span class="badge"
+                                      th:text="${solicitud.estado}"
+                                      th:classappend="${solicitud.estado.name() == 'PENDIENTE'} ? 'bg-warning text-dark' :
+                                                     (${solicitud.estado.name() == 'EN_REVISION'} ? 'bg-info' :
+                                                     (${solicitud.estado.name() == 'ENTREVISTA'} ? 'bg-primary' :
+                                                     (${solicitud.estado.name() == 'RECHAZADA'} ? 'bg-danger' : 'bg-secondary')))">
+                                </span>
+                            </td>
+                            <td class="text-center">
+                                <button class="btn btn-sm btn-outline-dark"
+                                        type="button"
+                                        data-bs-toggle="collapse"
+                                        th:attr="data-bs-target='#detalle-' + ${solicitud.id}">
+                                    <i class="bi bi-chevron-down"></i>
+                                </button>
+                            </td>
+                        </tr>
+
+                        <!-- FILA DETALLE COLAPSABLE -->
+                        <tr>
+                            <td colspan="5" class="p-0 border-0">
+                                <div class="collapse detalle-solicitud p-4"
+                                     th:id="'detalle-' + ${solicitud.id}">
+
+                                    <div class="row g-4">
+                                        <!-- Mensaje del adoptante -->
+                                        <div class="col-md-6">
+                                            <h6 class="fw-bold text-uppercase small text-muted mb-2">
+                                                <i class="bi bi-chat-left-text me-1"></i>Mensaje del adoptante
+                                            </h6>
+                                            <p class="mb-0" th:text="${solicitud.mensaje}"></p>
+
+                                            <hr>
+                                            <div class="row">
+                                                <div class="col-6">
+                                                    <small class="text-muted d-block">Tipo de vivienda</small>
+                                                    <span th:text="${solicitud.tipoVivienda}"></span>
+                                                </div>
+                                                <div class="col-6">
+                                                    <small class="text-muted d-block">Otros animales</small>
+                                                    <span th:text="${solicitud.otrosAnimales}"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Gestión de la solicitud -->
+                                        <div class="col-md-6">
+                                            <form th:action="@{/protectora/solicitudes/actualizar/{id}(id=${solicitud.id})}"
+                                                  method="post">
+                                                <h6 class="fw-bold text-uppercase small text-muted mb-2">
+                                                    <i class="bi bi-pencil-square me-1"></i>Gestión
+                                                </h6>
+
+                                                <div class="mb-3">
+                                                    <label class="form-label small fw-bold">Estado</label>
+                                                    <select name="estado" class="form-select form-select-sm">
+                                                        <option th:each="est : ${T(com.example.PFC_DAM.model.enums.EstadoSolicitud).values()}"
+                                                                th:value="${est}"
+                                                                th:text="${est}"
+                                                                th:selected="${est == solicitud.estado}">
+                                                        </option>
+                                                    </select>
+                                                </div>
+
+                                                <div class="mb-3">
+                                                    <label class="form-label small fw-bold">Notas internas</label>
+                                                    <textarea name="notas"
+                                                              class="form-control form-control-sm"
+                                                              rows="3"
+                                                              placeholder="Anotaciones privadas sobre esta solicitud..."
+                                                              th:text="${solicitud.notas}"></textarea>
+                                                </div>
+
+                                                <button type="submit" class="btn btn-dark btn-sm px-4">
+                                                    <i class="bi bi-save me-1"></i> Guardar cambios
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </th:block>
+
+                    <tr th:if="${#lists.isEmpty(solicitudes)}">
+                        <td colspan="5" class="text-center py-5 text-muted">
+                            <i class="bi bi-file-earmark-text fs-1 d-block mb-3"></i>
+                            Aún no has recibido ninguna solicitud.
+                        </td>
+                    </tr>
+
+                    </tbody>
+                </table>
+            </div>
+
+            <footer class="mt-5 pt-4 border-top text-center text-muted">
+                <p>&copy; 2026 Vanesa Pérez.</p>
+            </footer>
+
+        </main>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

@@ -22,6 +22,7 @@ public interface SolicitudRepository extends JpaRepository<Solicitud, Long> {
     //que no se muestren en el panel de protectora las solicitudes rechazadas
     List<Solicitud> findByAnimalProtectoraIdAndEstadoNot(Long protectoraId, EstadoSolicitud estado);
 
-
+    //Busca el número de solicitudes de adopción pendientes que tiene una protectora:
+    long countByAnimalProtectoraIdAndEstado(Long protectoraId, EstadoSolicitud estado);
 }
 

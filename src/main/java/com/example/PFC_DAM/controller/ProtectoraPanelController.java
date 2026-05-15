@@ -48,7 +48,7 @@ public class ProtectoraPanelController {
         model.addAttribute("cantEnAdopcion", animalRepository.countByProtectoraIdAndEstado(protectora.getId(), EstadoAnimal.DISPONIBLE));
         model.addAttribute("cantAdoptados", animalRepository.countByProtectoraIdAndEstado(protectora.getId(), EstadoAnimal.ADOPTADO));
         model.addAttribute("cantUrgentes", animalRepository.countByProtectoraIdAndEstado(protectora.getId(), EstadoAnimal.URGENTE));
-        //Tengo pendiente contabilizar las solicitudes por ahora
+        model.addAttribute("cantSolPendientes", solicitudRepository.countByAnimalProtectoraIdAndEstado(protectora.getId(), EstadoSolicitud.PENDIENTE));
 
 
         //Para tabla animales:

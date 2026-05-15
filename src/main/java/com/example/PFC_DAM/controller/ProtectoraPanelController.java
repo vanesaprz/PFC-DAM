@@ -1,16 +1,10 @@
 package com.example.PFC_DAM.controller;
 
-import com.example.PFC_DAM.model.Animal;
-import com.example.PFC_DAM.model.Cuenta;
-import com.example.PFC_DAM.model.Protectora;
-import com.example.PFC_DAM.model.Solicitud;
+import com.example.PFC_DAM.model.*;
 import com.example.PFC_DAM.model.enums.EstadoAnimal;
 import com.example.PFC_DAM.model.enums.EstadoSolicitud;
 import com.example.PFC_DAM.model.enums.Sexo;
-import com.example.PFC_DAM.repos.AnimalRepository;
-import com.example.PFC_DAM.repos.CuentaRepository;
-import com.example.PFC_DAM.repos.ProtectoraRepository;
-import com.example.PFC_DAM.repos.SolicitudRepository;
+import com.example.PFC_DAM.repos.*;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -38,6 +32,9 @@ public class ProtectoraPanelController {
 
     @Autowired
     private ProtectoraRepository protectoraRepository;
+
+    @Autowired
+    private RedSocialRepository redSocialRepository;
 
     @GetMapping("/panel")
     public String mostrarPanel(Model model, Principal principal) {
@@ -67,7 +64,6 @@ public class ProtectoraPanelController {
     public String formularioNuevoAnimal(Model model) {
         Animal nuevoAnimal = new Animal();
         //Valores por defecto:
-
         nuevoAnimal.setVacunado(false);
         nuevoAnimal.setEsterilizado(false);
         nuevoAnimal.setDesparasitado(false);
@@ -200,6 +196,7 @@ public class ProtectoraPanelController {
 
         model.addAttribute("protectora", protectora);
         model.addAttribute("menuActivo", "perfil");
+        model.addAttribute("tiposRedSocial", List.of("instagram", "facebook", "twitter-x", "whatsapp", "youtube", "tiktok", "telegram"));
 
         return "protectora/perfil";
     }
@@ -224,5 +221,25 @@ public class ProtectoraPanelController {
         return "redirect:/protectora/perfil";
 
     }
+
+    //Para añadir nuevas redes sociales a la base de datos de la protectora
+    @PostMapping("/perfil/redes/guardar")
+    public String guardarRedSocial(@RequestParam String tipo,
+                                   @RequestParam String enlaceUsuario,
+                                   Principal principal,
+                                   RedirectAttributes redirectAttributes) {
+        Cuenta cuenta = cuentaRepository.findByEmail(principal.getName()).orElseThrow();
+        Protectora protectora = cuenta.getProtectora();
+
+        RedSocial redSocial = new RedSocial();
+        redSocial.setTipo(tipo);
+        redSocial.setEnlaceUsuario(enlaceUsuario);
+        redSocial.setProtectora(protectora);
+
+        redSocialRepository.save(redSocial);
+        redirectAttributes.addFlashAttribute("mensaje", "Red Social añadida correctamente");
+        return "redirect:/protectora/perfil";
+    }
+
 
 }

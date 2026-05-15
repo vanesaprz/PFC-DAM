@@ -143,6 +143,55 @@
                 </div>
             </form>
 
+            <!-- SECCIÓN 4: REDES SOCIALES -->
+            <div class="form-section-title text-uppercase small">Redes Sociales</div>
+
+            <!-- Redes existentes -->
+            <div class="mb-4">
+                <div th:if="${protectora.redesSociales.isEmpty()}" class="text-muted small mb-3">
+                    Aún no has añadido ninguna red social.
+                </div>
+                <div th:each="red : ${protectora.redesSociales}"
+                     class="d-flex align-items-center gap-3 mb-2 p-2 bg-white border rounded">
+                    <i th:class="|bi bi-${red.tipo} fs-4|"></i>
+                    <span th:text="${red.enlaceUsuario}" class="flex-grow-1"></span>
+                    <form th:action="@{/protectora/perfil/redes/eliminar/{id}(id=${red.id})}" method="post">
+                        <button type="submit" class="btn btn-sm btn-outline-danger"
+                                onclick="return confirm('¿Eliminar esta red social?')">
+                            <i class="bi bi-trash3"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Formulario para añadir nueva -->
+            <div class="card border-0 bg-light p-3 mb-4">
+                <h6 class="fw-bold mb-3"><i class="bi bi-plus-circle me-2"></i>Añadir red social</h6>
+                <form th:action="@{/protectora/perfil/redes/guardar}" method="post">
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <label class="form-label small fw-bold">Red Social</label>
+                            <select name="tipo" class="form-select">
+                                <option th:each="tipo : ${tiposRedSocial}"
+                                        th:value="${tipo}"
+                                        th:text="${#strings.capitalize(tipo)}">
+                                </option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label small fw-bold">Enlace o usuario</label>
+                            <input type="text" name="enlaceUsuario" class="form-control"
+                                   placeholder="https://instagram.com/miprotectora" required>
+                        </div>
+                        <div class="col-md-2 d-flex align-items-end">
+                            <button type="submit" class="btn btn-dark w-100">
+                                <i class="bi bi-plus-lg"></i> Añadir
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
             <footer class="mt-5 pt-4 border-top text-center text-muted">
                 <p> 2026 Vanesa Pérez.</p>
             </footer>

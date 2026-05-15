@@ -1,7 +1,12 @@
 package com.example.PFC_DAM.controller;
 
+import com.example.PFC_DAM.model.Adoptante;
 import com.example.PFC_DAM.model.Animal;
+import com.example.PFC_DAM.model.Cuenta;
+import com.example.PFC_DAM.repos.AdoptanteRepository;
 import com.example.PFC_DAM.repos.AnimalRepository;
+import com.example.PFC_DAM.repos.CuentaRepository;
+import com.example.PFC_DAM.repos.FavoritoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.security.Principal;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -19,6 +25,15 @@ public class AnimalController {
 
     @Autowired
     private AnimalRepository animalRepository;
+
+    @Autowired
+    private CuentaRepository cuentaRepository;
+
+    @Autowired
+    private AdoptanteRepository adoptanteRepository;
+
+    @Autowired
+    private FavoritoRepository favoritoRepository;
 
     @GetMapping("")
     public String listarAnimales(
@@ -68,11 +83,18 @@ public class AnimalController {
     }
 
     @GetMapping("/{id}")
-    public String verDetalle(@PathVariable Long id, Model model) {
+    public String verDetalle(@PathVariable Long id, Model model, Principal principal) {
         Animal animal = animalRepository.findById(id).orElseThrow(() -> new RuntimeException("Animal no encontrado"));
-
         model.addAttribute("animal", animal);
 
+        if (principal != null) {
+            Cuenta cuenta = cuentaRepository.findByEmail(principal.getName()).orElseThrow();
+            Adoptante adoptante = adoptanteRepository.findByCuenta(cuenta).orElseThrow();
+            if (adoptante != null) {
+                boolean esFavorito = favoritoRepository.existsByAdoptanteIdAndAnimalId(adoptante.getId(), id);
+                model.addAttribute("esFavorito", esFavorito);
+            }
+        }
 
         //PENDIENTE INCLUIR LISTA DE TODAS LAS FOTOS PARA GALERÍA/CARRUSEL
 

@@ -61,11 +61,6 @@ public class MainController {
         return "adoptante/perfil";
     }
 
-    //Pantalla favoritos
-    @GetMapping("/adoptante/favoritos")
-    public String verFavoritos() {
-        return "adoptante/favoritos";
-    }
 
     //Consulta de solicitudes realizadas:
     @GetMapping("/adoptante/solicitudes")

@@ -31,7 +31,8 @@
             <div class="position-sticky">
                 <ul class="nav flex-column">
                     <li class="nav-item">
-                        <a class="nav-link" th:classappend="${menuActivo == 'perfil' ? 'active' : ''}" href="#">
+                        <a class="nav-link" th:classappend="${menuActivo == 'perfil' ? 'active' : ''}"
+                           th:href="@{/protectora/perfil}">
                             <i class="bi bi-person-lines-fill me-2"></i> INFORMACIÓN PERFIL
                         </a>
                     </li>

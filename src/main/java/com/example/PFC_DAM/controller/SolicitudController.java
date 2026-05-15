@@ -60,7 +60,7 @@ public class SolicitudController {
         return "redirect:/animales/" + animalId + "?enviado=true";
     }
 
-
+    //Para que el adoptante elimine su solicitud de adopción
     @PostMapping("/eliminar/{id}")
     public String eliminarSolicitud(@PathVariable Long id, Principal principal, RedirectAttributes redirectAttributes) {
         Solicitud solicitud = solicitudRepository.findById(id).orElseThrow();

@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Mi Perfil - GeoAdopt</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <style>
+        body { background-color: #f4f7f6; }
+        .sidebar { min-height: 100vh; background-color: #fff; border-right: 1px solid #e0e0e0; }
+        .nav-link { color: #333; font-weight: 500; padding: 10px 20px; border-radius: 5px; margin-bottom: 5px; }
+        .nav-link:hover { background-color: #f0f0f0; color: #000; }
+        .nav-link.active { background-color: #333; color: #fff; }
+        .form-section-title { background-color: #f8f9fa; padding: 10px 15px; border-left: 5px solid #0d6efd; margin-bottom: 20px; font-weight: bold; color: #495057; }
+    </style>
+</head>
+<body>
+
+<div th:replace="~{fragments/navbar :: menu_principal}"></div>
+
+<div class="container-fluid">
+    <div class="row">
+        <!-- SIDEBAR -->
+        <nav class="col-md-3 col-lg-2 d-md-block sidebar collapse p-3">
+            <div class="position-sticky">
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link" th:classappend="${menuActivo == 'perfil' ? 'active' : ''}"
+                           th:href="@{/protectora/perfil}">
+                            <i class="bi bi-person-lines-fill me-2"></i> INFORMACIÓN PERFIL
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:classappend="${menuActivo == 'animales' ? 'active' : ''}"
+                           th:href="@{/protectora/panel}">
+                            <i class="bi bi-dog me-2"></i> MIS ANIMALES
+                        </a>
+                    </li>
+                    <li class="nav-item ps-3">
+                        <a class="nav-link text-success small" th:href="@{/protectora/animales/nuevo}">
+                            <i class="bi bi-plus-circle me-2"></i> + Añadir animal
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:classappend="${menuActivo == 'solicitudes' ? 'active' : ''}"
+                           th:href="@{/protectora/solicitudes}">
+                            <i class="bi bi-file-earmark-text me-2"></i> MIS SOLICITUDES
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <!-- CONTENIDO PRINCIPAL -->
+        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 py-4">
+
+            <div th:if="${mensaje}" class="alert alert-success alert-dismissible fade show" role="alert">
+                <span th:text="${mensaje}"></span>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+
+            <h3 class="mb-4 text-uppercase fw-bold text-muted" style="letter-spacing: 1px;">Mi Perfil</h3>
+
+            <form th:action="@{/protectora/perfil/guardar}" th:object="${protectora}" method="post">
+
+                <!-- SECCIÓN 1: DATOS BÁSICOS -->
+                <div class="form-section-title text-uppercase small">Datos de la Entidad</div>
+                <div class="row g-3 mb-4">
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">Nombre de la Entidad</label>
+                        <input type="text" th:field="*{nombre}" class="form-control" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">CIF</label>
+                        <input type="text" th:field="*{cif}" class="form-control" readonly>
+                        <small class="text-muted">El CIF no puede modificarse. Contacta con soporte si hay un
+                            error.</small>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">Teléfono</label>
+                        <input type="tel" th:field="*{telefono}" class="form-control">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">Provincia</label>
+                        <select th:field="*{provincia}" class="form-select">
+                            <option value="A Coruña">A Coruña</option>
+                            <option value="Lugo">Lugo</option>
+                            <option value="Ourense">Ourense</option>
+                            <option value="Pontevedra">Pontevedra</option>
+                        </select>
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label fw-bold">Dirección</label>
+                        <input type="text" th:field="*{direccion}" class="form-control">
+                    </div>
+                </div>
+
+                <!-- SECCIÓN 2: CONTACTO PÚBLICO -->
+                <div class="form-section-title text-uppercase small">Contacto Público</div>
+                <div class="row g-3 mb-4">
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">Email de Contacto Público</label>
+                        <input type="email" th:field="*{emailContacto}" class="form-control"
+                               placeholder="Para que los adoptantes os escriban">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">Sitio Web</label>
+                        <input type="url" th:field="*{web}" class="form-control"
+                               placeholder="https://www.miprotectora.org">
+                    </div>
+                </div>
+
+                <!-- SECCIÓN 3: IMAGEN Y PRESENTACIÓN -->
+                <div class="form-section-title text-uppercase small">Imagen y Presentación</div>
+                <div class="row g-3 mb-4">
+                    <div class="col-12">
+                        <label class="form-label fw-bold">URL del Logo</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="bi bi-image"></i></span>
+                            <input type="url" th:field="*{logo}" class="form-control"
+                                   placeholder="https://ejemplo.com/logo.png">
+                        </div>
+                        <div th:if="${protectora.logo != null and !protectora.logo.isEmpty()}" class="mt-2">
+                            <img th:src="${protectora.logo}" alt="Logo actual"
+                                 style="height: 80px; object-fit: contain;">
+                            <small class="text-muted d-block">Logo actual</small>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label fw-bold">Presentación</label>
+                        <textarea th:field="*{presentacion}" class="form-control" rows="5"
+                                  placeholder="Cuéntanos sobre vuestra labor..."></textarea>
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-end gap-3">
+                    <a th:href="@{/protectora/panel}" class="btn btn-outline-secondary px-4">
+                        <i class="bi bi-arrow-left me-2"></i>Volver al panel
+                    </a>
+                    <button type="submit" class="btn btn-dark px-5 fw-bold">
+                        <i class="bi bi-save me-2"></i>Guardar cambios
+                    </button>
+                </div>
+            </form>
+
+            <footer class="mt-5 pt-4 border-top text-center text-muted">
+                <p> 2026 Vanesa Pérez.</p>
+            </footer>
+
+        </main>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

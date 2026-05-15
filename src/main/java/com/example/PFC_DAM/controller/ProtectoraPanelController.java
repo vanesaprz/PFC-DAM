@@ -9,6 +9,7 @@ import com.example.PFC_DAM.model.enums.EstadoSolicitud;
 import com.example.PFC_DAM.model.enums.Sexo;
 import com.example.PFC_DAM.repos.AnimalRepository;
 import com.example.PFC_DAM.repos.CuentaRepository;
+import com.example.PFC_DAM.repos.ProtectoraRepository;
 import com.example.PFC_DAM.repos.SolicitudRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +35,9 @@ public class ProtectoraPanelController {
 
     @Autowired
     private SolicitudRepository solicitudRepository;
+
+    @Autowired
+    private ProtectoraRepository protectoraRepository;
 
     @GetMapping("/panel")
     public String mostrarPanel(Model model, Principal principal) {
@@ -174,6 +178,7 @@ public class ProtectoraPanelController {
         return "protectora/solicitudes-recibidas";
     }
 
+    //Para cambiar estado de la solicitud y escribir notas al respecto
     @PostMapping("/solicitudes/actualizar/{id}")
     public String actualizarSolicitud(@PathVariable Long id,
                                       @RequestParam EstadoSolicitud estado,
@@ -187,5 +192,37 @@ public class ProtectoraPanelController {
         return "redirect:/protectora/solicitudes";
     }
 
+    //Mostrar la pagina que contiene los datos del perfil:
+    @GetMapping("/perfil")
+    public String mostrarPerfil(Model model, Principal principal) {
+        Cuenta cuenta = cuentaRepository.findByEmail(principal.getName()).orElseThrow();
+        Protectora protectora = cuenta.getProtectora();
+
+        model.addAttribute("protectora", protectora);
+        model.addAttribute("menuActivo", "perfil");
+
+        return "protectora/perfil";
+    }
+
+    @PostMapping("/perfil/guardar")
+    public String guardarPerfil(@ModelAttribute Protectora protectora, Principal principal, RedirectAttributes redirectAttributes) {
+
+        Cuenta cuenta = cuentaRepository.findByEmail(principal.getName()).orElseThrow();
+        Protectora protectoraActual = cuenta.getProtectora();
+        //diferencio entre la protectora de la base de datos "protectoraActual" y la del formulario/modelo "protectora"
+        //no puedo guardar como protectoraRepository.save(protectora) porque hay datos que no van a estar en el formulario y  puenden machacarse y dar error
+        protectoraActual.setNombre(protectora.getNombre());
+        protectoraActual.setDireccion(protectora.getDireccion());
+        protectoraActual.setTelefono(protectora.getTelefono());
+        protectoraActual.setProvincia(protectora.getProvincia());
+        protectoraActual.setPresentacion(protectora.getPresentacion());
+        protectoraActual.setLogo(protectora.getLogo());
+        protectoraActual.setEmailContacto(protectora.getEmailContacto());
+
+        protectoraRepository.save(protectoraActual);
+        redirectAttributes.addFlashAttribute("mensaje", "Perfil guardado correctamente");
+        return "redirect:/protectora/perfil";
+
+    }
 
 }

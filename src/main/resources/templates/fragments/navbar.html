@@ -55,7 +55,12 @@
                         <i class="bi bi-person-circle"></i> <span sec:authentication="name">Usuario</span>
                     </button>
                     <ul class="dropdown-menu dropdown-menu-end">
-                        <li><a class="dropdown-item" th:href="@{/perfil}">Mi Perfil</a></li>
+                        <li sec:authorize="hasRole('ADOPTANTE')">
+                            <a class="dropdown-item" th:href="@{/perfil}">Mi Perfil</a>
+                        </li>
+                        <li sec:authorize="hasAnyRole('PROTECTORA', 'ADMIN')">
+                            <a class="dropdown-item" th:href="@{/protectora/perfil}">Mi Perfil</a>
+                        </li>
                         <li sec:authorize="hasAnyRole('ADOPTANTE', 'ADMIN')">
                             <a class="dropdown-item" th:href="@{/adoptante/solicitudes}">Mis Solicitudes</a>
                         </li>

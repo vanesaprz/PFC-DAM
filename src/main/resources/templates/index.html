@@ -25,10 +25,14 @@
                             <span class="badge bg-secondary" th:text="${animal.especie.label}"></span>
                             <span class="badge bg-light text-dark" th:text="${animal.getEdadFormateada()}"></span>
                         </p>
+                        <p class="card-text mb-1">
+                            <i class="bi bi-geo-alt"></i> <span th:text="${animal.protectora.provincia}"></span>
+                        </p>
                         <p class="small text-muted mb-0">
                             Con nosotros desde: <span
                                 th:text="${#temporals.format(animal.fechaIngreso, 'dd/MM/yyyy')}"></span>
                         </p>
+
                     </div>
                     <div class="card-footer bg-white border-top-0 pb-3">
                         <a th:href="@{/animales/{id}(id=${animal.id})}" class="btn btn-outline-primary w-100">Ver ficha
@@ -55,6 +59,9 @@
                         <p class="mb-1">
                             <i class="fas fa-paw"></i> <span
                                 th:text="${animal.especie.label} + ' - ' + ${animal.getEdadFormateada()}"></span>
+                        </p>
+                        <p class="card-text mb-1">
+                            <i class="bi bi-geo-alt"></i> <span th:text="${animal.protectora.provincia}"></span>
                         </p>
                         <small class="text-muted">Tamaño: <span th:text="${animal.tamano.label}"></span></small>
                     </div>

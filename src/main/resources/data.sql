@@ -16,11 +16,11 @@ VALUES ('adopta@pontemascotas.es', '$2a$10$8.UnVuG9HHgffUDAlk8qfOuVGkqRzgVymGe07
 
 -- Admin General (Password: 'admin123')[cite: 1]
 INSERT INTO cuentas (email, contrasena, rol)
-VALUES ('admin@geoadopt.es', '$2a$10$QGMWqLZlJia8irHKTqkY0OOo4kCYEa9pPnrqyuDe.hUww7QLpyuxS', 'ADMIN');
+VALUES ('admin@patitasgal.es', '$2a$10$QGMWqLZlJia8irHKTqkY0OOo4kCYEa9pPnrqyuDe.hUww7QLpyuxS', 'ADMIN');
 
 -- protectora@test.com
 -- adoptante@test.com
---contraseña 1234
+--contraseña 12345
 INSERT INTO cuentas (email, contrasena, rol)
 VALUES ('adoptante@test.com', '$2a$10$2/NDD8Gcp19n4a4Ce5mpAeeeavJOoLn7zqxVEZ0YusX6Fmx62w7/W', 'ADOPTANTE'),
        ('protectora@test.com', '$2a$10$2/NDD8Gcp19n4a4Ce5mpAeeeavJOoLn7zqxVEZ0YusX6Fmx62w7/W', 'PROTECTORA');
@@ -43,7 +43,7 @@ VALUES ('PonteMascotas', 'G36987654', 'adopta@pontemascotas.es', '986555444', 'A
 
 -- Admin vinculado como protectora en Ourense para pruebas[cite: 1]
 INSERT INTO protectoras (nombre, cif, email_contacto, telefono, direccion, provincia, cuenta_id)
-VALUES ('Administración Central GeoAdopt', '00000000A', 'admin@geoadopt.es', '900000000', 'Sede Central Ourense',
+VALUES ('Administración Central PatitasGal', '00000000A', 'admin@PatitasGal.es', '900000000', 'Sede Central Ourense',
         'Ourense', 3);
 
 -- ==========================================

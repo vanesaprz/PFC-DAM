@@ -55,12 +55,6 @@ public class MainController {
         return "listado-protectoras";
     }
 
-    //Pantalla Mi Perfil
-    @GetMapping("/perfil")
-    public String verPerfil() {
-        return "adoptante/perfil";
-    }
-
 
     //Consulta de solicitudes realizadas:
     @GetMapping("/adoptante/solicitudes")

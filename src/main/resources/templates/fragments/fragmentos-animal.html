@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<body>
+
+<div th:fragment="tarjeta-animal(animal, mostrarBadge, estiloBoton, estiloTarjeta)"
+     th:class="'card h-100 shadow-sm ' + ${estiloTarjeta}">
+    <div class="position-relative">
+        <img th:src="${animal.fotoPrincipal}"
+             class="card-img-top"
+             style="height: 200px; object-fit: cover;"
+             th:alt="${animal.nombre}">
+        <span th:if="${mostrarBadge and animal.estado.name() == 'URGENTE'}"
+              class="badge bg-danger position-absolute top-0 start-0 m-2">
+            🆘 URGENTE
+        </span>
+    </div>
+    <div class="card-body">
+        <h5 class="card-title" th:text="${animal.nombre}"></h5>
+        <p class="card-text mb-1">
+            <span class="badge bg-secondary" th:text="${animal.especie.label}"></span>
+            <span class="badge bg-light text-dark" th:text="${animal.getEdadFormateada()}"></span>
+        </p>
+        <p class="card-text mb-1">
+            <i class="bi bi-geo-alt"></i> <span th:text="${animal.protectora.provincia}"></span>
+        </p>
+        <p class="card-text mb-1 small text-muted">
+            <i class="bi bi-house-heart"></i> <span th:text="${animal.protectora.nombre}"></span>
+        </p>
+    </div>
+    <div class="card-footer bg-white border-top-0 pb-3">
+        <a th:href="@{/animales/{id}(id=${animal.id})}"
+           th:class="'btn w-100 ' + ${estiloBoton}">Ver ficha completa</a>
+    </div>
+</div>
+
+</body>
+</html>

@@ -37,7 +37,7 @@
 <main class="container">
     <div class="row g-5">
         <!-- Columna Izquierda: Descripción y Animales -->
-        <div class="col-lg-8">
+        <div class="col-lg-8 order-lg-1 order-2">
             <section class="mb-5" th:if="${protectora.presentacion != null and !protectora.presentacion.isEmpty()}">
                 <h3 class="fw-bold mb-4">Sobre nosotros</h3>
                 <p class="text-justify lh-lg"
@@ -49,45 +49,22 @@
             <section>
                 <h3 class="fw-bold mb-4">Nuestros peludos en adopción</h3>
 
-                <div th:if="${!protectora.animales.isEmpty()}"
+                <div th:if="${!animalesProtectora.isEmpty()}"
                      class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4">
-                    <div class="col" th:each="animal : ${animalesProtectora}"
-                         th:if="${animal.estado.name() == 'DISPONIBLE' or animal.estado.name() == 'URGENTE'}">
-                        <div class="card h-100 shadow-sm">
-                            <div class="position-relative">
-                                <img th:src="${animal.fotoPrincipal}"
-                                     class="card-img-top"
-                                     style="height: 200px; object-fit: cover;"
-                                     th:alt="${animal.nombre}">
-                                <span th:if="${animal.estado.name() == 'URGENTE'}"
-                                      class="badge bg-danger position-absolute top-0 start-0 m-2">
-                        🆘 URGENTE
-                    </span>
-                            </div>
-                            <div class="card-body">
-                                <h5 class="card-title" th:text="${animal.nombre}"></h5>
-                                <p class="card-text mb-1">
-                                    <span class="badge bg-secondary" th:text="${animal.especie.label}"></span>
-                                    <span class="badge bg-light text-dark"
-                                          th:text="${animal.getEdadFormateada()}"></span>
-                                </p>
-                            </div>
-                            <div class="card-footer bg-white border-top-0 pb-3">
-                                <a th:href="@{/animales/{id}(id=${animal.id})}"
-                                   class="btn btn-outline-primary w-100">Ver ficha</a>
-                            </div>
-                        </div>
+                    <div class="col" th:each="animal : ${animalesProtectora}">
+                        <div th:replace="~{fragments/fragmentos-animal :: tarjeta-animal(${animal}, true, 'btn-outline-primary', '')}"></div>
                     </div>
                 </div>
 
-                <div th:if="${protectora.animales.isEmpty()}" class="alert alert-light border">
+                <div th:if="${animalesProtectora.isEmpty()}" class="alert alert-light border">
                     <p class="mb-0 text-muted">Esta protectora aún no tiene animales publicados.</p>
                 </div>
             </section>
         </div>
 
         <!-- Columna Derecha: Datos de contacto -->
-        <div class="col-lg-4">
+        <div class="col-lg-4 order-1 order-lg-2">
+            <h3 class="fw-bold mb-4" style="visibility: hidden;">Datos de Contacto</h3>
             <div class="sidebar-info shadow-sm">
                 <h4 class="fw-bold mb-4">Datos de Contacto</h4>
 

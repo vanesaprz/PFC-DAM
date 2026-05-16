@@ -1,29 +1,22 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-      lang="es">
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Adopta un Amigo - Inicio</title>
+    <title>Inicio - PatitasGal</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
     <style>
-        .animal-card-img { height: 200px; object-fit: cover; width: 100%; }
-        .animal-container { padding: 2rem 0; }
+        .animal-container { padding: 2rem 0; overflow: visible; }
         .section-title { margin-bottom: 1.5rem; }
         .text-urgente { color: #dc3545; }
-        .card-urgente { border: 2px solid #dc3545;}
-        .carousel-wrapper { position:relative; }
+        .carousel-wrapper { position: relative; }
         .carousel-control-prev, .carousel-control-next {
-                width: 40px;
-                background-color: rgba(0,0,0,0.2);
-                border-radius: 50%;
-                height: 40px;
-                top: 50%;
-                transform: translateY(-50%);
-        }
-        .animal-container {
-            padding: 2rem 0;
-            overflow: visible;
+            width: 40px;
+            background-color: rgba(0,0,0,0.2);
+            border-radius: 50%;
+            height: 40px;
+            top: 50%;
+            transform: translateY(-50%);
         }
         .carousel-control-prev { left: -40px; }
         .carousel-control-next { right: -40px; }
@@ -33,12 +26,12 @@
 <div th:replace="~{fragments/navbar :: menu_principal}"></div>
 <div class="container animal-container">
 
+    <!-- URGENTES -->
     <div th:if="${!urgentes.isEmpty()}">
         <h2 class="section-title text-urgente">🆘 Casos muy urgentes</h2>
         <div class="carousel-wrapper">
             <div id="carruselUrgentes" class="carousel slide">
                 <div class="carousel-inner">
-                    <!-- Agrupamos de 4 en 4 -->
                     <div th:each="animal, iter : ${urgentes}"
                          th:if="${iter.index % 4 == 0}"
                          th:classappend="${iter.index == 0} ? 'active'"
@@ -47,29 +40,8 @@
                             <div th:each="i : ${#numbers.sequence(0, 3)}"
                                  th:if="${iter.index + i < urgentes.size()}"
                                  class="col-md-3">
-                                <div th:with="animal=${urgentes[iter.index + i]}"
-                                     class="card animal-card card-urgente h-100 shadow-sm">
-                                    <div class="position-relative">
-                                        <img th:src="${animal.fotoPrincipal}"
-                                             class="card-img-top animal-card-img"
-                                             th:alt="${animal.nombre}">
-                                    </div>
-                                    <div class="card-body">
-                                        <h5 class="card-title text-urgente" th:text="${animal.nombre}"></h5>
-                                        <p class="card-text mb-1">
-                                            <span class="badge bg-secondary" th:text="${animal.especie.label}"></span>
-                                            <span class="badge bg-light text-dark"
-                                                  th:text="${animal.getEdadFormateada()}"></span>
-                                        </p>
-                                        <p class="card-text mb-1">
-                                            <i class="bi bi-geo-alt"></i> <span
-                                                th:text="${animal.protectora.provincia}"></span>
-                                        </p>
-                                    </div>
-                                    <div class="card-footer bg-white border-top-0 pb-3">
-                                        <a th:href="@{/animales/{id}(id=${animal.id})}"
-                                           class="btn btn-outline-danger w-100">Ver ficha completa</a>
-                                    </div>
+                                <div th:with="animal=${urgentes[iter.index + i]}">
+                                    <div th:replace="~{fragments/fragmentos-animal :: tarjeta-animal(${animal}, false, 'btn-outline-danger', 'border-danger border-2')}"></div>
                                 </div>
                             </div>
                         </div>
@@ -88,33 +60,13 @@
         <hr class="my-5">
     </div>
 
-
+    <!-- RECIENTES -->
     <div>
         <h2 class="section-title text-primary">🐾 Últimas llegadas</h2>
         <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
-
             <div class="col" th:each="animal : ${recientes}">
-                <div class="card animal-card h-100 shadow-sm">
-                    <img th:src="${animal.fotoPrincipal}" class="card-img-top animal-card-img"
-                         alt="Foto de ${animal.nombre}">
-                    <div class="card-body">
-                        <h5 class="card-title text-primary" th:text="${animal.nombre}">Nombre</h5>
-                        <p class="mb-1">
-                            <i class="fas fa-paw"></i> <span
-                                th:text="${animal.especie.label} + ' - ' + ${animal.getEdadFormateada()}"></span>
-                        </p>
-                        <p class="card-text mb-1">
-                            <i class="bi bi-geo-alt"></i> <span th:text="${animal.protectora.provincia}"></span>
-                        </p>
-                        <small class="text-muted">Tamaño: <span th:text="${animal.tamano.label}"></span></small>
-                    </div>
-                    <div class="card-footer bg-white border-top-0 pb-3">
-                        <a th:href="@{/animales/{id}(id=${animal.id})}" class="btn btn-outline-primary w-100">Ver ficha
-                            completa</a>
-                    </div>
-                </div>
+                <div th:replace="~{fragments/fragmentos-animal :: tarjeta-animal(${animal}, false, 'btn-outline-primary', '')}"></div>
             </div>
-
         </div>
     </div>
 

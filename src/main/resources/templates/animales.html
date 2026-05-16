@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Buscador de Amigos - PatitasGal</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
     <style>
         .animal-card { transition: transform 0.2s; }
         .animal-card:hover { transform: scale(1.02); }
@@ -71,8 +72,11 @@
                     </select>
                 </div>
 
-                <div class="col-md-2 d-flex align-items-end">
-                    <button type="submit" class="btn btn-primary w-100 py-2">Buscar</button>
+                <div class="col-md-2 d-flex align-items-end gap-2">
+                    <button type="submit" class="btn btn-primary flex-grow-1 py-2">Buscar</button>
+                    <a th:href="@{/animales}" class="btn btn-outline-secondary py-2" title="Limpiar filtros">
+                        <i class="bi bi-x-lg"></i>
+                    </a>
                 </div>
             </form>
         </div>
@@ -81,30 +85,8 @@
     <div th:if="${!animales.isEmpty()}" class="row row-cols-1 row-cols-md-3 g-4">
 
         <div class="col" th:each="animal : ${animales}">
-            <div class="card h-100 shadow-sm animal-card">
-                <div class="img-container">
-                    <img th:src="${animal.fotoPrincipal != null ? animal.fotoPrincipal : 'https://via.placeholder.com/400x300?text=Sin+Foto'}"
-                         class="card-img-top" th:alt="${animal.nombre}">
-                </div>
-                <span th:if="${animal.estado.name() == 'URGENTE'}"
-                      class="badge bg-danger position-absolute top-0 start-0 m-2">
-                        🆘 URGENTE
-                </span>
-                <div class="card-body">
-                    <h5 class="card-title text-primary" th:text="${animal.nombre}">Nombre</h5>
-                    <p class="card-text mb-1">
-                        <strong>Provincia:</strong> <span th:text="${animal.protectora.provincia}">Provincia</span>
-                    </p>
-                    <p class="card-text mb-1">
-                        <strong>Tamaño:</strong> <span th:text="${animal.tamano.label}">Mediano</span>
-                    </p>
-                    <p class="card-text small text-muted" th:text="${animal.raza}">Raza</p>
-                </div>
-                <div class="card-footer bg-white border-top-0 pb-3">
-                    <a th:href="@{/animales/{id}(id=${animal.id})}" class="btn btn-outline-primary w-100">Ver ficha
-                        completa</a>
-                </div>
-            </div>
+            <div th:replace="~{fragments/fragmentos-animal :: tarjeta-animal(${animal}, true, 'btn-outline-primary', '')}"></div>
+
         </div>
 
     </div>

@@ -11,6 +11,11 @@
 <div th:replace="~{fragments/navbar :: menu_principal}"></div>
 
 <main class="container py-5">
+    <div th:if="${mensaje}" class="alert alert-success alert-dismissible fade show mb-4" role="alert">
+        <span th:text="${mensaje}"></span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2 class="fw-bold text-uppercase">Mis Solicitudes de Adopción</h2>
     </div>
@@ -28,39 +33,72 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="solicitud : ${solicitudes}">
-                    <td class="ps-4">
-                        <div class="d-flex align-items-center">
-                            <img th:src="${solicitud.animal.fotoPrincipal}"
-                                 class="rounded-circle me-3" style="width:50px;height:50px;object-fit:cover;"
-                                 alt="Foto animal">
-                            <span class="fw-bold" th:text="${solicitud.animal.nombre}"></span>
-                        </div>
-                    </td>
-                    <td th:text="${solicitud.animal.protectora.nombre}"></td>
-                    <td th:text="${#temporals.format(solicitud.fecha, 'dd/MM/yyyy')}"></td>
-                    <td>
-        <span th:text="${solicitud.estado}"
-              th:classappend="${solicitud.estado.name() == 'PENDIENTE'} ? 'bg-warning text-dark' :
-                             (${solicitud.estado.name() == 'RECHAZADA'} ? 'bg-danger' :
-                             (${solicitud.estado.name() == 'ENTREVISTA'} ? 'bg-info' : 'bg-secondary'))"
-              class="badge">
-        </span>
-                    </td>
-                    <td class="text-center">
-                        <a th:href="@{/animales/{id}(id=${solicitud.animal.id})}" class="btn btn-sm btn-outline-dark">Ver
-                            animal</a>
-                        <form th:action="@{/solicitudes/eliminar/{id}(id=${solicitud.id})}"
-                              method="post" style="display:inline;">
-                            <button type="submit" class="btn btn-sm btn-outline-danger"
-                                    onclick="return confirm('¿Seguro que quieres eliminar esta solicitud?')">
-                                <i class="bi bi-trash3"></i>
+                <th:block th:each="solicitud : ${solicitudes}">
+                    <tr>
+                        <td class="ps-4">
+                            <div class="d-flex align-items-center">
+                                <img th:src="${solicitud.animal.fotoPrincipal}"
+                                     class="rounded-circle me-3" style="width:50px;height:50px;object-fit:cover;"
+                                     alt="Foto animal">
+                                <span class="fw-bold" th:text="${solicitud.animal.nombre}"></span>
+                            </div>
+                        </td>
+                        <td th:text="${solicitud.animal.protectora.nombre}"></td>
+                        <td th:text="${#temporals.format(solicitud.fecha, 'dd/MM/yyyy')}"></td>
+                        <td>
+            <span th:text="${solicitud.estado}"
+                  th:classappend="${solicitud.estado.name() == 'PENDIENTE'} ? 'bg-warning text-dark' :
+                                 (${solicitud.estado.name() == 'RECHAZADA'} ? 'bg-danger' :
+                                 (${solicitud.estado.name() == 'ENTREVISTA'} ? 'bg-primary' :
+                                 (${solicitud.estado.name() == 'EN_REVISION'} ? 'bg-info' : 'bg-secondary')))"
+                  class="badge">
+            </span>
+                        </td>
+                        <td class="text-center">
+                            <!--Botón para desplegar -->
+                            <button class="btn btn-sm btn-outline-dark me-1"
+                                    type="button"
+                                    data-bs-toggle="collapse"
+                                    th:attr="data-bs-target='#detalle-' + ${solicitud.id}">
+                                <i class="bi bi-chevron-down"></i>
                             </button>
-                        </form>
-                    </td>
-                </tr>
-
-                <!-- Mensaje si no hay solicitudes -->
+                            <a th:href="@{/animales/{id}(id=${solicitud.animal.id})}"
+                               class="btn btn-sm btn-outline-dark me-1">Ver animal</a>
+                            <form th:action="@{/solicitudes/eliminar/{id}(id=${solicitud.id})}"
+                                  method="post" style="display:inline;">
+                                <button type="submit" class="btn btn-sm btn-outline-danger"
+                                        onclick="return confirm('¿Seguro que quieres eliminar esta solicitud?')">
+                                    <i class="bi bi-trash3"></i>
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    <!--Información en el desplegable -->
+                    <tr>
+                        <td colspan="5" class="p-0 border-0">
+                            <div class="collapse p-4 bg-light border-start border-primary border-3"
+                                 th:id="'detalle-' + ${solicitud.id}">
+                                <div class="row g-4">
+                                    <div class="col-md-4">
+                                        <small class="text-muted d-block text-uppercase fw-bold mb-1">Tipo de
+                                            vivienda</small>
+                                        <span th:text="${solicitud.tipoVivienda}"></span>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <small class="text-muted d-block text-uppercase fw-bold mb-1">Otros
+                                            animales</small>
+                                        <span th:text="${solicitud.otrosAnimales}"></span>
+                                    </div>
+                                    <div class="col-12">
+                                        <small class="text-muted d-block text-uppercase fw-bold mb-1">Tu mensaje</small>
+                                        <p class="mb-0" th:text="${solicitud.mensaje}"></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </th:block>
+                <!-- si no hay solicitudes-->
                 <tr th:if="${#lists.isEmpty(solicitudes)}">
                     <td colspan="5" class="text-center py-5 text-muted">
                         <p class="mb-0">Aún no has realizado ninguna solicitud de adopción.</p>

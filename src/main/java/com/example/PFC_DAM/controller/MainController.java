@@ -5,10 +5,7 @@ import com.example.PFC_DAM.model.Cuenta;
 import com.example.PFC_DAM.model.Protectora;
 import com.example.PFC_DAM.model.Solicitud;
 import com.example.PFC_DAM.model.enums.EstadoAnimal;
-import com.example.PFC_DAM.repos.AnimalRepository;
-import com.example.PFC_DAM.repos.CuentaRepository;
-import com.example.PFC_DAM.repos.ProtectoraRepository;
-import com.example.PFC_DAM.repos.SolicitudRepository;
+import com.example.PFC_DAM.repos.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -31,6 +28,9 @@ public class MainController {
     private CuentaRepository cuentaRepository;
     @Autowired
     private SolicitudRepository solicitudRepository;
+
+    @Autowired
+    private AdoptanteRepository adoptanteRepository;
 
     @GetMapping("/")
     public String index(Model model) {
@@ -66,7 +66,7 @@ public class MainController {
     @GetMapping("/adoptante/solicitudes")
     public String verMisSolicitudes(Model model, Principal principal) {
         Cuenta cuenta = cuentaRepository.findByEmail(principal.getName()).orElse(null);
-        Adoptante adoptante = cuenta.getAdoptante();
+        Adoptante adoptante = adoptanteRepository.findByCuenta(cuenta).orElseThrow();
 
         List<Solicitud> solicitudes = solicitudRepository.findByAdoptanteId(adoptante.getId());
         model.addAttribute("solicitudes", solicitudes);

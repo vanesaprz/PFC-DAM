@@ -82,7 +82,7 @@ INSERT INTO animales (nombre, especie, raza, sexo, fecha_nacimiento, fecha_ingre
 VALUES
 -- Urgente en Pontevedra
 ('Bimba', 'PERRO', 'Bodeguero Mix', 'HEMBRA', '2023-12-01', '2024-04-25', 'URGENTE',
- 'PEQUENO', 6.50, 'https://images.pexels.com/photos/1108099/pexels-photo-1108099.jpeg',
+ 'PEQUENO', 6.50, 'https://images.pexels.com/photos/1805164/pexels-photo-1805164.jpeg',
  false, true, true, true, 'Cachorra muy activa', 'Muy Alto',
  true, true, true, NULL, 'Rescatada de una camada indeseada. Necesita socialización.', 2),
 
@@ -97,6 +97,47 @@ VALUES
  'GRANDE', 30.00, 'https://images.pexels.com/photos/1108099/pexels-photo-1108099.jpeg',
  true, true, true, true, NULL, 'Medio',
  true, true, true, 'Coches', 'Rex es el perro ideal para una familia con niños.', 2);
+
+INSERT INTO animales (nombre, especie, raza, sexo, fecha_nacimiento, fecha_ingreso, estado,
+                      tamano, peso, foto_principal, esterilizado, vacunado, desparasitado,
+                      microchip, necesidades_especiales, nivel_actividad, apto_perros,
+                      apto_gatos, apto_ninos, miedos, descripcion, protectora_id)
+VALUES ('Nala', 'GATO', 'Siamés Mix', 'HEMBRA', '2020-03-15', '2024-05-01', 'URGENTE',
+        'PEQUENO', 3.80, 'https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg',
+        true, true, true, true, 'Necesita medicación para enfermedad renal', 'Bajo',
+        false, true, false, 'Ruidos fuertes', 'Nala es una gata tranquila que busca un hogar sin perros.', 1),
+
+       ('Rocky', 'PERRO', 'Boxer Mix', 'MACHO', '2018-07-22', '2024-04-15', 'URGENTE',
+        'GRANDE', 28.00, 'https://images.pexels.com/photos/1254140/pexels-photo-1254140.jpeg',
+        true, true, true, true, NULL, 'Alto',
+        true, false, true, NULL, 'Rocky es un perrazo con mucha energía que necesita espacio.', 2),
+
+       ('Mia', 'PERRO', 'Caniche', 'HEMBRA', '2022-01-10', '2024-05-10', 'URGENTE',
+        'PEQUENO', 4.20, 'https://images.pexels.com/photos/1458916/pexels-photo-1458916.jpeg',
+        true, true, true, true, NULL, 'Medio',
+        true, true, true, 'Tormentas', 'Mia es una perrita muy cariñosa que se lleva bien con todos.', 1),
+
+-- ANIMALES DISPONIBLES ADICIONALES
+       ('Coco', 'PERRO', 'Golden Retriever', 'MACHO', '2022-05-20', '2024-03-01', 'DISPONIBLE',
+        'GRANDE', 29.00, 'https://images.pexels.com/photos/2253275/pexels-photo-2253275.jpeg',
+        true, true, true, true, NULL, 'Alto',
+        true, true, true, NULL, 'Coco es un golden muy juguetón ideal para familias activas.', 1),
+
+       ('Lola', 'GATO', 'Persa Mix', 'HEMBRA', '2021-08-15', '2024-02-20', 'DISPONIBLE',
+        'PEQUENO', 3.50, 'https://images.pexels.com/photos/617278/pexels-photo-617278.jpeg',
+        true, true, true, true, NULL, 'Bajo',
+        false, true, true, 'Extraños', 'Lola es una gata tranquila perfecta para un hogar sin mucho ruido.', 2),
+
+       ('Max', 'PERRO', 'Dálmata', 'MACHO', '2021-03-10', '2024-01-30', 'DISPONIBLE',
+        'GRANDE', 26.00, 'https://images.pexels.com/photos/1108099/pexels-photo-1108099.jpeg',
+        true, true, true, true, NULL, 'Alto',
+        true, false, true, 'Coches', 'Max es un dálmata muy activo que necesita mucho ejercicio.', 1),
+
+       ('Kira', 'GATO', 'Maine Coon Mix', 'HEMBRA', '2020-11-05', '2024-03-15', 'DISPONIBLE',
+        'MEDIANO', 5.20, 'https://images.pexels.com/photos/596590/pexels-photo-596590.jpeg',
+        true, true, true, true, NULL, 'Medio',
+        true, true, true, NULL, 'Kira es una gata grande y majestuosa muy sociable.', 2);
+
 
 -- ANIMAL ADOPTADO (No se muestra en novedades/urgentes)
 INSERT INTO animales (nombre, especie, raza, sexo, fecha_nacimiento, fecha_ingreso, estado,

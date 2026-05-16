@@ -11,7 +11,22 @@
         .animal-container { padding: 2rem 0; }
         .section-title { margin-bottom: 1.5rem; }
         .text-urgente { color: #dc3545; }
-        .card-urgente { border: 2px solid #dc3545; }
+        .card-urgente { border: 2px solid #dc3545;}
+        .carousel-wrapper { position:relative; }
+        .carousel-control-prev, .carousel-control-next {
+                width: 40px;
+                background-color: rgba(0,0,0,0.2);
+                border-radius: 50%;
+                height: 40px;
+                top: 50%;
+                transform: translateY(-50%);
+        }
+        .animal-container {
+            padding: 2rem 0;
+            overflow: visible;
+        }
+        .carousel-control-prev { left: -40px; }
+        .carousel-control-next { right: -40px; }
     </style>
 </head>
 <body>
@@ -20,34 +35,55 @@
 
     <div th:if="${!urgentes.isEmpty()}">
         <h2 class="section-title text-urgente">🆘 Casos muy urgentes</h2>
-        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
-
-            <div class="col" th:each="animal : ${urgentes}">
-                <div class="card animal-card card-urgente h-100 shadow-sm">
-                    <img th:src="${animal.fotoPrincipal}" class="card-img-top animal-card-img"
-                         alt="Foto de ${animal.nombre}">
-                    <div class="card-body">
-                        <h5 class="card-title text-urgente" th:text="${animal.nombre}">Nombre</h5>
-                        <p class="card-text mb-1">
-                            <span class="badge bg-secondary" th:text="${animal.especie.label}"></span>
-                            <span class="badge bg-light text-dark" th:text="${animal.getEdadFormateada()}"></span>
-                        </p>
-                        <p class="card-text mb-1">
-                            <i class="bi bi-geo-alt"></i> <span th:text="${animal.protectora.provincia}"></span>
-                        </p>
-                        <p class="small text-muted mb-0">
-                            Con nosotros desde: <span
-                                th:text="${#temporals.format(animal.fechaIngreso, 'dd/MM/yyyy')}"></span>
-                        </p>
-
-                    </div>
-                    <div class="card-footer bg-white border-top-0 pb-3">
-                        <a th:href="@{/animales/{id}(id=${animal.id})}" class="btn btn-outline-primary w-100">Ver ficha
-                            completa</a>
+        <div class="carousel-wrapper">
+            <div id="carruselUrgentes" class="carousel slide">
+                <div class="carousel-inner">
+                    <!-- Agrupamos de 4 en 4 -->
+                    <div th:each="animal, iter : ${urgentes}"
+                         th:if="${iter.index % 4 == 0}"
+                         th:classappend="${iter.index == 0} ? 'active'"
+                         class="carousel-item">
+                        <div class="row g-4">
+                            <div th:each="i : ${#numbers.sequence(0, 3)}"
+                                 th:if="${iter.index + i < urgentes.size()}"
+                                 class="col-md-3">
+                                <div th:with="animal=${urgentes[iter.index + i]}"
+                                     class="card animal-card card-urgente h-100 shadow-sm">
+                                    <div class="position-relative">
+                                        <img th:src="${animal.fotoPrincipal}"
+                                             class="card-img-top animal-card-img"
+                                             th:alt="${animal.nombre}">
+                                    </div>
+                                    <div class="card-body">
+                                        <h5 class="card-title text-urgente" th:text="${animal.nombre}"></h5>
+                                        <p class="card-text mb-1">
+                                            <span class="badge bg-secondary" th:text="${animal.especie.label}"></span>
+                                            <span class="badge bg-light text-dark"
+                                                  th:text="${animal.getEdadFormateada()}"></span>
+                                        </p>
+                                        <p class="card-text mb-1">
+                                            <i class="bi bi-geo-alt"></i> <span
+                                                th:text="${animal.protectora.provincia}"></span>
+                                        </p>
+                                    </div>
+                                    <div class="card-footer bg-white border-top-0 pb-3">
+                                        <a th:href="@{/animales/{id}(id=${animal.id})}"
+                                           class="btn btn-outline-danger w-100">Ver ficha completa</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
+                <button class="carousel-control-prev" type="button"
+                        data-bs-target="#carruselUrgentes" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon bg-dark rounded-circle p-2"></span>
+                </button>
+                <button class="carousel-control-next" type="button"
+                        data-bs-target="#carruselUrgentes" data-bs-slide="next">
+                    <span class="carousel-control-next-icon bg-dark rounded-circle p-2"></span>
+                </button>
             </div>
-
         </div>
         <hr class="my-5">
     </div>

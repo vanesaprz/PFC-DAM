@@ -32,7 +32,8 @@
                 </div>
 
                 <div class="card-body p-4 p-md-5">
-                    <form th:action="@{/protectora/animales/guardar}" th:object="${animal}" method="post">
+                    <form th:action="@{/protectora/animales/guardar}" th:object="${animalDTO}" method="post">
+                        <input type="hidden" th:if="${animalDTO.id != null}" th:field="*{id}">
 
                         <!-- SECCIÓN 1: DATOS IDENTIFICATIVOS -->
                         <div th:if="${errorGlobal}" class="alert alert-danger" th:text="${errorGlobal}"></div>
@@ -47,7 +48,9 @@
                                 <label class="form-label fw-bold">Especie</label>
                                 <select th:field="*{especie}" class="form-select" required>
                                     <option value="" selected disabled>Selecciona...</option>
-                                    <option th:each="esp : ${especies}" th:value="${esp}" th:text="${esp}"></option>
+                                    <option th:each="esp : ${especies}"
+                                            th:value="${esp}"
+                                            th:text="${esp.label}"></option>
                                 </select>
                             </div>
                             <div class="col-md-3">
@@ -64,11 +67,11 @@
                             </div>
                             <div class="col-md-3">
                                 <label class="form-label fw-bold">Tamaño</label>
-                                <select th:field="*{tamano}" class="form-select" required>
+                                <select th:field="*{tamano}" class="form-select">
                                     <option value="" selected disabled>Selecciona...</option>
-                                    <option value="Pequeño">Pequeño</option>
-                                    <option value="Mediano">Mediano</option>
-                                    <option value="Grande">Grande</option>
+                                    <option th:each="tam : ${tamanos}"
+                                            th:value="${tam}"
+                                            th:text="${tam.label}"></option>
                                 </select>
                             </div>
                             <div class="col-md-3">

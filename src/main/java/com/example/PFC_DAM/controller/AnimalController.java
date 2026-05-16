@@ -3,6 +3,8 @@ package com.example.PFC_DAM.controller;
 import com.example.PFC_DAM.model.Adoptante;
 import com.example.PFC_DAM.model.Animal;
 import com.example.PFC_DAM.model.Cuenta;
+import com.example.PFC_DAM.model.enums.Especie;
+import com.example.PFC_DAM.model.enums.Tamano;
 import com.example.PFC_DAM.repos.AdoptanteRepository;
 import com.example.PFC_DAM.repos.AnimalRepository;
 import com.example.PFC_DAM.repos.CuentaRepository;
@@ -73,12 +75,14 @@ public class AnimalController {
                     break;
             }
         }
-        String e = (especie != null && !especie.isEmpty()) ? especie : null;
+        Especie e = (especie != null && !especie.isEmpty()) ? Especie.valueOf(especie) : null;
         String p = (provincia != null && !provincia.isEmpty()) ? provincia : null;
-        String t = (tamano != null && !tamano.isEmpty()) ? tamano : null;
+        Tamano t = (tamano != null && !tamano.isEmpty()) ? Tamano.valueOf(tamano) : null;
 
         List<Animal> animales = animalRepository.buscarConFiltros(e, p, t, fechaInicio, fechaFin);
         model.addAttribute("animales", animales);
+        model.addAttribute("especies", Especie.values());
+        model.addAttribute("tamanos", Tamano.values());
         return "animales";
     }
 
@@ -89,7 +93,7 @@ public class AnimalController {
 
         if (principal != null) {
             Cuenta cuenta = cuentaRepository.findByEmail(principal.getName()).orElseThrow();
-            Adoptante adoptante = adoptanteRepository.findByCuenta(cuenta).orElseThrow();
+            Adoptante adoptante = adoptanteRepository.findByCuenta(cuenta).orElse(null);
             if (adoptante != null) {
                 boolean esFavorito = favoritoRepository.existsByAdoptanteIdAndAnimalId(adoptante.getId(), id);
                 model.addAttribute("esFavorito", esFavorito);

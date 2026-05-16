@@ -1,7 +1,9 @@
 package com.example.PFC_DAM.repos;
 
 import com.example.PFC_DAM.model.Animal;
+import com.example.PFC_DAM.model.enums.Especie;
 import com.example.PFC_DAM.model.enums.EstadoAnimal;
+import com.example.PFC_DAM.model.enums.Tamano;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -13,7 +15,7 @@ import java.util.List;
 @Repository
 public interface AnimalRepository extends JpaRepository<Animal, Long> {
     //Por especie:
-    List<Animal> findByEspecie(String especie);
+    List<Animal> findByEspecie(Especie especie);
 
     //Para los urgentes de la página principal:
     List<Animal> findByEstado(EstadoAnimal estado);
@@ -36,9 +38,9 @@ public interface AnimalRepository extends JpaRepository<Animal, Long> {
             "(cast(:fechaFin as date) IS NULL OR a.fechaNacimiento <= :fechaFin) AND " +
             "(a.estado = 'DISPONIBLE' OR a.estado = 'URGENTE')")
     List<Animal> buscarConFiltros(
-            @Param("especie") String especie,
+            @Param("especie") Especie especie,
             @Param("provincia") String provincia,
-            @Param("tamano") String tamano,
+            @Param("tamano") Tamano tamano,
             @Param("fechaInicio") LocalDate fechaInicio,
             @Param("fechaFin") LocalDate fechaFin);
 

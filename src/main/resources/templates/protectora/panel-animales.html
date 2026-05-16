@@ -123,7 +123,7 @@
                                  class="animal-thumb border" alt="Foto animal"/>
                         </td>
                         <td class="fw-bold" th:text="${animal.nombre}">Nombre</td>
-                        <td th:text="${animal.especie}">Especie</td>
+                        <td th:text="${animal.especie.label}">Especie</td>
                         <td>
                             <span th:if="${animal.estado.name() == 'DISPONIBLE'}"
                                   class="badge bg-primary">Disponible</span>

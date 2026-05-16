@@ -28,8 +28,7 @@
                     <label class="form-label fw-bold">Especie</label>
                     <select name="especie" class="form-select">
                         <option value="">Todas</option>
-                        <option value="Perro">Perro</option>
-                        <option value="Gato">Gato</option>
+                        <option th:each="esp : ${especies}" th:value="${esp}" th:text="${esp.label}"></option>
                     </select>
                 </div>
 
@@ -48,9 +47,7 @@
                     <label class="form-label fw-bold">Tamaño</label>
                     <select name="tamano" class="form-select">
                         <option value="">Todos</option>
-                        <option value="Pequeño">Pequeño</option>
-                        <option value="Mediano">Mediano</option>
-                        <option value="Grande">Grande</option>
+                        <option th:each="tam : ${tamanos}" th:value="${tam}" th:text="${tam.label}"></option>
                     </select>
                 </div>
 
@@ -86,7 +83,7 @@
                         <strong>Provincia:</strong> <span th:text="${animal.protectora.provincia}">Provincia</span>
                     </p>
                     <p class="card-text mb-1">
-                        <strong>Tamaño:</strong> <span th:text="${animal.tamano}">Mediano</span>
+                        <strong>Tamaño:</strong> <span th:text="${animal.tamano.label}">Mediano</span>
                     </p>
                     <p class="card-text small text-muted" th:text="${animal.raza}">Raza</p>
                 </div>

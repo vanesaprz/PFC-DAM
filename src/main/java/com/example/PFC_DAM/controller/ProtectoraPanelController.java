@@ -1,9 +1,8 @@
 package com.example.PFC_DAM.controller;
 
 import com.example.PFC_DAM.model.*;
-import com.example.PFC_DAM.model.enums.EstadoAnimal;
-import com.example.PFC_DAM.model.enums.EstadoSolicitud;
-import com.example.PFC_DAM.model.enums.Sexo;
+import com.example.PFC_DAM.model.DTO.AnimalDTO;
+import com.example.PFC_DAM.model.enums.*;
 import com.example.PFC_DAM.repos.*;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,29 +61,30 @@ public class ProtectoraPanelController {
     //Formulario de subida de animales
     @GetMapping("/animales/nuevo")
     public String formularioNuevoAnimal(Model model) {
-        Animal nuevoAnimal = new Animal();
+        AnimalDTO animalDTO = new AnimalDTO();
         //Valores por defecto:
-        nuevoAnimal.setVacunado(false);
-        nuevoAnimal.setEsterilizado(false);
-        nuevoAnimal.setDesparasitado(false);
-        nuevoAnimal.setMicrochip(false);
-        nuevoAnimal.setAptoPerros(false);
-        nuevoAnimal.setAptoGatos(false);
-        nuevoAnimal.setAptoNinos(false);
-        nuevoAnimal.setEstado(EstadoAnimal.DISPONIBLE);
+        animalDTO.setVacunado(false);
+        animalDTO.setEsterilizado(false);
+        animalDTO.setDesparasitado(false);
+        animalDTO.setMicrochip(false);
+        animalDTO.setAptoPerros(false);
+        animalDTO.setAptoGatos(false);
+        animalDTO.setAptoNinos(false);
+        animalDTO.setEstado(EstadoAnimal.DISPONIBLE);
 
-        model.addAttribute("animal", nuevoAnimal);
+        model.addAttribute("animalDTO", animalDTO);
 
-        model.addAttribute("especies", List.of("Perro", "Gato", "Otros"));
+        model.addAttribute("especies", Especie.values());
         model.addAttribute("sexos", Sexo.values());
         model.addAttribute("estados", EstadoAnimal.values());
+        model.addAttribute("tamanos", Tamano.values());
 
         return "protectora/formulario-animal";
     }
 
     //Guardar formulario
     @PostMapping("/animales/guardar")
-    public String guardarAnimal(@Valid @ModelAttribute("animal") Animal animal,
+    public String guardarAnimal(@Valid @ModelAttribute("animalDTO") AnimalDTO dto,
                                 BindingResult result,
                                 Principal principal,
                                 Model model,
@@ -92,30 +92,47 @@ public class ProtectoraPanelController {
 
         if (result.hasErrors()) {
             // Volvemos a cargar las listas necesarias para el formulario
-            model.addAttribute("especies", List.of("Perro", "Gato", "Otros"));
+            model.addAttribute("especies", Especie.values());
             model.addAttribute("sexos", Sexo.values());
             model.addAttribute("estados", EstadoAnimal.values());
+            model.addAttribute("tamanos", Tamano.values());
+
             return "protectora/formulario-animal"; // Se queda en la misma página mostrando errores
         }
         try {
             Cuenta cuenta = cuentaRepository.findByEmail(principal.getName())
                     .orElseThrow(() -> new RuntimeException("Cuenta no encontrada"));
 
+            Animal animal;
+            if (dto.getId() != null) {
+                animal = animalRepository.findById(dto.getId()).orElseThrow();
+            } else {
+                animal = new Animal();
+            }
+
+            animal.setNombre(dto.getNombre());
+            animal.setEspecie(dto.getEspecie());
+            animal.setRaza(dto.getRaza());
+            animal.setSexo(dto.getSexo());
+            animal.setFechaNacimiento(dto.getFechaNacimiento());
+            animal.setFechaIngreso(dto.getFechaIngreso());
+            animal.setEstado(dto.getEstado());
+            animal.setTamano(dto.getTamano());
+            animal.setPeso(dto.getPeso());
+            animal.setFotoPrincipal(dto.getFotoPrincipal());
+            animal.setEsterilizado(dto.getEsterilizado() != null ? dto.getEsterilizado() : false);
+            animal.setVacunado(dto.getVacunado() != null ? dto.getVacunado() : false);
+            animal.setDesparasitado(dto.getDesparasitado() != null ? dto.getDesparasitado() : false);
+            animal.setMicrochip(dto.getMicrochip() != null ? dto.getMicrochip() : false);
+            animal.setAptoPerros(dto.getAptoPerros() != null ? dto.getAptoPerros() : false);
+            animal.setAptoGatos(dto.getAptoGatos() != null ? dto.getAptoGatos() : false);
+            animal.setAptoNinos(dto.getAptoNinos() != null ? dto.getAptoNinos() : false);
+            animal.setNecesidadesEspeciales(dto.getNecesidadesEspeciales());
+            animal.setNivelActividad(dto.getNivelActividad());
+            animal.setMiedos(dto.getMiedos());
+            animal.setDescripcion(dto.getDescripcion());
             animal.setProtectora(cuenta.getProtectora());
 
-            // Si los checkbox no se marcan, llegan como null en lugar de false
-            if (animal.getVacunado() == null) animal.setVacunado(false);
-            if (animal.getEsterilizado() == null) animal.setEsterilizado(false);
-            if (animal.getDesparasitado() == null) animal.setDesparasitado(false);
-            if (animal.getMicrochip() == null) animal.setMicrochip(false);
-            if (animal.getAptoPerros() == null) animal.setAptoPerros(false);
-            if (animal.getAptoGatos() == null) animal.setAptoGatos(false);
-            if (animal.getAptoNinos() == null) animal.setAptoNinos(false);
-
-            // 3. Estado inicial (Tu entidad dice que no puede ser null)
-            if (animal.getEstado() == null) {
-                animal.setEstado(EstadoAnimal.DISPONIBLE);
-            }
 
             animalRepository.save(animal);
             redirectAttributes.addFlashAttribute("mensaje", "¡Animal guardado con éxito!");
@@ -146,19 +163,44 @@ public class ProtectoraPanelController {
     //Controlador para editar los datos de los animales desde el panel de la protectora:
 
     @GetMapping("/animales/editar/{id}")
-    public String formularioEditarAnimal(@PathVariable Long id, Model model, Principal principa, RedirectAttributes redirectAttributes) {
+    public String formularioEditarAnimal(@PathVariable Long id, Model model, Principal principal, RedirectAttributes redirectAttributes) {
         Animal animal = animalRepository.findById(id).orElseThrow();
-        Cuenta cuenta = cuentaRepository.findByEmail(principa.getName()).orElseThrow();
+        Cuenta cuenta = cuentaRepository.findByEmail(principal.getName()).orElseThrow();
 
         if (!animal.getProtectora().getId().equals(cuenta.getProtectora().getId())) {
             redirectAttributes.addFlashAttribute("error", "No tienes permiso para editar este animal");
             return "redirect:/protectora/panel";
         }
+        AnimalDTO animalDTO = new AnimalDTO();
+        animalDTO.setId(animal.getId());
+        animalDTO.setNombre(animal.getNombre());
+        animalDTO.setEspecie(animal.getEspecie());
+        animalDTO.setRaza(animal.getRaza());
+        animalDTO.setSexo(animal.getSexo());
+        animalDTO.setFechaNacimiento(animal.getFechaNacimiento());
+        animalDTO.setFechaIngreso(animal.getFechaIngreso());
+        animalDTO.setEstado(animal.getEstado());
+        animalDTO.setTamano(animal.getTamano());
+        animalDTO.setPeso(animal.getPeso());
+        animalDTO.setFotoPrincipal(animal.getFotoPrincipal());
+        animalDTO.setEsterilizado(animal.getEsterilizado());
+        animalDTO.setVacunado(animal.getVacunado());
+        animalDTO.setDesparasitado(animal.getDesparasitado());
+        animalDTO.setMicrochip(animal.getMicrochip());
+        animalDTO.setAptoPerros(animal.getAptoPerros());
+        animalDTO.setAptoGatos(animal.getAptoGatos());
+        animalDTO.setAptoNinos(animal.getAptoNinos());
+        animalDTO.setNecesidadesEspeciales(animal.getNecesidadesEspeciales());
+        animalDTO.setNivelActividad(animal.getNivelActividad());
+        animalDTO.setMiedos(animal.getMiedos());
+        animalDTO.setDescripcion(animal.getDescripcion());
 
-        model.addAttribute("animal", animal);
-        model.addAttribute("especies", List.of("Perro", "Gato", "Otros"));
+
+        model.addAttribute("animalDTO", animalDTO);
+        model.addAttribute("especies", Especie.values());
         model.addAttribute("sexos", Sexo.values());
         model.addAttribute("estados", EstadoAnimal.values());
+        model.addAttribute("tamanos", Tamano.values());
 
         return "protectora/formulario-animal";
     }

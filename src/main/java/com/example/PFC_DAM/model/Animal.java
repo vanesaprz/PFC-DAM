@@ -1,7 +1,9 @@
 package com.example.PFC_DAM.model;
 
+import com.example.PFC_DAM.model.enums.Especie;
 import com.example.PFC_DAM.model.enums.EstadoAnimal;
 import com.example.PFC_DAM.model.enums.Sexo;
+import com.example.PFC_DAM.model.enums.Tamano;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
@@ -30,10 +32,8 @@ public class Animal {
     @NotBlank(message = "El nombre es obligatorio")
     private String nombre;
 
-    @Column(nullable = false,
-            length = 20,
-            name = "especie")
-    private String especie;
+    @Enumerated(EnumType.STRING)
+    private Especie especie;
 
     @Column(nullable = false,
             length = 40,
@@ -66,9 +66,8 @@ public class Animal {
     @Enumerated(EnumType.STRING)
     private EstadoAnimal estado;
 
-    @Column(length = 20,
-            name = "tamano")
-    private String tamano;
+    @Enumerated(EnumType.STRING)
+    private Tamano tamano;
 
     @Column(nullable = false,
             scale = 2,
@@ -154,6 +153,6 @@ public class Animal {
     @OneToMany(mappedBy = "animal")
     private List<Solicitud> solicitudes;
 
-
+    
 }
 

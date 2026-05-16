@@ -1,12 +1,13 @@
 package com.example.PFC_DAM.model.enums;
 
-public enum Sexo {
-    MACHO("Macho"),
-    HEMBRA("Hembra");
+public enum Tamano {
+    PEQUENO("Pequeño"),
+    MEDIANO("Mediano"),
+    GRANDE("Grande");
 
     private final String label;
 
-    Sexo(String label) {
+    Tamano(String label) {
         this.label = label;
     }
 

@@ -58,7 +58,7 @@
                 <div class="col-md-8">
                     <div class="form-container bg-white shadow-sm rounded p-4">
                         <form th:action="@{/solicitudes/guardar}"
-                              th:object="${solicitud}" method="post">
+                              th:object="${solicitudDTO}" method="post">
                             <input type="hidden" name="animalId" th:value="${animal.id}">
 
                             <div class="row g-3">

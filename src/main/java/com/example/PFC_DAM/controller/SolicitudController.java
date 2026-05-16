@@ -3,6 +3,7 @@ package com.example.PFC_DAM.controller;
 import com.example.PFC_DAM.model.Adoptante;
 import com.example.PFC_DAM.model.Animal;
 import com.example.PFC_DAM.model.Cuenta;
+import com.example.PFC_DAM.model.DTO.SolicitudDTO;
 import com.example.PFC_DAM.model.Solicitud;
 import com.example.PFC_DAM.repos.AdoptanteRepository;
 import com.example.PFC_DAM.repos.AnimalRepository;
@@ -11,6 +12,7 @@ import com.example.PFC_DAM.repos.SolicitudRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -37,24 +39,34 @@ public class SolicitudController {
         if (animal == null) return "redirect:/animales";
 
         model.addAttribute("animal", animal);
-        model.addAttribute("solicitud", new Solicitud());
+        model.addAttribute("solicitudDTO", new SolicitudDTO());
         return "formulario-adopcion";
     }
 
     @PostMapping("/guardar")
-    public String guardarSolicitud(@ModelAttribute Solicitud solicitud, @RequestParam Long animalId, Principal principal, RedirectAttributes redirectAttributes) {
-        solicitud.setAnimal(animalRepository.getReferenceById(animalId));
-        String emailAdoptante = principal.getName();
+    public String guardarSolicitud(@ModelAttribute SolicitudDTO dto, @RequestParam Long animalId, Principal principal, BindingResult result, RedirectAttributes redirectAttributes) {
+        if (result.hasErrors()) {
+            redirectAttributes.addFlashAttribute("error", "Por favor revisa los campos del formulario");
+            return "redirect:/solicitudes/crear/" + animalId;
+        }
 
-        Cuenta cuenta = cuentaRepository.findByEmail(emailAdoptante).orElseThrow(() -> new RuntimeException("Cuenta no encontrada"));
-        Adoptante adoptante = adoptanteRepository.findByCuenta(cuenta).orElseThrow(() -> new RuntimeException("Adoptante no encontrada"));
+
+        Cuenta cuenta = cuentaRepository.findByEmail(principal.getName()).orElseThrow();
+        Adoptante adoptante = adoptanteRepository.findByCuenta(cuenta).orElseThrow();
 
         if (solicitudRepository.existsByAdoptanteIdAndAnimalId(adoptante.getId(), animalId)) {
             redirectAttributes.addFlashAttribute("error", "Ya has enviado una solicitud para este animal");
             return "redirect:/animales/" + animalId;
         }
+        Solicitud solicitud = new Solicitud();
+
+        solicitud.setMensaje(dto.getMensaje());
+        solicitud.setTipoVivienda(dto.getTipoVivienda());
+        solicitud.setOtrosAnimales(dto.getOtrosAnimales());
+
         solicitud.setAdoptante(adoptante);
         solicitud.setAnimal(animalRepository.getReferenceById(animalId));
+
         solicitudRepository.save(solicitud);
 
         return "redirect:/animales/" + animalId + "?enviado=true";

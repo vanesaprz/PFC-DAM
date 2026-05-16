@@ -18,7 +18,7 @@
 <div th:replace="~{fragments/navbar :: menu_principal}"></div>
 
 <div class="container py-5">
-    <h1 class="text-center mb-5">🐾 Encuentra a tu nuevo compañero</h1>
+    <h1 class="text-center mb-5">Encuentra a tu nuevo compañero</h1>
 
     <div class="card shadow-sm mb-5">
         <div class="card-body">
@@ -28,7 +28,11 @@
                     <label class="form-label fw-bold">Especie</label>
                     <select name="especie" class="form-select">
                         <option value="">Todas</option>
-                        <option th:each="esp : ${especies}" th:value="${esp}" th:text="${esp.label}"></option>
+                        <option th:each="esp : ${especies}"
+                                th:value="${esp}"
+                                th:text="${esp.label}"
+                                th:selected="${esp.name() == especieSeleccionada}">
+                        </option>
                     </select>
                 </div>
 
@@ -36,10 +40,11 @@
                     <label class="form-label fw-bold">Provincia</label>
                     <select name="provincia" class="form-select">
                         <option value="">Toda Galicia</option>
-                        <option value="A Coruna">A Coruña</option>
-                        <option value="Lugo">Lugo</option>
-                        <option value="Ourense">Ourense</option>
-                        <option value="Pontevedra">Pontevedra</option>
+                        <option value="A Coruña" th:selected="${'A Coruña' == provinciaSeleccionada}">A Coruña</option>
+                        <option value="Lugo" th:selected="${'Lugo' == provinciaSeleccionada}">Lugo</option>
+                        <option value="Ourense" th:selected="${'Ourense' == provinciaSeleccionada}">Ourense</option>
+                        <option value="Pontevedra" th:selected="${'Pontevedra' == provinciaSeleccionada}">Pontevedra
+                        </option>
                     </select>
                 </div>
 
@@ -47,7 +52,11 @@
                     <label class="form-label fw-bold">Tamaño</label>
                     <select name="tamano" class="form-select">
                         <option value="">Todos</option>
-                        <option th:each="tam : ${tamanos}" th:value="${tam}" th:text="${tam.label}"></option>
+                        <option th:each="tam : ${tamanos}"
+                                th:value="${tam}"
+                                th:text="${tam.label}"
+                                th:selected="${tam.name() == tamanoSeleccionado}">
+                        </option>
                     </select>
                 </div>
 
@@ -55,15 +64,15 @@
                     <label class="form-label fw-bold">Edad</label>
                     <select name="edad" class="form-select">
                         <option value="">Cualquiera</option>
-                        <option value="Cachorro">Cachorro</option>
-                        <option value="Joven">Joven</option>
-                        <option value="Adulto">Adulto</option>
-                        <option value="Senior">Senior</option>
+                        <option value="Cachorro" th:selected="${'Cachorro' == edadSeleccionada}">Cachorro</option>
+                        <option value="Joven" th:selected="${'Joven' == edadSeleccionada}">Joven</option>
+                        <option value="Adulto" th:selected="${'Adulto' == edadSeleccionada}">Adulto</option>
+                        <option value="Senior" th:selected="${'Senior' == edadSeleccionada}">Senior</option>
                     </select>
                 </div>
 
                 <div class="col-md-2 d-flex align-items-end">
-                    <button type="submit" class="btn btn-primary w-100 py-2">🔍 Buscar</button>
+                    <button type="submit" class="btn btn-primary w-100 py-2">Buscar</button>
                 </div>
             </form>
         </div>
@@ -77,6 +86,10 @@
                     <img th:src="${animal.fotoPrincipal != null ? animal.fotoPrincipal : 'https://via.placeholder.com/400x300?text=Sin+Foto'}"
                          class="card-img-top" th:alt="${animal.nombre}">
                 </div>
+                <span th:if="${animal.estado.name() == 'URGENTE'}"
+                      class="badge bg-danger position-absolute top-0 start-0 m-2">
+                        🆘 URGENTE
+                </span>
                 <div class="card-body">
                     <h5 class="card-title text-primary" th:text="${animal.nombre}">Nombre</h5>
                     <p class="card-text mb-1">
@@ -97,7 +110,7 @@
     </div>
 
     <div th:if="${animales.isEmpty()}" class="text-center py-5">
-        <h3 class="text-muted">No hemos encontrado peludos con esos filtros... 🐕</h3>
+        <h3 class="text-muted">No hemos encontrado peludos con esos filtros... </h3>
         <p>Prueba a cambiar los parámetros de búsqueda.</p>
         <a th:href="@{/animales}" class="btn btn-link">Ver todos los animales</a>
     </div>

@@ -83,6 +83,15 @@ public class AnimalController {
         model.addAttribute("animales", animales);
         model.addAttribute("especies", Especie.values());
         model.addAttribute("tamanos", Tamano.values());
+
+
+        //Para poder conseguir que los filtros se mantengan despues de la busqueda
+        model.addAttribute("especieSeleccionada", especie);
+        model.addAttribute("provinciaSeleccionada", provincia);
+        model.addAttribute("tamanoSeleccionado", tamano);
+        model.addAttribute("edadSeleccionada", edad);
+
+
         return "animales";
     }
 

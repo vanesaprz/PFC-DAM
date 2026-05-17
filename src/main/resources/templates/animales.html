@@ -1,18 +1,12 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-      lang="es">
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Buscador de Amigos - PatitasGal</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
-    <style>
-        .animal-card { transition: transform 0.2s; }
-        .animal-card:hover { transform: scale(1.02); }
-        .img-container { height: 200px; overflow: hidden; }
-        .img-container img { object-fit: cover; height: 100%; width: 100%; }
-    </style>
+    <link rel="stylesheet" th:href="@{/css/animales.css}">
 </head>
 <body class="bg-light">
 
@@ -82,17 +76,14 @@
         </div>
     </div>
 
-    <div th:if="${!animales.isEmpty()}" class="row row-cols-1 row-cols-md-3 g-4">
-
+    <div th:if="${!animales.isEmpty()}" class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
         <div class="col" th:each="animal : ${animales}">
             <div th:replace="~{fragments/fragmentos-animal :: tarjeta-animal(${animal}, true, 'btn-outline-primary', '')}"></div>
-
         </div>
-
     </div>
 
     <div th:if="${animales.isEmpty()}" class="text-center py-5">
-        <h3 class="text-muted">No hemos encontrado peludos con esos filtros... </h3>
+        <h3 class="text-muted">No hemos encontrado peludos con esos filtros...</h3>
         <p>Prueba a cambiar los parámetros de búsqueda.</p>
         <a th:href="@{/animales}" class="btn btn-link">Ver todos los animales</a>
     </div>

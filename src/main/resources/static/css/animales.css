@@ -1,0 +1,36 @@
+.animal-card { transition: transform 0.2s; }
+.animal-card:hover { transform: scale(1.02); }
+.img-container {
+    height: 200px;
+    overflow: hidden;
+    }
+.img-container img {
+    object-fit: cover;
+    height: 100%;
+    width: 100%;
+    }
+.badge-salud {
+    font-size: 0.9rem;
+    padding: 8px 15px;
+    border-radius: 50px;
+    }
+.info-label {
+    color: #6c757d;
+    font-size: 0.85rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    }
+.info-value {
+    font-size: 1.1rem;
+    color: #212529;
+    }
+.card-protectora {
+    border-left: 4px solid #0d6efd;
+    background-color: #f8f9fa;
+    }
+
+.card-img-animal {
+    height: 200px;
+    object-fit: cover;
+    width: 100%;
+   }

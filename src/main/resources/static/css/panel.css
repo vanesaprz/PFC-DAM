@@ -1,0 +1,54 @@
+body { background-color: #f4f7f6; }
+.sidebar {
+    min-height: 100vh;
+    background-color: #fff;
+    border-right: 1px solid #e0e0e0;
+    }
+.nav-link {
+    color: #333;
+    font-weight: 500;
+    padding: 10px 20px;
+    border-radius: 5px;
+    margin-bottom: 5px;
+    }
+.nav-link:hover {
+    background-color: #f0f0f0;
+    color: #000;
+    }
+.nav-link.active {
+    background-color: #333;
+    color: #fff;
+    }
+.stat-card {
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 20px;
+    text-align: center;
+    }
+.stat-card h2 {
+    font-size: 3rem;
+    font-weight: 700;
+    color: #333; }
+.stat-card p {
+    color: #666;
+    margin-bottom: 0;
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+    }
+.table-container {
+    background: #fff;
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
+    padding: 20px;
+    }
+.animal-thumb {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 5px;
+    }
+.detalle-solicitud {
+    background-color: #f8f9fa;
+    border-left: 4px solid #0d6efd;
+    }

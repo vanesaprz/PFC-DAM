@@ -1,0 +1,28 @@
+.header-protectora {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #dee2e6;
+    padding: 40px 0; }
+.sidebar-info {
+    border: 1px solid #eee;
+    border-radius: 10px;
+    padding: 25px;
+    background: white; }
+
+
+    .protectora-card {
+        transition: all 0.3s ease;
+        border: 1px solid #eee;
+        }
+    .protectora-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+    .logo-placeholder {
+        width: 80px;
+        height: 80px;
+        background: #f0f0f0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        }

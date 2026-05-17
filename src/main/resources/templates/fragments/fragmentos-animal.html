@@ -6,8 +6,7 @@
      th:class="'card h-100 shadow-sm ' + ${estiloTarjeta}">
     <div class="position-relative">
         <img th:src="${animal.fotoPrincipal}"
-             class="card-img-top"
-             style="height: 200px; object-fit: cover;"
+             class="card-img-top card-img-animal"
              th:alt="${animal.nombre}">
         <span th:if="${mostrarBadge and animal.estado.name() == 'URGENTE'}"
               class="badge bg-danger position-absolute top-0 start-0 m-2">

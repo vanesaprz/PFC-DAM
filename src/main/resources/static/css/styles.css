@@ -1,58 +1,32 @@
-/* Contenedor de las tarjetas para que no se peguen */
 .animal-container {
-    padding: 20px 0;
+    padding: 2rem 0;
+    overflow: visible;
+    }
+.section-title { margin-bottom: 1.5rem; }
+.text-urgente { color: #dc3545; }
+.carousel-wrapper { position: relative; }
+.carousel-control-prev, .carousel-control-next {
+    width: 40px;
+    background-color: rgba(0,0,0,0.2);
+    border-radius: 50%;
+    height: 40px;
+    top: 50%;
+    transform: translateY(-50%);
 }
+.carousel-control-prev { left: -40px; }
+.carousel-control-next { right: -40px; }
 
-/* Títulos de sección */
-.section-title {
-    margin-bottom: 25px;
-    font-weight: bold;
-}
 
-/* Estilo para CADA tarjeta */
-.animal-card {
-    border: none;
-    border-radius: 10px;
-    overflow: hidden;
-    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-    height: 100%; /* Para que todas las tarjetas de la fila midan lo mismo */
-}
-
-/* Efecto al pasar el ratón*/
-.animal-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(0,0,0,0.15);
-}
-
-/* LA SOLUCIÓN PARA LAS FOTOS */
-.animal-card-img {
-    width: 100%;
-    height: 250px;
+.foto-solicitud {
+    width: 50px;
+    height: 50px;
     object-fit: cover;
-    object-position: center;
-}
 
-/* Variaciones para Urgentes */
-.card-urgente {
-    border: 2px solid #dc3545; /* Borde rojo */
-}
-
-.text-urgente {
-    color: #dc3545;
-    font-weight: bold;
-}
-
-.input-error {
-    border: 2px solid red !important;
-    background-color: #fff0f0;
-}
-
-.bi-heart, .bi-heart-fill {
-    transition: transform 0.2s ease, color 0.2s ease;
-    cursor: pointer;
-}
-
-.bi-heart:hover {
-    color: #dc3545 !important; /* Rojo Bootstrap */
-    transform: scale(1.2);
-}
+    }
+foto-perfil {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 4px solid white;
+    }

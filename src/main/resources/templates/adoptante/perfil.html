@@ -30,7 +30,7 @@
                 </div>
                 <div th:if="${adoptanteDTO.fotoPerfil == null or adoptanteDTO.fotoPerfil.isEmpty()}"
                      class="foto-perfil mx-auto d-block mb-3 shadow-sm bg-light d-flex align-items-center justify-content-center">
-                    <i class="bi bi-person-circle" style="font-size: 5rem; color: #adb5bd;"></i>
+                    <i class="bi bi-person-circle"></i>
                 </div>
                 <h5 class="fw-bold mb-0"
                     th:text="${adoptanteDTO.nombre + ' ' + (adoptanteDTO.apellidos != null ? adoptanteDTO.apellidos : '')}"></h5>

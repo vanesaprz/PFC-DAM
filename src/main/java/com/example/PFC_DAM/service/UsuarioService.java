@@ -19,9 +19,7 @@ import static com.example.PFC_DAM.model.enums.Rol.PROTECTORA;
 
 @Service
 public class UsuarioService {
-
-    //PENDIENTE IMPLEMENTAR EL CIFRADO DE CONTRASEÑA
-
+    
     @Autowired
     private CuentaRepository cuentaRepository;
     @Autowired

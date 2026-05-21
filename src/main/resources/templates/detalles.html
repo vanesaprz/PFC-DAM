@@ -120,11 +120,12 @@
                 </div>
 
                 <!-- BOTONES DE ACCIÓN -->
+                <div th:if="${error}" class="alert alert-warning w-100" th:text="${error}"></div>
+                <div th:if="${param.enviado}" class="alert alert-success w-100">
+                    ¡Solicitud enviada correctamente!
+                </div>
                 <div sec:authorize="hasAnyRole('ADOPTANTE','ADMIN')" class="d-grid gap-2 d-md-flex mt-5">
-                    <div th:if="${error}" class="alert alert-warning w-100" th:text="${error}"></div>
-                    <div th:if="${param.enviado}" class="alert alert-success w-100">
-                        ¡Solicitud enviada correctamente!
-                    </div>
+
                     <a th:href="@{/solicitudes/crear/{animalId}(animalId=${animal.id})}"
                        class="btn btn-primary btn-lg px-5 w-100">
                         Solicitar Adopción

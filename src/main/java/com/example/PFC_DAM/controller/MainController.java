@@ -37,7 +37,7 @@ public class MainController {
         model.addAttribute("urgentes", animalRepository.findByEstado(EstadoAnimal.URGENTE));
 
         //Devuelve los 10 animales que han llegado más recientemente... se quitan los urgentes porque ya están arriba
-        model.addAttribute("recientes", animalRepository.findTop10ByEstadoOrderByFechaIngresoDesc(EstadoAnimal.DISPONIBLE));
+        model.addAttribute("recientes", animalRepository.findTop8ByEstadoOrderByFechaIngresoDesc(EstadoAnimal.DISPONIBLE));
 
         return "index";
     }
@@ -78,7 +78,7 @@ public class MainController {
                 .collect(Collectors.toList());
 
         model.addAttribute("animalesProtectora", animalesOrdenados);
-        
+
         return "detalle-protectora";
     }
 

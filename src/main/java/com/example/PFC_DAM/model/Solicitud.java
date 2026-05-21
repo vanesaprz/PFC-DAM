@@ -41,10 +41,12 @@ public class Solicitud {
 
     @Column(name = "tipo_vivienda", nullable = false)
     private String tipoVivienda;
-    
+
     @Column(name = "otros_animales", nullable = false)
     private String otrosAnimales;
 
+    @Column(name = "telefono", length = 15)
+    private String telefono;
 
     //RELACIONES:
     //Con adoptantes:

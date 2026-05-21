@@ -130,6 +130,19 @@
                                                     <span th:text="${solicitud.otrosAnimales}"></span>
                                                 </div>
                                             </div>
+
+                                            <hr>
+
+                                            <div class="row">
+                                                <div class="col-6">
+                                                    <small class="text-muted d-block">Teléfono de contacto</small>
+                                                    <span th:text="${solicitud.telefono}"></span>
+                                                </div>
+                                                <div class="col-6">
+                                                    <small class="text-muted d-block">Email</small>
+                                                    <span th:text="${solicitud.adoptante.cuenta.email}"></span>
+                                                </div>
+                                            </div>
                                         </div>
 
                                         <!-- Gestión de la solicitud -->

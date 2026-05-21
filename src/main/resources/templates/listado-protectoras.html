@@ -48,7 +48,8 @@
                             <small class="text-muted"><i class="bi bi-geo-alt"></i> <span th:text="${pro.provincia}">Provincia</span></small>
                         </div>
                     </div>
-                    <p class="card-text text-muted small mb-4" th:text="${#strings.abbreviate(pro.presentacion, 120)}">
+                    <p class="card-text text-muted small mb-4"
+                       th:text="${pro.presentacion != null ? #strings.abbreviate(pro.presentacion, 120) : 'Sin descripción'}">
                         Descripción corta de la protectora y su labor con los animales...
                     </p>
                     <div class="d-flex justify-content-between align-items-center mt-auto">

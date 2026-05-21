@@ -21,7 +21,7 @@ public interface AnimalRepository extends JpaRepository<Animal, Long> {
     List<Animal> findByEstado(EstadoAnimal estado);
 
     //Pensado para incluir los recién llegados en la página principal:
-    List<Animal> findTop10ByEstadoOrderByFechaIngresoDesc(EstadoAnimal estado);
+    List<Animal> findTop8ByEstadoOrderByFechaIngresoDesc(EstadoAnimal estado);
 
     //Para el panel privado de la protectora:
     List<Animal> findByProtectoraId(Long protectoraId);

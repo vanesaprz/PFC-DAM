@@ -2,6 +2,7 @@ package com.example.PFC_DAM.model.DTO;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 import org.hibernate.validator.constraints.URL;
@@ -24,12 +25,16 @@ public class RegistroProtectoraDTO {
     @NotBlank
     private String direccion;
 
-    @NotBlank(message = "El CIF es obligatorio")
-    @Size(max = 10, message = "El CIF no puede tener más de 10 caracteres")
+
+    @NotBlank(message = "El CIF/NIF es obligatorio")
+    @Pattern(regexp = "^[ABCDEFGHJNPQRSUVW]\\d{7}[0-9A-J]$",
+            message = "El formato del CIF/NIF no es válido")
     private String cif;
 
-    @Size(max = 15, message = "El teléfono es demasiado largo")
+
     @NotBlank(message = "El teléfono es obligatorio")
+    @Pattern(regexp = "^[6789]\\d{8}$",
+            message = "El teléfono debe tener 9 dígitos y empezar por 6, 7, 8 o 9")
     private String telefono;
 
     @URL(message = "Introduce una dirección web válida")

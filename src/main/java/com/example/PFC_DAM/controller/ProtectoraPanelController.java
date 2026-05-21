@@ -2,6 +2,7 @@ package com.example.PFC_DAM.controller;
 
 import com.example.PFC_DAM.model.*;
 import com.example.PFC_DAM.model.DTO.AnimalDTO;
+import com.example.PFC_DAM.model.DTO.ProtectoraPerfilDTO;
 import com.example.PFC_DAM.model.enums.*;
 import com.example.PFC_DAM.repos.*;
 import com.example.PFC_DAM.service.CloudinaryService;
@@ -280,6 +281,17 @@ public class ProtectoraPanelController {
         Cuenta cuenta = cuentaRepository.findByEmail(principal.getName()).orElseThrow();
         Protectora protectora = cuenta.getProtectora();
 
+        // Cargamos el DTO con los datos actuales de la protectora
+        ProtectoraPerfilDTO dto = new ProtectoraPerfilDTO();
+        dto.setNombre(protectora.getNombre());
+        dto.setDireccion(protectora.getDireccion());
+        dto.setTelefono(protectora.getTelefono());
+        dto.setProvincia(protectora.getProvincia());
+        dto.setEmailContacto(protectora.getEmailContacto());
+        dto.setWeb(protectora.getWeb());
+        dto.setPresentacion(protectora.getPresentacion());
+
+        model.addAttribute("protectoraDTO", dto);
         model.addAttribute("protectora", protectora);
         model.addAttribute("menuActivo", "perfil");
         model.addAttribute("tiposRedSocial", List.of("instagram", "facebook", "twitter-x", "whatsapp", "youtube", "tiktok", "telegram"));
@@ -288,20 +300,31 @@ public class ProtectoraPanelController {
     }
 
     @PostMapping("/perfil/guardar")
-    public String guardarPerfil(@ModelAttribute Protectora protectora,
+    public String guardarPerfil(@Valid @ModelAttribute("protectoraDTO") ProtectoraPerfilDTO dto,
+                                BindingResult result,
                                 @RequestParam(value = "archivoLogo", required = false) MultipartFile logo,
                                 Principal principal,
+                                Model model,
                                 RedirectAttributes redirectAttributes) {
+
+        if (result.hasErrors()) {
+            Cuenta cuenta = cuentaRepository.findByEmail(principal.getName()).orElseThrow();
+            model.addAttribute("protectora", cuenta.getProtectora());
+            model.addAttribute("menuActivo", "perfil");
+            model.addAttribute("tiposRedSocial", List.of("instagram", "facebook", "twitter-x", "whatsapp", "youtube", "tiktok", "telegram"));
+            return "protectora/perfil";
+        }
 
         Cuenta cuenta = cuentaRepository.findByEmail(principal.getName()).orElseThrow();
         Protectora protectoraActual = cuenta.getProtectora();
-        //diferencio entre la protectora de la base de datos "protectoraActual" y la del formulario/modelo "protectora"
-        //no puedo guardar como protectoraRepository.save(protectora) porque hay datos que no van a estar en el formulario y  puenden machacarse y dar error
-        protectoraActual.setNombre(protectora.getNombre());
-        protectoraActual.setDireccion(protectora.getDireccion());
-        protectoraActual.setTelefono(protectora.getTelefono());
-        protectoraActual.setProvincia(protectora.getProvincia());
-        protectoraActual.setPresentacion(protectora.getPresentacion());
+
+        protectoraActual.setNombre(dto.getNombre());
+        protectoraActual.setDireccion(dto.getDireccion());
+        protectoraActual.setTelefono(dto.getTelefono());
+        protectoraActual.setProvincia(dto.getProvincia());
+        protectoraActual.setPresentacion(dto.getPresentacion());
+        protectoraActual.setEmailContacto(dto.getEmailContacto());
+        protectoraActual.setWeb(dto.getWeb());
 
         // Si se sube un logo nuevo lo subimos a Cloudinary, si no mantenemos el actual
         if (logo != null && !logo.isEmpty()) {
@@ -313,8 +336,6 @@ public class ProtectoraPanelController {
                 return "redirect:/protectora/perfil";
             }
         }
-
-        protectoraActual.setEmailContacto(protectora.getEmailContacto());
 
         protectoraRepository.save(protectoraActual);
         redirectAttributes.addFlashAttribute("mensaje", "Perfil guardado correctamente");

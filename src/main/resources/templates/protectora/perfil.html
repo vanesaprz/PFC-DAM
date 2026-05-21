@@ -55,7 +55,7 @@
 
             <h3 class="mb-4 text-uppercase fw-bold text-muted" style="letter-spacing: 1px;">Mi Perfil</h3>
 
-            <form th:action="@{/protectora/perfil/guardar}" th:object="${protectora}" method="post"
+            <form th:action="@{/protectora/perfil/guardar}" th:object="${protectoraDTO}" method="post"
                   enctype="multipart/form-data">
 
                 <!-- SECCIÓN 1: DATOS BÁSICOS -->
@@ -67,7 +67,7 @@
                     </div>
                     <div class="col-md-6">
                         <label class="form-label fw-bold">CIF</label>
-                        <input type="text" th:field="*{cif}" class="form-control" readonly>
+                        <input type="text" class="form-control" th:value="${protectora.cif}" readonly>
                         <small class="text-muted">El CIF no puede modificarse. Contacta con soporte si hay un
                             error.</small>
                     </div>

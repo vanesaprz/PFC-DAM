@@ -63,6 +63,7 @@ public class SolicitudController {
         solicitud.setMensaje(dto.getMensaje());
         solicitud.setTipoVivienda(dto.getTipoVivienda());
         solicitud.setOtrosAnimales(dto.getOtrosAnimales());
+        solicitud.setTelefono(dto.getTelefono());
 
         solicitud.setAdoptante(adoptante);
         solicitud.setAnimal(animalRepository.getReferenceById(animalId));

@@ -110,7 +110,7 @@
                     <div class="d-flex gap-3 fs-3">
                         <div th:each="red : ${protectora.redesSociales}">
                             <a th:href="${red.enlaceUsuario}" target="_blank" class="text-dark">
-                                <!-- Iconos dinámicos según el tipo[cite: 1] -->
+                                <!-- Iconos dinámicos según el tipo-->
                                 <i th:class="|bi bi-${red.tipo.toLowerCase()}|"></i>
                             </a>
                         </div>

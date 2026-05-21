@@ -23,21 +23,25 @@
                 </div>
 
                 <div class="card-body p-4 p-md-5">
-                    <form th:action="@{/protectora/animales/guardar}" th:object="${animalDTO}" method="post">
+                    <form th:action="@{/protectora/animales/guardar}" th:object="${animalDTO}" method="post"
+                          enctype="multipart/form-data">
                         <input type="hidden" th:if="${animalDTO.id != null}" th:field="*{id}">
 
                         <!-- SECCIÓN 1: DATOS IDENTIFICATIVOS -->
-                        <div th:if="${errorGlobal}" class="alert alert-danger" th:text="${errorGlobal}"></div>
+                        <div th:if="${#fields.hasAnyErrors()}" class="alert alert-danger">
+                            <ul class="mb-0">
+                                <li th:each="error : ${#fields.allErrors()}" th:text="${error}"></li>
+                            </ul>
+                        </div>
                         <div class="form-section-title text-uppercase small">Datos Identificativos</div>
                         <div class="row g-3 mb-4">
                             <div class="col-md-6">
                                 <label class="form-label fw-bold">Nombre del animal</label>
-                                <input type="text" th:field="*{nombre}" class="form-control" placeholder="Ej: Luna"
-                                       required>
+                                <input type="text" th:field="*{nombre}" class="form-control" placeholder="Ej: Luna">
                             </div>
                             <div class="col-md-3">
                                 <label class="form-label fw-bold">Especie</label>
-                                <select th:field="*{especie}" class="form-select" required>
+                                <select th:field="*{especie}" class="form-select">
                                     <option value="" selected disabled>Selecciona...</option>
                                     <option th:each="esp : ${especies}"
                                             th:value="${esp}"
@@ -46,12 +50,11 @@
                             </div>
                             <div class="col-md-3">
                                 <label class="form-label fw-bold">Raza</label>
-                                <input type="text" th:field="*{raza}" class="form-control" placeholder="Ej: Mestizo"
-                                       required>
+                                <input type="text" th:field="*{raza}" class="form-control" placeholder="Ej: Mestizo">
                             </div>
                             <div class="col-md-3">
                                 <label class="form-label fw-bold">Sexo</label>
-                                <select th:field="*{sexo}" class="form-select" required>
+                                <select th:field="*{sexo}" class="form-select">
                                     <option value="" selected disabled>Selecciona...</option>
                                     <option th:each="s : ${sexos}" th:value="${s}" th:text="${s}"></option>
                                 </select>
@@ -68,15 +71,19 @@
                             <div class="col-md-3">
                                 <label class="form-label fw-bold">Peso (Kg)</label>
                                 <input type="number" step="0.01" th:field="*{peso}" class="form-control"
-                                       placeholder="0.00" required>
+                                       placeholder="0.00">
                             </div>
                             <div class="col-md-3">
                                 <label class="form-label fw-bold">Fecha Nacimiento</label>
-                                <input type="date" th:field="*{fechaNacimiento}" class="form-control" required>
+                                <input type="date" name="fechaNacimiento"
+                                       th:value="${animalDTO.fechaNacimiento != null ? #temporals.format(animalDTO.fechaNacimiento, 'yyyy-MM-dd') : ''}"
+                                       class="form-control">
                             </div>
                             <div class="col-md-3">
-                                <label class="form-label fw-bold">Fecha Ingreso</label>
-                                <input type="date" th:field="*{fechaIngreso}" class="form-control" required>
+                                <label class="form-label fw-bold">Fecha Ingreso en Protectora</label>
+                                <input type="date" name="fechaIngreso"
+                                       th:value="${animalDTO.fechaIngreso != null ? #temporals.format(animalDTO.fechaIngreso, 'yyyy-MM-dd') : ''}"
+                                       class="form-control">
                             </div>
                         </div>
 
@@ -85,7 +92,7 @@
                         <div class="row g-3 mb-4">
                             <div class="col-md-4">
                                 <label class="form-label fw-bold">Estado actual en el centro</label>
-                                <select th:field="*{estado}" class="form-select" required>
+                                <select th:field="*{estado}" class="form-select">
                                     <option th:each="est : ${estados}" th:value="${est}" th:text="${est}"></option>
                                 </select>
                             </div>
@@ -114,7 +121,7 @@
                         <div class="row g-3 mb-4">
                             <div class="col-md-4">
                                 <label class="form-label fw-bold">Nivel de actividad</label>
-                                <select th:field="*{nivelActividad}" class="form-select" required>
+                                <select th:field="*{nivelActividad}" class="form-select">
                                     <option value="Bajo">Bajo</option>
                                     <option value="Medio" selected>Medio</option>
                                     <option value="Alto">Alto</option>
@@ -148,12 +155,16 @@
 
                         <!-- SECCIÓN 4: INFORMACIÓN ADICIONAL -->
                         <div class="form-section-title text-uppercase small">Información Pública y Fotos</div>
+
                         <div class="mb-4">
-                            <label class="form-label fw-bold">URL de la Foto Principal</label>
-                            <div class="input-group">
-                                <span class="input-group-text"><i class="bi bi-image"></i></span>
-                                <input type="url" th:field="*{fotoPrincipal}" class="form-control"
-                                       placeholder="https://ejemplo.com/foto.jpg" required>
+                            <label class="form-label fw-bold">Foto Principal</label>
+                            <input type="file" name="archivoFoto" accept="image/*" class="form-control">
+                            <div th:if="${errorFoto}" class="text-danger small mt-1" th:text="${errorFoto}"></div>
+                            <div th:if="${animalDTO.fotoPrincipal != null}" class="mt-2">
+                                <img th:src="${animalDTO.fotoPrincipal}" alt="Foto actual"
+                                     style="height: 100px; object-fit: cover; border-radius: 8px;">
+                                <small class="text-muted d-block mt-1">Foto actual. Sube una nueva para
+                                    reemplazarla.</small>
                             </div>
                         </div>
 
@@ -161,7 +172,7 @@
                             <label class="form-label fw-bold">Descripción / Historia</label>
                             <textarea th:field="*{descripcion}" class="form-control" rows="5"
                                       placeholder="Escribe aquí la descripción que verán los adoptantes..."
-                                      required></textarea>
+                            ></textarea>
                         </div>
 
                         <hr class="my-5">

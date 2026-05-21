@@ -44,7 +44,6 @@ public class AnimalDTO {
     @DecimalMin(value = "0.1", message = "El peso debe ser mayor a 0")
     private BigDecimal peso;
 
-    @NotBlank(message = "La URL de la foto es obligatoria")
     private String fotoPrincipal;
 
     private Boolean esterilizado = false;
@@ -56,7 +55,10 @@ public class AnimalDTO {
     private Boolean aptoNinos = false;
 
     private String necesidadesEspeciales;
+    @NotBlank(message = "El nivel de actividad es obligatorio")
     private String nivelActividad;
     private String miedos;
+
+    @NotBlank(message = "La descripción es obligatoria")
     private String descripcion;
 }

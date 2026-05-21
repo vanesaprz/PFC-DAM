@@ -17,6 +17,7 @@
         transform: translateY(-5px);
         box-shadow: 0 10px 20px rgba(0,0,0,0.1);
         }
+
     .logo-placeholder {
         width: 80px;
         height: 80px;
@@ -25,4 +26,10 @@
         align-items: center;
         justify-content: center;
         border-radius: 50%;
+        }
+
+        .logo-protectora {
+            width: 150px;
+            height: 150px;
+            object-fit: contain;
         }

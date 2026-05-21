@@ -16,7 +16,7 @@
         <div class="row align-items-center">
             <div class="col-md-2 text-center text-md-start"
                  th:if="${protectora.logo != null and !protectora.logo.isEmpty()}">
-                <img src="https://via.placeholder.com/150" class="rounded-circle shadow-sm" alt="Logo">
+                <img th:src="${protectora.logo}" class="rounded-circle shadow-sm logo-protectora" alt="Logo">
             </div>
             <div class="col-md-10 mt-3 mt-md-0">
                 <h1 class="display-5 fw-bold"

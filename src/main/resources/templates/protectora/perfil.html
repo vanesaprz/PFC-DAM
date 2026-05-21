@@ -55,7 +55,8 @@
 
             <h3 class="mb-4 text-uppercase fw-bold text-muted" style="letter-spacing: 1px;">Mi Perfil</h3>
 
-            <form th:action="@{/protectora/perfil/guardar}" th:object="${protectora}" method="post">
+            <form th:action="@{/protectora/perfil/guardar}" th:object="${protectora}" method="post"
+                  enctype="multipart/form-data">
 
                 <!-- SECCIÓN 1: DATOS BÁSICOS -->
                 <div class="form-section-title text-uppercase small">Datos de la Entidad</div>
@@ -108,16 +109,12 @@
                 <div class="form-section-title text-uppercase small">Imagen y Presentación</div>
                 <div class="row g-3 mb-4">
                     <div class="col-12">
-                        <label class="form-label fw-bold">URL del Logo</label>
-                        <div class="input-group">
-                            <span class="input-group-text"><i class="bi bi-image"></i></span>
-                            <input type="url" th:field="*{logo}" class="form-control"
-                                   placeholder="https://ejemplo.com/logo.png">
-                        </div>
+                        <label class="form-label fw-bold">Logo</label>
+                        <input type="file" name="archivoLogo" accept="image/*" class="form-control">
                         <div th:if="${protectora.logo != null and !protectora.logo.isEmpty()}" class="mt-2">
                             <img th:src="${protectora.logo}" alt="Logo actual"
                                  style="height: 80px; object-fit: contain;">
-                            <small class="text-muted d-block">Logo actual</small>
+                            <small class="text-muted d-block">Logo actual. Sube uno nuevo para reemplazarlo.</small>
                         </div>
                     </div>
                     <div class="col-12">

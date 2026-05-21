@@ -34,8 +34,14 @@
             <div class="card h-100 shadow-sm protectora-card">
                 <div class="card-body">
                     <div class="d-flex align-items-center mb-3">
-                        <div class="logo-placeholder me-3">
-                            <i class="bi bi-house-heart fs-2 text-primary"></i>
+                        <div class="me-3">
+                            <img th:if="${pro.logo != null and !pro.logo.isEmpty()}"
+                                 th:src="${pro.logo}"
+                                 alt="Logo"
+                                 style="width: 60px; height: 60px; object-fit: contain; border-radius: 8px;">
+                            <div th:if="${pro.logo == null or pro.logo.isEmpty()}" class="logo-placeholder">
+                                <i class="bi bi-house-heart fs-2 text-primary"></i>
+                            </div>
                         </div>
                         <div>
                             <h5 class="card-title mb-0 fw-bold" th:text="${pro.nombre}">Nombre Protectora</h5>

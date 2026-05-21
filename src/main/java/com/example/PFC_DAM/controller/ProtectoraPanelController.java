@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.IOException;
 import java.security.Principal;
 import java.time.LocalDate;
 import java.util.List;
@@ -287,7 +288,10 @@ public class ProtectoraPanelController {
     }
 
     @PostMapping("/perfil/guardar")
-    public String guardarPerfil(@ModelAttribute Protectora protectora, Principal principal, RedirectAttributes redirectAttributes) {
+    public String guardarPerfil(@ModelAttribute Protectora protectora,
+                                @RequestParam(value = "archivoLogo", required = false) MultipartFile logo,
+                                Principal principal,
+                                RedirectAttributes redirectAttributes) {
 
         Cuenta cuenta = cuentaRepository.findByEmail(principal.getName()).orElseThrow();
         Protectora protectoraActual = cuenta.getProtectora();
@@ -298,7 +302,18 @@ public class ProtectoraPanelController {
         protectoraActual.setTelefono(protectora.getTelefono());
         protectoraActual.setProvincia(protectora.getProvincia());
         protectoraActual.setPresentacion(protectora.getPresentacion());
-        protectoraActual.setLogo(protectora.getLogo());
+
+        // Si se sube un logo nuevo lo subimos a Cloudinary, si no mantenemos el actual
+        if (logo != null && !logo.isEmpty()) {
+            try {
+                String urlLogo = cloudinaryService.subirImagen(logo);
+                protectoraActual.setLogo(urlLogo);
+            } catch (IOException e) {
+                redirectAttributes.addFlashAttribute("error", "Error al subir el logo: " + e.getMessage());
+                return "redirect:/protectora/perfil";
+            }
+        }
+
         protectoraActual.setEmailContacto(protectora.getEmailContacto());
 
         protectoraRepository.save(protectoraActual);

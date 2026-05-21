@@ -46,8 +46,8 @@
         <!-- COLUMNA DERECHA: FORMULARIO -->
         <div class="col-md-9">
             <div class="card border-0 shadow-sm p-4">
-                <form th:action="@{/adoptante/perfil/guardar}" th:object="${adoptanteDTO}" method="post">
-
+                <form th:action="@{/adoptante/perfil/guardar}" th:object="${adoptanteDTO}" method="post"
+                      enctype="multipart/form-data">
                     <div class="form-section-title text-uppercase small">Información Personal</div>
                     <div class="row g-3 mb-4">
                         <div class="col-md-6">
@@ -69,11 +69,11 @@
                             </select>
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label fw-bold">URL Foto de Perfil</label>
-                            <div class="input-group">
-                                <span class="input-group-text"><i class="bi bi-image"></i></span>
-                                <input type="url" th:field="*{fotoPerfil}" class="form-control"
-                                       placeholder="https://ejemplo.com/foto.jpg">
+                            <label class="form-label fw-bold">Foto de Perfil</label>
+                            <input type="file" name="archivoFoto" accept="image/*" class="form-control">
+                            <div th:if="${adoptanteDTO.fotoPerfil != null and !adoptanteDTO.fotoPerfil.isEmpty()}"
+                                 class="mt-2">
+                                <small class="text-muted">Foto actual. Sube una nueva para reemplazarla.</small>
                             </div>
                         </div>
                         <div class="col-12">

@@ -5,18 +5,18 @@ import com.example.PFC_DAM.model.Cuenta;
 import com.example.PFC_DAM.model.DTO.AdoptantePerfilDTO;
 import com.example.PFC_DAM.repos.AdoptanteRepository;
 import com.example.PFC_DAM.repos.CuentaRepository;
+import com.example.PFC_DAM.service.CloudinaryService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.IOException;
 import java.security.Principal;
 
 @Controller
@@ -28,6 +28,9 @@ public class AdoptanteController {
     private AdoptanteRepository adoptanteRepository;
     @Autowired
     private CuentaRepository cuentaRepository;
+
+    @Autowired
+    private CloudinaryService cloudinaryService;
 
     //Pantalla Mi Perfil
     @GetMapping("/perfil")
@@ -53,6 +56,7 @@ public class AdoptanteController {
     public String guardarPerfil(@Valid @ModelAttribute("adoptanteDTO") AdoptantePerfilDTO dto,
                                 BindingResult result,
                                 RedirectAttributes redirectAttributes,
+                                @RequestParam(value = "archivoFoto", required = false) MultipartFile foto,
                                 Principal principal) {
 
         if (result.hasErrors()) {
@@ -65,11 +69,22 @@ public class AdoptanteController {
         adoptante.setNombre(dto.getNombre());
         adoptante.setProvincia(dto.getProvincia());
         adoptante.setPresentacion(dto.getPresentacion());
-        adoptante.setFotoPerfil(dto.getFotoPerfil());
+
+        // Si se sube foto nueva la enviamos a Cloudinary, si no mantenemos la actual
+        if (foto != null && !foto.isEmpty()) {
+            try {
+                String urlFoto = cloudinaryService.subirImagen(foto);
+                adoptante.setFotoPerfil(urlFoto);
+            } catch (IOException e) {
+                redirectAttributes.addFlashAttribute("error", "Error al subir la foto: " + e.getMessage());
+                return "redirect:/adoptante/perfil";
+            }
+        }
+
         adoptante.setApellidos(dto.getApellidos());
 
         adoptanteRepository.save(adoptante);
-        redirectAttributes.addFlashAttribute("message", "Perfil guardado correctamente");
+        redirectAttributes.addFlashAttribute("mensaje", "Perfil guardado correctamente");
 
         return "redirect:/adoptante/perfil";
 

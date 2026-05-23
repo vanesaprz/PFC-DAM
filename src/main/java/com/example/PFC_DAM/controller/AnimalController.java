@@ -100,6 +100,8 @@ public class AnimalController {
         Animal animal = animalRepository.findById(id).orElseThrow(() -> new RuntimeException("Animal no encontrado"));
         model.addAttribute("animal", animal);
 
+        model.addAttribute("esFavorito", false); // valor por defecto
+
         if (principal != null) {
             Cuenta cuenta = cuentaRepository.findByEmail(principal.getName()).orElseThrow();
             Adoptante adoptante = adoptanteRepository.findByCuenta(cuenta).orElse(null);
@@ -108,9 +110,6 @@ public class AnimalController {
                 model.addAttribute("esFavorito", esFavorito);
             }
         }
-
-        //PENDIENTE INCLUIR LISTA DE TODAS LAS FOTOS PARA GALERÍA/CARRUSEL
-
         return "detalles";
     }
 

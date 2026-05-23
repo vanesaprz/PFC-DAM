@@ -6,6 +6,7 @@ import com.example.PFC_DAM.model.DTO.ProtectoraPerfilDTO;
 import com.example.PFC_DAM.model.enums.*;
 import com.example.PFC_DAM.repos.*;
 import com.example.PFC_DAM.service.CloudinaryService;
+import com.example.PFC_DAM.service.SolicitudService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -42,6 +43,9 @@ public class ProtectoraPanelController {
 
     @Autowired
     private CloudinaryService cloudinaryService;
+
+    @Autowired
+    private SolicitudService solicitudService;
 
     @GetMapping("/panel")
     public String mostrarPanel(Model model, Principal principal) {
@@ -267,10 +271,7 @@ public class ProtectoraPanelController {
                                       @RequestParam EstadoSolicitud estado,
                                       @RequestParam(required = false) String notas,
                                       RedirectAttributes redirectAttributes) {
-        Solicitud solicitud = solicitudRepository.findById(id).orElseThrow();
-        solicitud.setEstado(estado);
-        solicitud.setNotas(notas);
-        solicitudRepository.save(solicitud);
+        solicitudService.actualizarEstado(id, estado, notas);
         redirectAttributes.addFlashAttribute("mensaje", "Solicitud actualizada correctamente");
         return "redirect:/protectora/solicitudes";
     }

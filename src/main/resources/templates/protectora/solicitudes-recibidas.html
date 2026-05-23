@@ -90,9 +90,10 @@
                                 <span class="badge"
                                       th:text="${solicitud.estado}"
                                       th:classappend="${solicitud.estado.name() == 'PENDIENTE'} ? 'bg-warning text-dark' :
-                                                     (${solicitud.estado.name() == 'EN_REVISION'} ? 'bg-info' :
-                                                     (${solicitud.estado.name() == 'ENTREVISTA'} ? 'bg-primary' :
-                                                     (${solicitud.estado.name() == 'RECHAZADA'} ? 'bg-danger' : 'bg-secondary')))">
+                                            (${solicitud.estado.name() == 'EN_REVISION'} ? 'bg-info' :
+                                            (${solicitud.estado.name() == 'ENTREVISTA'} ? 'bg-primary' :
+                                            (${solicitud.estado.name() == 'APROBADA'} ? 'bg-success' :
+                                            (${solicitud.estado.name() == 'RECHAZADA'} ? 'bg-danger' : 'bg-secondary'))))">
                                 </span>
                             </td>
                             <td class="text-center">

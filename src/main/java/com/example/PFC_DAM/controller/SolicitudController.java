@@ -9,6 +9,7 @@ import com.example.PFC_DAM.repos.AdoptanteRepository;
 import com.example.PFC_DAM.repos.AnimalRepository;
 import com.example.PFC_DAM.repos.CuentaRepository;
 import com.example.PFC_DAM.repos.SolicitudRepository;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -44,7 +45,7 @@ public class SolicitudController {
     }
 
     @PostMapping("/guardar")
-    public String guardarSolicitud(@ModelAttribute SolicitudDTO dto, @RequestParam Long animalId, Principal principal, BindingResult result, RedirectAttributes redirectAttributes) {
+    public String guardarSolicitud(@Valid @ModelAttribute SolicitudDTO dto, @RequestParam Long animalId, Principal principal, BindingResult result, RedirectAttributes redirectAttributes) {
         if (result.hasErrors()) {
             redirectAttributes.addFlashAttribute("error", "Por favor revisa los campos del formulario");
             return "redirect:/solicitudes/crear/" + animalId;

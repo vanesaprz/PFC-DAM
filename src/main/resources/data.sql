@@ -22,7 +22,7 @@ VALUES ('admin@patitasgal.es', '$2a$10$QGMWqLZlJia8irHKTqkY0OOo4kCYEa9pPnrqyuDe.
 -- adoptante@test.com
 --contraseña 12345
 INSERT INTO cuentas (email, contrasena, rol)
-VALUES ('adoptante@test.com', '$2a$10$2/NDD8Gcp19n4a4Ce5mpAeeeavJOoLn7zqxVEZ0YusX6Fmx62w7/W', 'ADOPTANTE'),
+VALUES ('adoptante@test.com', '$2a$10$h0Pp5bgcLAKs6//c77DzjOyUEwkf8IMeN.EgIWjd3RPB/v7A1tESO', 'ADOPTANTE'),
        ('protectora@test.com', '$2a$10$2/NDD8Gcp19n4a4Ce5mpAeeeavJOoLn7zqxVEZ0YusX6Fmx62w7/W', 'PROTECTORA');
 
 INSERT INTO adoptantes (nombre, apellidos, cuenta_id)

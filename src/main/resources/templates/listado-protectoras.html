@@ -54,7 +54,7 @@
                     </p>
                     <div class="d-flex justify-content-between align-items-center mt-auto">
                         <span class="badge bg-light text-dark border"
-                              th:with="total=${#lists.size(pro.animales)}"
+                              th:with="total=${#lists.size(pro.animales.?[estado.name() != 'ADOPTADO'])}"
                               th:text="|${total} ${total == 1 ? 'Animal' : 'Animales'}|">>
                             <i class="bi bi-paw-fill"></i> 12 Animales
                         </span>

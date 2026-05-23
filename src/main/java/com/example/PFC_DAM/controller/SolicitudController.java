@@ -45,12 +45,12 @@ public class SolicitudController {
     }
 
     @PostMapping("/guardar")
-    public String guardarSolicitud(@Valid @ModelAttribute SolicitudDTO dto, @RequestParam Long animalId, Principal principal, BindingResult result, RedirectAttributes redirectAttributes) {
+    public String guardarSolicitud(@Valid @ModelAttribute SolicitudDTO dto, BindingResult result, @RequestParam Long animalId, Model model, Principal principal, RedirectAttributes redirectAttributes) {
         if (result.hasErrors()) {
-            redirectAttributes.addFlashAttribute("error", "Por favor revisa los campos del formulario");
-            return "redirect:/solicitudes/crear/" + animalId;
+            model.addAttribute("animal", animalRepository.findById(animalId).orElseThrow());
+            model.addAttribute("solicitudDTO", dto);
+            return "formulario-adopcion";
         }
-
 
         Cuenta cuenta = cuentaRepository.findByEmail(principal.getName()).orElseThrow();
         Adoptante adoptante = adoptanteRepository.findByCuenta(cuenta).orElseThrow();

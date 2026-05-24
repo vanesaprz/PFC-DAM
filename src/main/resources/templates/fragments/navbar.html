@@ -4,7 +4,6 @@
       lang="es">
 <body>
 
-
 <nav th:fragment="menu_principal" class="navbar navbar-expand-lg navbar-light bg-white border-bottom shadow-sm">
     <div class="container">
         <!-- Logo -->
@@ -22,14 +21,11 @@
                 <li class="nav-item">
                     <a class="nav-link" th:href="@{/protectoras}">Protectoras</a>
                 </li>
-
-                <!-- ACCESO AL PANEL (Solo para Protectoras o Admin) -->
                 <li class="nav-item" sec:authorize="hasAnyRole('PROTECTORA', 'ADMIN')">
                     <a class="nav-link text-primary fw-bold" th:href="@{/protectora/panel}">
                         <i class="bi bi-layout-text-window-reverse"></i> Mi panel
                     </a>
                 </li>
-                <!-- ACCESO A favoritos (Solo para Adoptantes) -->
                 <li class="nav-item" sec:authorize="hasAnyRole('ADOPTANTE', 'ADMIN')">
                     <a class="nav-link" th:href="@{/adoptante/favoritos}">
                         <i class="bi bi-heart"></i> Favoritos
@@ -42,11 +38,22 @@
                 </li>
             </ul>
 
-            <div class="d-flex align-items-center">
+            <div class="d-flex align-items-center gap-2">
                 <!-- Si NO está logueado -->
                 <div sec:authorize="isAnonymous()">
                     <a th:href="@{/login}" class="btn btn-outline-dark me-2">Login</a>
                     <a th:href="@{/registro/seleccion}" class="btn btn-dark">Registro</a>
+                </div>
+
+                <!-- Notificaciones (solo para usuarios autenticados) -->
+                <div sec:authorize="isAuthenticated()" class="position-relative">
+                    <a th:href="@{/notificaciones}" class="btn btn-outline-secondary position-relative">
+                        <i class="bi bi-bell"></i>
+                        <span th:if="${notificacionesNoLeidas != null and notificacionesNoLeidas > 0}"
+                              class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+                              th:text="${notificacionesNoLeidas}">
+                        </span>
+                    </a>
                 </div>
 
                 <!-- Si SÍ está logueado -->

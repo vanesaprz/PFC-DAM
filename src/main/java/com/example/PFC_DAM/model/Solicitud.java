@@ -45,7 +45,7 @@ public class Solicitud {
     @Column(name = "otros_animales", nullable = false)
     private String otrosAnimales;
 
-    @Column(name = "telefono", length = 15)
+    @Column(name = "telefono", length = 15, nullable = false)
     private String telefono;
 
     //RELACIONES:

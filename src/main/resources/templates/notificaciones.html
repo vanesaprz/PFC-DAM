@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Notificaciones - PatitasGal</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body class="bg-light">
+
+<div th:replace="~{fragments/navbar :: menu_principal}"></div>
+
+<main class="container py-5">
+    <h2 class="fw-bold text-uppercase mb-4">
+        <i class="bi bi-bell me-2"></i>Notificaciones
+    </h2>
+
+    <div class="card border-0 shadow-sm">
+        <div class="card-body p-0">
+            <div th:if="${#lists.isEmpty(notificaciones)}" class="text-center py-5 text-muted">
+                <i class="bi bi-bell-slash fs-1 d-block mb-3"></i>
+                No tienes notificaciones.
+            </div>
+            <ul class="list-group list-group-flush">
+                <li th:each="notif : ${notificaciones}"
+                    class="list-group-item d-flex justify-content-between align-items-center py-3"
+                    th:classappend="${!notif.leida} ? 'bg-light fw-bold' : ''">
+                    <div>
+                        <i class="bi bi-bell me-2 text-primary"></i>
+                        <span th:text="${notif.mensaje}"></span>
+                        <small class="text-muted d-block mt-1"
+                               th:text="${#temporals.format(notif.fecha, 'dd/MM/yyyy HH:mm')}"></small>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,6 +1,5 @@
-package com.example.PFC_DAM.model.enums;
+package com.example.PFC_DAM.model;
 
-import com.example.PFC_DAM.model.Cuenta;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;

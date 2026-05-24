@@ -9,6 +9,7 @@ import com.example.PFC_DAM.repos.AdoptanteRepository;
 import com.example.PFC_DAM.repos.AnimalRepository;
 import com.example.PFC_DAM.repos.CuentaRepository;
 import com.example.PFC_DAM.repos.SolicitudRepository;
+import com.example.PFC_DAM.service.NotificacionService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -29,6 +30,9 @@ public class SolicitudController {
 
     @Autowired
     private CuentaRepository cuentaRepository;
+
+    @Autowired
+    private NotificacionService notificacionService;
 
 
     @Autowired
@@ -70,6 +74,10 @@ public class SolicitudController {
         solicitud.setAnimal(animalRepository.getReferenceById(animalId));
 
         solicitudRepository.save(solicitud);
+
+        notificacionService.crear(solicitud.getAnimal().getProtectora().getCuenta(),
+                "Has recibido una nueva solicitud para " + solicitud.getAnimal().getNombre());
+
 
         return "redirect:/animales/" + animalId + "?enviado=true";
     }

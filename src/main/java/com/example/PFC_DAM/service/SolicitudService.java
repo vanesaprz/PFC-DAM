@@ -18,12 +18,21 @@ public class SolicitudService {
     @Autowired
     private AnimalRepository animalRepository;
 
+    @Autowired
+    private NotificacionService notificacionService;
+
     @Transactional
     public void actualizarEstado(Long solicitudId, EstadoSolicitud nuevoEstado, String notas) {
         Solicitud solicitud = solicitudRepository.findById(solicitudId).orElseThrow();
         solicitud.setEstado(nuevoEstado);
         solicitud.setNotas(notas);
         solicitudRepository.save(solicitud);
+
+        notificacionService.crear(
+                solicitud.getAdoptante().getCuenta(), "Tu solicitud para adoptar a " +
+                        solicitud.getAnimal().getNombre() + " ha cambiado de estado a: " + nuevoEstado
+        );
+
 
         // Si la solicitud se aprueba, el animal pasa a estado ADOPTADO
         if (nuevoEstado == EstadoSolicitud.APROBADA) {

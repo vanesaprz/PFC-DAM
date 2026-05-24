@@ -78,12 +78,14 @@
                                 <input type="date" name="fechaNacimiento"
                                        th:value="${animalDTO.fechaNacimiento != null ? #temporals.format(animalDTO.fechaNacimiento, 'yyyy-MM-dd') : ''}"
                                        class="form-control">
+
                             </div>
                             <div class="col-md-3">
                                 <label class="form-label fw-bold">Fecha Ingreso en Protectora</label>
                                 <input type="date" name="fechaIngreso"
                                        th:value="${animalDTO.fechaIngreso != null ? #temporals.format(animalDTO.fechaIngreso, 'yyyy-MM-dd') : ''}"
                                        class="form-control">
+
                             </div>
                         </div>
 
@@ -159,7 +161,6 @@
                         <div class="mb-4">
                             <label class="form-label fw-bold">Foto Principal</label>
                             <input type="file" name="archivoFoto" accept="image/*" class="form-control">
-                            <div th:if="${errorFoto}" class="text-danger small mt-1" th:text="${errorFoto}"></div>
                             <div th:if="${animalDTO.fotoPrincipal != null}" class="mt-2">
                                 <img th:src="${animalDTO.fotoPrincipal}" alt="Foto actual"
                                      style="height: 100px; object-fit: cover; border-radius: 8px;">

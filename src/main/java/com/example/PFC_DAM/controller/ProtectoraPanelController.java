@@ -53,7 +53,7 @@ public class ProtectoraPanelController {
         Protectora protectora = cuenta.getProtectora();
 
         //Para las tarjetas de administración:
-        model.addAttribute("cantEnAdopcion", animalRepository.countByProtectoraIdAndEstado(protectora.getId(), EstadoAnimal.DISPONIBLE));
+        model.addAttribute("cantEnAdopcion", animalRepository.countByProtectoraIdAndEstadoNot(protectora.getId(), EstadoAnimal.ADOPTADO));
         model.addAttribute("cantAdoptados", animalRepository.countByProtectoraIdAndEstado(protectora.getId(), EstadoAnimal.ADOPTADO));
         model.addAttribute("cantUrgentes", animalRepository.countByProtectoraIdAndEstado(protectora.getId(), EstadoAnimal.URGENTE));
         model.addAttribute("cantSolPendientes", solicitudRepository.countByAnimalProtectoraIdAndEstado(protectora.getId(), EstadoSolicitud.PENDIENTE));
@@ -126,7 +126,7 @@ public class ProtectoraPanelController {
 
 
             if ((foto == null || foto.isEmpty()) && dto.getId() == null) {
-                model.addAttribute("errorFoto", "La foto principal es obligatoria");
+                result.rejectValue("fotoPrincipal", "error.fotoPrincipal", "La foto principal es obligatoria");
             }
 
             return "protectora/formulario-animal";

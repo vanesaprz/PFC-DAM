@@ -126,21 +126,25 @@
                 </div>
                 <div sec:authorize="hasAnyRole('ADOPTANTE','ADMIN')" class="d-grid gap-2 d-md-flex mt-5">
 
-                    <a th:href="@{/solicitudes/crear/{animalId}(animalId=${animal.id})}"
+                    <a th:if="${animal.estado.name() != 'ADOPTADO'}"
+                       th:href="@{/solicitudes/crear/{animalId}(animalId=${animal.id})}"
                        class="btn btn-primary btn-lg px-5 w-100">
                         Solicitar Adopción
                     </a>
+
                     <!-- Si ya es favorito, mostrar botón para eliminar -->
-                    <form th:if="${esFavorito}"
+                    <form th:if="${esFavorito and animal.estado.name() != 'ADOPTADO'}"
                           th:action="@{/adoptante/favoritos/eliminar/{animalId}(animalId=${animal.id})}"
-                          method="post">
+                          method="post"
+                          onsubmit="return confirm('¿Segura que quieres quitar este animal de tus favoritos?')">
+                        <input type="hidden" name="origen" value="detalles">
                         <button class="btn btn-danger btn-lg px-4" title="Quitar de favoritos">
                             <i class="bi bi-heart-fill"></i>
                         </button>
                     </form>
 
                     <!-- Si no es favorito, mostrar botón para añadir -->
-                    <form th:if="${!esFavorito}"
+                    <form th:if="${!esFavorito and animal.estado.name() != 'ADOPTADO'}"
                           th:action="@{/adoptante/favoritos/agregar/{animalId}(animalId=${animal.id})}"
                           method="post">
                         <button class="btn btn-outline-danger btn-lg px-4" title="Añadir a favoritos">

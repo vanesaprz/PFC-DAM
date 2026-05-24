@@ -28,6 +28,8 @@ public interface AnimalRepository extends JpaRepository<Animal, Long> {
 
     long countByProtectoraIdAndEstado(Long protectoraId, EstadoAnimal estado);
 
+    long countByProtectoraIdAndEstadoNot(Long protectoraId, EstadoAnimal estado);
+
 
     //PARA FILTRO DE BÚSQUEDA
     @Query("SELECT a FROM Animal a WHERE " +

@@ -40,7 +40,8 @@ public class AnimalDTO {
 
     @NotNull(message = "El tamaño es obligatorio")
     private Tamano tamano;
-
+    
+    @NotNull(message = "El peso es obligatorio")
     @DecimalMin(value = "0.1", message = "El peso debe ser mayor a 0")
     private BigDecimal peso;
 

@@ -26,7 +26,8 @@ public class Protectora {
     private String nombre;
 
     @Column(name = "direccion",
-            length = 64)
+            length = 64,
+            nullable = false)
     private String direccion;
 
     @Column(name = "cif",
@@ -36,11 +37,13 @@ public class Protectora {
     private String cif;
 
     @Column(name = "telefono",
-            length = 15)
+            length = 15,
+            nullable = false)
     private String telefono;
 
     @Column(name = "provincia",
-            length = 30)
+            length = 30,
+            nullable = false)
     private String provincia;
 
     @Column(name = "email_contacto",

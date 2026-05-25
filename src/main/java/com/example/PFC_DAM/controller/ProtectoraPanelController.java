@@ -204,6 +204,14 @@ public class ProtectoraPanelController {
             redirectAttributes.addFlashAttribute("error", "No tienes permiso para eliminar este animal");
             return "redirect:/protectora/panel";
         }
+        if (animal.getFotoPrincipal() != null) {
+            try {
+                cloudinaryService.eliminarImagen(animal.getFotoPrincipal());
+            } catch (IOException e) {
+                // Si falla el borrado en Cloudinary, borro el animal igualmente
+            }
+        }
+
         animalRepository.delete(animal);
         redirectAttributes.addFlashAttribute("mensaje", "Animal eliminado correctamente");
         return "redirect:/protectora/panel";

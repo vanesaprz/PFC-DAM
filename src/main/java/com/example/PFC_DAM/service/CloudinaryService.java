@@ -22,4 +22,11 @@ public class CloudinaryService {
 
         return (String) resultado.get("secure_url");
     }
+
+    public void eliminarImagen(String url) throws IOException {
+        String publicId = url
+                .substring(url.indexOf("/patitasgal/") + 1)
+                .replaceAll("\\.[^.]+$", "");
+        cloudinary.uploader().destroy(publicId, ObjectUtils.emptyMap());
+    }
 }

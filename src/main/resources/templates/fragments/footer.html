@@ -1,0 +1,47 @@
+<footer th:fragment="footer" class="mt-auto py-5 bg-dark text-white">
+    <div class="container">
+        <div class="row g-4">
+
+            <!-- Columna 1: Marca -->
+            <div class="col-md-4">
+                <h5 class="fw-bold fs-4 mb-3">🐾 PatitasGal</h5>
+                <p class="text-white-50 small">Conectando animales que buscan un hogar con familias que buscan un
+                    compañero. Galicia, España.</p>
+            </div>
+
+            <!-- Columna 2: Enlaces -->
+            <div class="col-md-4">
+                <h6 class="fw-bold text-uppercase mb-3 text-white-50">Explorar</h6>
+                <ul class="list-unstyled">
+                    <li class="mb-2"><a th:href="@{/animales}" class="text-white-50 text-decoration-none small">Animales
+                        en adopción</a></li>
+                    <li class="mb-2"><a th:href="@{/protectoras}" class="text-white-50 text-decoration-none small">Protectoras</a>
+                    </li>
+                    <li class="mb-2"><a th:href="@{/registro/seleccion}"
+                                        class="text-white-50 text-decoration-none small">Registrarse</a></li>
+                    <li class="mb-2"><a th:href="@{/login}" class="text-white-50 text-decoration-none small">Iniciar
+                        sesión</a></li>
+                </ul>
+            </div>
+
+            <!-- Columna 3: Info -->
+            <div class="col-md-4">
+                <h6 class="fw-bold text-uppercase mb-3 text-white-50">Proyecto</h6>
+                <ul class="list-unstyled">
+                    <li class="mb-2 text-white-50 small"><i class="bi bi-geo-alt me-2"></i>Galicia, España</li>
+                    <li class="mb-2 text-white-50 small"><i class="bi bi-mortarboard me-2"></i>Proyecto Final de Ciclo
+                        DAM
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+
+        <hr class="border-secondary mt-4">
+
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-center">
+            <p class="text-white-50 small mb-0">2026 PatitasGal. Proyecto Final de Ciclo Superior de DAM.</p>
+            <p class="text-white-50 small mb-0">Desarrollado con Spring Boot · Thymeleaf · Bootstrap</p>
+        </div>
+    </div>
+</footer>

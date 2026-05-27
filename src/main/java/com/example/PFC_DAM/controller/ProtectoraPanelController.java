@@ -5,6 +5,7 @@ import com.example.PFC_DAM.model.DTO.AnimalDTO;
 import com.example.PFC_DAM.model.DTO.ProtectoraPerfilDTO;
 import com.example.PFC_DAM.model.enums.*;
 import com.example.PFC_DAM.repos.*;
+import com.example.PFC_DAM.service.AnimalService;
 import com.example.PFC_DAM.service.CloudinaryService;
 import com.example.PFC_DAM.service.SolicitudService;
 import com.example.PFC_DAM.service.UsuarioService;
@@ -51,6 +52,11 @@ public class ProtectoraPanelController {
 
     @Autowired
     private UsuarioService usuarioService;
+    @Autowired
+    private FavoritoRepository favoritoRepository;
+
+    @Autowired
+    private AnimalService animalService;
 
     @GetMapping("/panel")
     public String mostrarPanel(Model model, Principal principal) {
@@ -107,91 +113,35 @@ public class ProtectoraPanelController {
                                 Model model,
                                 RedirectAttributes redirectAttributes) {
 
-        //Comprobamos que las fechas de nacimiento e ingreso introducidas no sean futuras
         if (dto.getFechaNacimiento() != null && dto.getFechaNacimiento().isAfter(LocalDate.now())) {
             result.rejectValue("fechaNacimiento", "error.fechaNacimiento", "La fecha de nacimiento no puede ser futura");
         }
         if (dto.getFechaIngreso() != null && dto.getFechaIngreso().isAfter(LocalDate.now())) {
-            result.rejectValue("fechaIngreso", "error.fechaIngreso", "La fecha de ingreso en la protectora no puede ser futura");
+            result.rejectValue("fechaIngreso", "error.fechaIngreso", "La fecha de ingreso no puede ser futura");
         }
-
-        //Comprobamos que la fecha de ingreso en la protectora no sea anterior a la fecha de nacimiento
         if (dto.getFechaNacimiento() != null && dto.getFechaIngreso() != null
                 && dto.getFechaIngreso().isBefore(dto.getFechaNacimiento())) {
             result.rejectValue("fechaIngreso", "error.fechaIngreso", "La fecha de ingreso no puede ser anterior a la fecha de nacimiento");
         }
 
-        //Si el formulario tiene errores o la foto está vacía, volvemos al formulario con los datos que ya había introducido
-        if (result.hasErrors() || ((foto == null || foto.isEmpty()) && dto.getId() == null)) {
+        boolean faltaFoto = (foto == null || foto.isEmpty()) && dto.getId() == null;
 
+        if (result.hasErrors() || faltaFoto) {
             model.addAttribute("especies", Especie.values());
             model.addAttribute("sexos", Sexo.values());
             model.addAttribute("estados", EstadoAnimal.values());
             model.addAttribute("tamanos", Tamano.values());
-
-
-            if ((foto == null || foto.isEmpty()) && dto.getId() == null) {
-                result.rejectValue("fotoPrincipal", "error.fotoPrincipal", "La foto principal es obligatoria");
+            if (faltaFoto) {
+                model.addAttribute("errorFoto", "La foto principal es obligatoria");
             }
-
             return "protectora/formulario-animal";
         }
 
         try {
-            // Recuperamos la cuenta de la protectora autenticada a partir del email del Principal
-            Cuenta cuenta = cuentaRepository.findByEmail(principal.getName())
-                    .orElseThrow(() -> new RuntimeException("Cuenta no encontrada"));
-
-            // Si el DTO tiene id, estamos editando un animal existente; si no, creamos uno nuevo
-            Animal animal;
-            if (dto.getId() != null) {
-                animal = animalRepository.findById(dto.getId()).orElseThrow();
-            } else {
-                animal = new Animal();
-            }
-
-            // Transferimos los datos del DTO a la entidad
-            animal.setNombre(dto.getNombre());
-            animal.setEspecie(dto.getEspecie());
-            animal.setRaza(dto.getRaza());
-            animal.setSexo(dto.getSexo());
-            animal.setFechaNacimiento(dto.getFechaNacimiento());
-            animal.setFechaIngreso(dto.getFechaIngreso());
-            animal.setEstado(dto.getEstado());
-            animal.setTamano(dto.getTamano());
-            animal.setPeso(dto.getPeso());
-
-            // Si se sube una foto nueva se envía a Cloudinary y se guarda la URL;
-            // si estamos editando y no se sube foto nueva, mantenemos la URL existente
-            if (foto != null && !foto.isEmpty()) {
-                String urlFoto = cloudinaryService.subirImagen(foto);
-                animal.setFotoPrincipal(urlFoto);
-            } else if (dto.getId() != null) {
-                Animal animalExistente = animalRepository.findById(dto.getId()).orElseThrow();
-                animal.setFotoPrincipal(animalExistente.getFotoPrincipal());
-            }
-
-            // Campos booleanos: si vienen null del formulario los establecemos a false
-            animal.setEsterilizado(dto.getEsterilizado() != null ? dto.getEsterilizado() : false);
-            animal.setVacunado(dto.getVacunado() != null ? dto.getVacunado() : false);
-            animal.setDesparasitado(dto.getDesparasitado() != null ? dto.getDesparasitado() : false);
-            animal.setMicrochip(dto.getMicrochip() != null ? dto.getMicrochip() : false);
-            animal.setAptoPerros(dto.getAptoPerros() != null ? dto.getAptoPerros() : false);
-            animal.setAptoGatos(dto.getAptoGatos() != null ? dto.getAptoGatos() : false);
-            animal.setAptoNinos(dto.getAptoNinos() != null ? dto.getAptoNinos() : false);
-            animal.setNecesidadesEspeciales(dto.getNecesidadesEspeciales());
-
-            animal.setNivelActividad(dto.getNivelActividad());
-            animal.setMiedos(dto.getMiedos());
-            animal.setDescripcion(dto.getDescripcion());
-
-            // Vinculamos el animal a la protectora que cubre el formulario
-            animal.setProtectora(cuenta.getProtectora());
-
-            animalRepository.save(animal);
+            Cuenta cuenta = cuentaRepository.findByEmail(principal.getName()).orElseThrow();
+            animalService.guardarAnimal(dto, foto, cuenta);
             redirectAttributes.addFlashAttribute("mensaje", "¡Animal guardado con éxito!");
             return "redirect:/protectora/panel";
-
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", "Error al guardar: " + e.getMessage());
             return "redirect:/protectora/animales/nuevo";
@@ -201,24 +151,13 @@ public class ProtectoraPanelController {
     //Se crea el controlador para la eliminación de animales del panel de la protectora.
     @PostMapping("/animales/borrar/{id}")
     public String borrarAnimal(@PathVariable Long id, Principal principal, RedirectAttributes redirectAttributes) {
-        Animal animal = animalRepository.findById(id).orElseThrow();
-
-        //Verifico que el animal pertenece a la protectora que trata de borrar el animal:
-        Cuenta cuenta = cuentaRepository.findByEmail(principal.getName()).orElseThrow();
-        if (!animal.getProtectora().getId().equals(cuenta.getProtectora().getId())) {
-            redirectAttributes.addFlashAttribute("error", "No tienes permiso para eliminar este animal");
-            return "redirect:/protectora/panel";
+        try {
+            Cuenta cuenta = cuentaRepository.findByEmail(principal.getName()).orElseThrow();
+            animalService.borrarAnimal(id, cuenta);
+            redirectAttributes.addFlashAttribute("mensaje", "Animal eliminado correctamente");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", e.getMessage());
         }
-        if (animal.getFotoPrincipal() != null) {
-            try {
-                cloudinaryService.eliminarImagen(animal.getFotoPrincipal());
-            } catch (IOException e) {
-                // Si falla el borrado en Cloudinary, borro el animal igualmente
-            }
-        }
-
-        animalRepository.delete(animal);
-        redirectAttributes.addFlashAttribute("mensaje", "Animal eliminado correctamente");
         return "redirect:/protectora/panel";
     }
 

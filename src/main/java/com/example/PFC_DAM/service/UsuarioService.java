@@ -1,13 +1,12 @@
 package com.example.PFC_DAM.service;
 
 import com.example.PFC_DAM.model.Adoptante;
+import com.example.PFC_DAM.model.Animal;
 import com.example.PFC_DAM.model.Cuenta;
 import com.example.PFC_DAM.model.DTO.RegistroAdoptanteDTO;
 import com.example.PFC_DAM.model.DTO.RegistroProtectoraDTO;
 import com.example.PFC_DAM.model.Protectora;
-import com.example.PFC_DAM.repos.AdoptanteRepository;
-import com.example.PFC_DAM.repos.CuentaRepository;
-import com.example.PFC_DAM.repos.ProtectoraRepository;
+import com.example.PFC_DAM.repos.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -19,14 +18,23 @@ import static com.example.PFC_DAM.model.enums.Rol.PROTECTORA;
 
 @Service
 public class UsuarioService {
-    
+
     @Autowired
     private CuentaRepository cuentaRepository;
     @Autowired
     private AdoptanteRepository adoptanteRepository;
     @Autowired
     private ProtectoraRepository protectoraRepository;
-
+    @Autowired
+    private SolicitudRepository solicitudRepository;
+    @Autowired
+    private FavoritoRepository favoritoRepository;
+    @Autowired
+    private RedSocialRepository redSocialRepository;
+    @Autowired
+    private AnimalRepository animalRepository;
+    @Autowired
+    private NotificacionRepository notificacionRepository;
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
 
@@ -88,4 +96,36 @@ public class UsuarioService {
 
         protectoraRepository.save(protectora);
     }
+
+    @Transactional
+    public void eliminarAdoptante(Cuenta cuenta) {
+        Adoptante adoptante = adoptanteRepository.findByCuenta(cuenta).orElseThrow();
+
+        //Borrado en order para evitar conflictos de integridad referencial
+        favoritoRepository.deleteAll(adoptante.getFavoritos());
+        solicitudRepository.deleteAll(adoptante.getSolicitudes());
+        notificacionRepository.deleteAll(notificacionRepository.findByCuentaIdOrderByFechaDesc(cuenta.getId()));
+
+        adoptanteRepository.delete(adoptante);
+        cuentaRepository.delete(cuenta);
+    }
+
+    @Transactional
+    public void eliminarProtectora(Cuenta cuenta) {
+        Protectora protectora = protectoraRepository.findByCuenta(cuenta).orElseThrow();
+        //Para cada animal de la protectora, borramos sus solicitudes y favoritos primero:
+        for (Animal animal : protectora.getAnimales()) {
+            solicitudRepository.deleteAll(solicitudRepository.findByAnimalId(animal.getId()));
+            favoritoRepository.deleteAll(favoritoRepository.findByAnimalId(animal.getId()));
+        }
+
+        animalRepository.deleteAll(protectora.getAnimales());
+        redSocialRepository.deleteAll(protectora.getRedesSociales());
+        notificacionRepository.deleteAll(notificacionRepository.findByCuentaIdOrderByFechaDesc(cuenta.getId()));
+
+        protectoraRepository.delete(protectora);
+        cuentaRepository.delete(cuenta);
+
+    }
+
 }

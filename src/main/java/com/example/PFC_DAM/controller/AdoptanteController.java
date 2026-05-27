@@ -6,6 +6,8 @@ import com.example.PFC_DAM.model.DTO.AdoptantePerfilDTO;
 import com.example.PFC_DAM.repos.AdoptanteRepository;
 import com.example.PFC_DAM.repos.CuentaRepository;
 import com.example.PFC_DAM.service.CloudinaryService;
+import com.example.PFC_DAM.service.UsuarioService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -28,6 +30,8 @@ public class AdoptanteController {
     private AdoptanteRepository adoptanteRepository;
     @Autowired
     private CuentaRepository cuentaRepository;
+    @Autowired
+    private UsuarioService usuarioService;
 
     @Autowired
     private CloudinaryService cloudinaryService;
@@ -88,6 +92,14 @@ public class AdoptanteController {
 
         return "redirect:/adoptante/perfil";
 
+    }
+
+    @PostMapping("/perfil/eliminar")
+    public String eliminarCuentaAdoptante(Principal principal, HttpServletRequest request) throws Exception {
+        Cuenta cuenta = cuentaRepository.findByEmail(principal.getName()).orElseThrow();
+        usuarioService.eliminarAdoptante(cuenta);
+        request.getSession().invalidate();
+        return "redirect:/";
     }
 
 

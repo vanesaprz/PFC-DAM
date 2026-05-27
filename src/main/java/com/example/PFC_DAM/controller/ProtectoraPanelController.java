@@ -7,6 +7,8 @@ import com.example.PFC_DAM.model.enums.*;
 import com.example.PFC_DAM.repos.*;
 import com.example.PFC_DAM.service.CloudinaryService;
 import com.example.PFC_DAM.service.SolicitudService;
+import com.example.PFC_DAM.service.UsuarioService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -46,6 +48,9 @@ public class ProtectoraPanelController {
 
     @Autowired
     private SolicitudService solicitudService;
+
+    @Autowired
+    private UsuarioService usuarioService;
 
     @GetMapping("/panel")
     public String mostrarPanel(Model model, Principal principal) {
@@ -369,6 +374,14 @@ public class ProtectoraPanelController {
         redSocialRepository.save(redSocial);
         redirectAttributes.addFlashAttribute("mensaje", "Red Social añadida correctamente");
         return "redirect:/protectora/perfil";
+    }
+
+    @PostMapping("/perfil/eliminar")
+    public String eliminarCuentaProtectora(Principal principal, HttpServletRequest request) {
+        Cuenta cuenta = cuentaRepository.findByEmail(principal.getName()).orElseThrow();
+        usuarioService.eliminarProtectora(cuenta);
+        request.getSession().invalidate();
+        return "redirect:/";
     }
 
 

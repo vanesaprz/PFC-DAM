@@ -19,4 +19,7 @@ public interface FavoritoRepository extends JpaRepository<Favorito, Long> {
     //Si existe una coincidencia, devuelve el favorito. Si no, devuelve un objeto vacío
     Optional<Favorito> findByAdoptanteIdAndAnimalId(Long adoptanteId, Long animalId);
 
+    List<Favorito> findByAnimalId(Long animalId);
+
+    
 }

@@ -182,7 +182,20 @@
                     </div>
                 </form>
             </div>
-
+            <hr class="mt-4">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div>
+                    <p class="text-muted small mb-1">¿Quieres eliminar tu cuenta?</p>
+                    <p class="text-muted small">Esta acción es irreversible y eliminará todos tus datos y animales
+                        asociados.</p>
+                </div>
+                <form th:action="@{/protectora/perfil/eliminar}" method="post"
+                      onsubmit="return confirm('¿Estás segura de que quieres eliminar tu cuenta? Esta acción eliminará también todos tus animales y solicitudes asociadas.')">
+                    <button type="submit" class="btn btn-outline-danger">
+                        <i class="bi bi-trash3 me-1"></i>Eliminar cuenta
+                    </button>
+                </form>
+            </div>
             <footer class="mt-5 pt-4 border-top text-center text-muted">
                 <p> 2026 Vanesa Pérez.</p>
             </footer>

@@ -66,6 +66,7 @@ public class Animal {
     @Enumerated(EnumType.STRING)
     private EstadoAnimal estado;
 
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Tamano tamano;
 
@@ -153,6 +154,6 @@ public class Animal {
     @OneToMany(mappedBy = "animal")
     private List<Solicitud> solicitudes;
 
-    
+
 }
 

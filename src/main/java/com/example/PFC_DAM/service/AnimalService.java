@@ -36,6 +36,9 @@ public class AnimalService {
         Animal animal;
         if (dto.getId() != null) {
             animal = animalRepository.findById(dto.getId()).orElseThrow();
+            if (!animal.getProtectora().getId().equals(cuenta.getProtectora().getId())) {
+                throw new RuntimeException("No tienes permiso para editar este animal");
+            }
         } else {
             animal = new Animal();
         }

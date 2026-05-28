@@ -65,10 +65,9 @@ public class AnimalService {
         if (foto != null && !foto.isEmpty()) {
             String urlFoto = cloudinaryService.subirImagen(foto);
             animal.setFotoPrincipal(urlFoto);
-        } else if (dto.getId() != null) {
-            Animal animalExistente = animalRepository.findById(dto.getId()).orElseThrow();
-            animal.setFotoPrincipal(animalExistente.getFotoPrincipal());
         }
+        // Si no se sube foto nueva en una edición, animal ya tiene su fotoPrincipal cargada desde BD
+
 
         // Si el animal pasa a ADOPTADO, cerramos solicitudes pendientes y eliminamos favoritos
         if (dto.getEstado() == EstadoAnimal.ADOPTADO) {

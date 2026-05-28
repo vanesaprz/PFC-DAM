@@ -4,7 +4,8 @@
 
             <!-- Columna 1: Marca -->
             <div class="col-md-4">
-                <h5 class="fw-bold fs-4 mb-3">🐾 PatitasGal</h5>
+                <img th:src="@{/images/logo.png}" alt="PatitasGal"
+                     style="height: 40px; filter: brightness(0) invert(1);" class="mb-3">
                 <p class="text-white-50 small">Conectando animales que buscan un hogar con familias que buscan un
                     compañero. Galicia, España.</p>
             </div>
@@ -21,6 +22,11 @@
                                         class="text-white-50 text-decoration-none small">Registrarse</a></li>
                     <li class="mb-2"><a th:href="@{/login}" class="text-white-50 text-decoration-none small">Iniciar
                         sesión</a></li>
+                    <li class="mb-2">
+                        <a th:href="@{/privacidad}" class="text-white-50 text-decoration-none small">
+                            Política de privacidad
+                        </a>
+                    </li>
                 </ul>
             </div>
 

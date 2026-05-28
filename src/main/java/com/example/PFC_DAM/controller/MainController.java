@@ -82,5 +82,10 @@ public class MainController {
         return "detalle-protectora";
     }
 
+    @GetMapping("/privacidad")
+    public String politicaPrivacidad() {
+        return "politica-privacidad";
+    }
+
 
 }

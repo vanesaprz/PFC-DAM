@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Política de Privacidad - PatitasGal</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body class="bg-light">
+
+<div th:replace="~{fragments/navbar :: menu_principal}"></div>
+
+<main class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+
+            <div class="text-center mb-5">
+                <img th:src="@{/images/PatitasGal.jpg}" alt="PatitasGal" style="max-width: 150px;" class="mb-3">
+                <h1 class="fw-bold">Política de Privacidad</h1>
+                <p class="text-muted small">Última actualización: mayo de 2026</p>
+            </div>
+
+            <div class="card border-0 shadow-sm p-4 p-md-5">
+
+                <h5 class="fw-bold mb-3">1. Responsable del tratamiento</h5>
+                <p class="text-muted">El responsable del tratamiento de los datos personales recogidos a través de
+                    PatitasGal es Vanesa Pérez, con email de contacto <a href="mailto:privacidad@patitasgal.gal">privacidad@patitasgal.gal</a>.
+                </p>
+
+                <hr>
+
+                <h5 class="fw-bold mb-3">2. Datos que recogemos</h5>
+                <p class="text-muted">En función del tipo de usuario, PatitasGal recoge los siguientes datos
+                    personales:</p>
+                <ul class="text-muted">
+                    <li><strong>Adoptantes:</strong> nombre, apellidos, provincia, dirección de correo electrónico,
+                        contraseña cifrada, foto de perfil y presentación personal.
+                    </li>
+                    <li><strong>Protectoras:</strong> nombre de la entidad, CIF/NIF, dirección, provincia, teléfono,
+                        email de contacto, logo y presentación.
+                    </li>
+                    <li><strong>Solicitudes de adopción:</strong> mensaje de presentación, tipo de vivienda, convivencia
+                        con otros animales y teléfono de contacto.
+                    </li>
+                </ul>
+
+                <hr>
+
+                <h5 class="fw-bold mb-3">3. Finalidad del tratamiento</h5>
+                <p class="text-muted">Los datos recogidos se utilizan exclusivamente para:</p>
+                <ul class="text-muted">
+                    <li>Gestionar el registro y acceso a la plataforma.</li>
+                    <li>Facilitar el proceso de adopción entre adoptantes y protectoras.</li>
+                    <li>Mostrar el perfil público de protectoras y adoptantes dentro de la plataforma.</li>
+                    <li>Enviar notificaciones internas sobre el estado de las solicitudes de adopción.</li>
+                </ul>
+
+                <hr>
+
+                <h5 class="fw-bold mb-3">4. Conservación de los datos</h5>
+                <p class="text-muted">Los datos se conservan mientras la cuenta permanezca activa. Cuando el usuario
+                    elimina su cuenta, todos sus datos personales y la información asociada (solicitudes, favoritos y
+                    notificaciones) se eliminan de forma permanente e irreversible de la base de datos.</p>
+
+                <hr>
+
+                <h5 class="fw-bold mb-3">5. Derechos del usuario</h5>
+                <p class="text-muted">De acuerdo con el Reglamento General de Protección de Datos (RGPD), el usuario
+                    tiene derecho a:</p>
+                <ul class="text-muted">
+                    <li><strong>Acceso:</strong> consultar qué datos personales están almacenados.</li>
+                    <li><strong>Rectificación:</strong> modificar sus datos desde la sección de perfil.</li>
+                    <li><strong>Supresión:</strong> eliminar su cuenta y todos sus datos desde la sección de perfil.
+                    </li>
+                </ul>
+                <p class="text-muted">Para cualquier consulta relacionada con el tratamiento de sus datos, puede
+                    contactar con nosotros en <a href="mailto:privacidad@patitasgal.gal">privacidad@patitasgal.gal</a>.
+                </p>
+
+                <hr>
+
+                <h5 class="fw-bold mb-3">6. Seguridad</h5>
+                <p class="text-muted">PatitasGal aplica medidas técnicas para proteger los datos personales de los
+                    usuarios. Las contraseñas se almacenan cifradas mediante el algoritmo BCrypt y nunca se guardan en
+                    texto plano. El acceso a las secciones privadas está restringido mediante autenticación y control de
+                    acceso basado en roles.</p>
+
+            </div>
+        </div>
+    </div>
+</main>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

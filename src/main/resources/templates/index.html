@@ -10,6 +10,27 @@
 </head>
 <body>
 <div th:replace="~{fragments/navbar :: menu_principal}"></div>
+<!-- HERO -->
+<section class="hero-section text-center py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <img th:src="@{/images/PatitasGal.jpg}" alt="PatitasGal" class="hero-logo mb-4">
+                <h1 class="display-5 fw-bold text-dark mb-3">Encuentra a tu compañero perfecto en Galicia</h1>
+                
+                <div class="d-flex justify-content-center gap-3 flex-wrap">
+                    <a th:href="@{/animales}" class="btn btn-primary btn-lg px-5">
+                        <i class="bi bi-search me-2"></i>Ver animales
+                    </a>
+                    <a th:href="@{/protectoras}" class="btn btn-outline-primary btn-lg px-5">
+                        <i class="bi bi-house-heart me-2"></i>Ver protectoras
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
 <div class="container animal-container">
 
     <!-- URGENTES -->

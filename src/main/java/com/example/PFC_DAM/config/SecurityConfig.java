@@ -37,7 +37,7 @@ public class SecurityConfig {
                 .authenticationProvider(authenticationProvider())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/registro/**", "/login", "/css/**", "/js/**", "/images/**",
-                                "/", "/animales", "/animales/{id}", "/protectoras", "/protectora/{id}").permitAll()
+                                "/", "/animales", "/animales/{id}", "/protectoras", "/protectora/{id}", "/privacidad").permitAll()
                         .requestMatchers("/protectora/panel", "/protectora/animales/**", "/protectora/solicitudes")
                         .hasAnyRole("PROTECTORA", "ADMIN")
                         .requestMatchers("/adoptante/**", "/solicitudes/**")

@@ -64,3 +64,12 @@
     font-size: 1 rem;
     padding: 0.4rem 1rem;
 }
+.hero-section {
+    background: linear-gradient(135deg, #f0f7ff 0%, #ffffff 100%);
+    border-bottom: 1px solid #e8f0fe;
+}
+
+.hero-logo {
+    max-width: 300px;
+    width: 100%;
+}

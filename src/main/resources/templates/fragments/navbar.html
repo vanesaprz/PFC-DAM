@@ -24,7 +24,7 @@
                     <a class="nav-link" th:href="@{/protectoras}">Protectoras</a>
                 </li>
                 <li class="nav-item" sec:authorize="hasAnyRole('PROTECTORA', 'ADMIN')">
-                    <a class="nav-link text-primary fw-bold" th:href="@{/protectora/panel}">
+                    <a class="nav-link text-primary" th:href="@{/protectora/panel}">
                         <i class="bi bi-layout-text-window-reverse"></i> Mi panel
                     </a>
                 </li>

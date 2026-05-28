@@ -1,16 +1,16 @@
 spring.application.name=PFC-DAM
-#URL conexión a servidor local y a base de datos
+# Conexion a base de datos PostgreSQL
 spring.datasource.url=jdbc:postgresql://localhost:5432/protectapp
-spring.datasource.username=usuario
-spring.datasource.password=contraseña_aqui
+spring.datasource.username=tu_usuario
+spring.datasource.password=tu_contrasena
 spring.jpa.hibernate.ddl-auto=update
-spring.jpa.show-sql=true
+# spring.jpa.show-sql=true
 spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
 server.servlet.session.timeout=15m
-#Conexión a cloudinary
+# Conexion a Cloudinary
 cloudinary.cloud-name=tu_cloud_name
 cloudinary.api-key=tu_api_key
 cloudinary.api-secret=tu_api_secret
-#Se aumenta el límite de tamaño de los archivos que se pueden subir:
+# Limite de tamano de archivos subidos
 spring.servlet.multipart.max-file-size=10MB
 spring.servlet.multipart.max-request-size=10MB

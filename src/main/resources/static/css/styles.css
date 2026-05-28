@@ -30,3 +30,37 @@
     border-radius: 50%;
     border: 4px solid white;
     }
+
+
+.navbar {
+    padding-top: 0.25rem;
+    padding-bottom: 0.25rem;
+    min-height:
+}
+
+.navbar-brand img {
+    height: 50px;
+    vertical-align: middle;
+}
+
+.navbar .nav-link {
+    font-size: 1.4rem;
+    font-weight: 500;
+    color: #444 !important;
+    letter-spacing: 0.3px;
+    padding: 0 rem 1rem;
+    transition: color 0.2s ease;
+}
+
+.navbar .nav-link:hover {
+    color: #000 !important;
+}
+
+.navbar .nav-link i {
+    font-size: 0.85rem;
+}
+
+.navbar .btn {
+    font-size: 1 rem;
+    padding: 0.4rem 1rem;
+}
